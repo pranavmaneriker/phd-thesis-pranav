@@ -1,0 +1,14 @@
+
+\section{Discussion} %\& Future Work}
+The case studies presented in the previous section demonstrate the ability of our tools to provide vital context when deciding how to refine a model or fairness specification.
+Although this contextual information makes decisions easier, it is not always clear how one should alter a specification in light of a violation and its relevant context.
+%For example, in case study B, the decision was made that the threshold could be lowered from 2. However, it is not obvious how much we should lower this threshold. Further complicating the matter is the fact that we have options when changing the specification. We can lower the threshold constant (2), or we can add a constant multiplier to the expectation of females with high income.
+To assist in these decisions, we are currently examining ways work to suggest edits that are likely to achieve the desired intent of a developer.
+Using our visual analysis tool for refinement, we can gather edits from developers and then use that data to learn iterative changes to the syntax tree of the specification.
+In addition to improving the usability of our tools for making fairness specification refinements, we also envision a more scalable framework.
+Our case studies look at a single model with respect to a single dataset. However, real-world deployment of machine learning often contain many clients with models that may differ.
+However, real-world deployment of machine learning often contain many clients with models and datasets that may evolve and drift over time.
+We take it as future work to study the efficient monitoring of machine learning behavior with respect to a fairness specification in a distributed context, enabling horizontal scalability.
+We believe techniques such as decoupling the observation of data and the reporting results from the monitoring of the results are promising and can lead to the desired scalability.
+
+%\vspace{-0.2in}

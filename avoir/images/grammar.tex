@@ -1,0 +1,10 @@
+\begin{grammar}
+             <spec> ::= <ETerm>  <comp-op>  c 
+                \alt <spec> $\land$ <spec>              
+                \alt <spec> $\lor$ <spec> 
+        
+            <ETerm> ::= $\E[<E>]$
+                \alt   $\E[<E>$|$<E>]$
+                \alt   c $\in \R$
+                \alt   <ETerm> $\ \{+, -, \times, \div \}\ $ <ETerm>
+\end{grammar}

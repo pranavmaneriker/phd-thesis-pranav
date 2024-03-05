@@ -1,0 +1,228 @@
+%\pmcomment{Please use \lstinline|\\pmcomment|,  \lstinline|\\spcomment|, and \lstinline|\\cbcomment| for adding comments. Set \lstinline{\\pmcommentson} to false in \texttt{my\_definitions.tex} to disable all comments.}
+
+\chapter{Introduction}
+
+The rise of deep learning as the primary paradigm for machine learning has been precipitated by the progress in the ability to use \textit{unstructured} data, development of special purpose hardware (GPUs), and availability of software frameworks for rapid prototyping.
+In particular, \textit{unstructured} data is expected to account for a significant fraction (nearly 80\%) of the stored data across enterprises by 2025~\citep{rydning2018digitization}. 
+Neural networks, composed of multiple layers, input with \textit{raw} or \textit{unstructured} data such as speech, images, and text form the basis of most modern deep learning architectures~\cite{lecun2015deep}.
+Distributed representations store concepts within a network as patterns across a number of processing units and are a central concept in the connectionism movement in cognitive science~\citep{hinton1986distributed}.
+These distributions have motivated the use of representation learning for unstructured data~\citep{goodfellow2016deep,lecun2015deep} in neural networks.
+Deep learning has only had mixed success with structured data - 
+tree-based methods still continue to outperform deep learning on a number of tasks, including classification and regression~\citep{shwartz2022tabular,grinsztajn2022tree}. 
+The successes include tasks such as relation extraction, cell filling, and question-answering tasks on tabular data~\cite{deng2022turl}. 
+In a similar vein, neural networks for graph representation learning have seen successes~\cite{welling2016semi,velivckovic2018graph} though there remain challenges in their application for unsupervised representation learning~\citep{gurukar2022benchmarking}.
+
+%\section{Motivation}
+%
+%\subsection{Structure}
+The success and failures of the aforementioned approaches prompt a natural question - are there hybrid approaches that can take advantage of the successes of machine learning on \textit{unstructured} data while simultaneously capitalizing on any available associated structure?
+The central theme of this thesis proposal is to demonstrate that structures, either those present implicitly or derived explicitly, provide opportunities for building improved models over methods that rely on unstructured data alone.
+Similar perspectives have been explored, for example, for natural language processing problems~\citep{wu2021graph} and computer vision~\citep{johnson2018image}.
+In particular, the study of language involves the study of structures. 
+The main subject of study of this proposal is the utility of these structures for both formal and natural languages.
+A formal language refers to a set of strings of symbols that are derived from a finite alphabet and specified by a set of rules that generate them~\citep{scott2000programming}.
+Formal languages are grouped into increasingly large classes that can be organized into the Chomsky hierarchy~\citep{chomsky1956three}.
+These classes can be characterized by the nature of the rules that are used to generate strings and the complexity of the \textit{formal machine} that recognizes the language.
+Further, the study of grammars and their innateness in formal languages has also played a crucial role in the study of machine learning on natural language\todo{citation here}%~\cite{missing},
+though not without critics~\citep{pullum2002empirical,linzen2021syntactic}.
+
+The preceding text references both \textit{implicit} and \textit{explicit} structures. 
+We use \textit{implicit} structures to reference those that play a direct role in the derivation of strings/sentences in a language.
+For a formal language, these are necessarily externally specified (alphabet, tokens, syntax).
+On the other hand, for natural languages, there exist multiple competing formulations for the same phenomenon.
+For example, the notion of a word/lexeme is not well-defined across languages~\cite{martin2017indeterminacy}, and therefore, it can be hard to separate morphological and syntactic differences. 
+Different formulations exist for describing syntactic structures, either as trees having recursive phrase structures (constituency grammars) or as general graphs connecting dependent words (dependency grammars).
+By \textit{explicit} structure, we refer to the locally ascribed or inferred semantics, as well as a contextual structure that helps define meaning.
+For instance, we study conversations on online forums and how a post can be better understood in the presence of the context preceding and surrounding it.
+Following this discussion of the broad range of available choices for structures, we next revisit the question of their utility.
+While there are claims of large language models as a panacea~\citep{bommasani2021foundationmodels} for solving language-related tasks, through this proposal, we aim to demonstrate scenarios where it is necessary to take advantage of structure to achieve \textit{adaptive} machine learning systems.
+\todo{what makes style different from other issues in the llm continuum}\
+%footnote{\url{https://twitter.com/yoavgo/status/1318567498653061122}}
+\todo{Cite the twitter thread correctly, arguing with the dilemma faced by modern NLP practitioners}
+%this proposal focuses on building and monitoring systems that are robust across time, i.e., \textit{adaptive} machine learning systems.
+
+%The most common machine learning setup includes a train-validate-evaluate setup~\citep{train-test} \todo{introduced in?}.
+%TOD:Fix
+% Magdalena Biesialska, Katarzyna Biesialska, and Marta R. Costa-jussà. 2020. Continual lifelong learning in natural language processing: A survey. In Proceedings of the 28th International Conference on Computational Linguistics, pages 6523–6541, Barcelona, Spain (Online). International Committee on Computational Linguistics.
+%Computational systems in the real world are expected to learn from dynamic streams of data, adapting from their states in past iterations~\citep{biesialska2020continual} \todo{fix}.
+%Sebastian Thrun. 1998. Lifelong learning algorithms. In Learning to learn, pages 181–209. Springer.
+
+%\subsection{Adaptation}
+Machine learning systems in the real world must adapt to new concepts and deal with issues arising from shifts in the underlying data distribution~\citep{huyen2022designing}.
+The problem of continuing to learn new tasks without forgetting knowledge from previous tasks, commonly referred to as \textit{continual learning} or \textit{life-long learning}, has been a subject of study since at least the 1990s~\citep{thrun1998lifelong}.
+However, in general, one cannot assume anything about how a model trained on data from the past may perform in the future or in another domain. 
+We examine these issues in view of the three stages of the life cycle of a machine learning model, viz. pre-deployment, runtime monitoring, and post-hoc analysis.
+With each stage, we can associate a corresponding challenge with building \textit{adaptable} ML.
+These are \textit{adversarial testing}, 
+\textit{online monitoring}, and \textit{domain generalization}.
+\todo{Talk about focusing on temporal splits.}
+
+\noindent \textbf{Adversarial Testing}
+The standard paradigm for the evaluation of an ML model is using train-validation-test splits to estimate the performance of a model. 
+Common benchmarks include standardized splits for comparing the performance of models~\citep{gorman2019need}.
+However, having standardized splits can lead to issues in quantifying performance; measurement on a standardized, held-out split is only an estimate of true performance.
+Some of these issues can be avoided by using randomized~\citep{gorman2019need}, or adversarial~\citep{sogaard2021need} splits.
+However, alternative splits of the data cannot model all behaviors that may be encountered by a model.
+One mechanism of measurement of the ability of a model to capture specific required properties is by validating its behavior against well-designed tests~\cite{ribeiro2020beyond}.
+Further, in the \textit{pre-deployment} stage, these tests can serve as a tool to build more robust systems. 
+Coming up with domain-specific test suites for generating adversarial examples efficiently remains a challenging task.
+\todo{Potentially mention synthetic data?}
+
+\noindent \textbf{Online Monitoring}
+Once a model has been deployed and begins to influence decisions being made in the real world, it is important to monitor it to understand whether it achieves the expected performance.
+The distribution of data encountered by the model at training time may be different from when it is actually deployed. 
+While the outputs of a model are used to make decisions, the true labels may be unavailable and expensive to obtain.
+Effective monitoring of an ML system at \textit{runtime} requires building monitoring tools that can provide estimates with fewer examples~\citep{ginart2022mldemon}.
+Monitoring is also imperative for auditing the compliance of decision-making ML systems with regulatory requirements.
+Creating efficient monitoring tools that can establish when a deployed model cannot reach regulatory or performance targets is a difficult task.
+
+\noindent \textbf{Domain Generalization}
+While there is some disparity in the notion of what constitutes a \textit{domain}, one frequently used notion of a \textit{domain} is to reference data that are sampled from a fixed, joint distribution of inputs and outputs~\cite{wang2022generalizing}.
+In the \textit{post-deployment} phase, a model that has been built for a specific domain may be adapted for use in other analogous settings, each having its own joint distribution.
+This motivates the problem of \textit{domain generalization}. 
+Representative strategies for \textit{domain generalization} include multi-task learning~\cite{caruana1997multitask} and transfer learning~\cite{zhuang2020comprehensive}.
+The third challenge that we study in this proposal is the setting up of model architectures, training algorithms, and understanding the impact of domain generalization in specific contexts.
+
+%Therefore, building robust and reliable systems requires making certain assumptions about the behavior (over time and domain) of the underlying data distributions.
+%On the other hand, shifts may happen either due to the training data distribution differing from that which the system encounters when deployed, or due to degenerate feedback loops.
+%Degenerate feedback loops are caused when the output of a system influences the input that is fed to the same system. 
+%This is often encountered, for example, in recommendation systems.
+%The items recommended by a system are more likely to be displayed to a user of the system.
+%The interaction of the user with this item could act as an input to a future iteration of the system.
+%This problem is often referred to by terms such as \textit{exposure bias}, \textit{popularity bias}, or \textit{sampling bias}.
+%Incorrect recommendations are a relatively benign manifestation of this issue.
+%The problem can manifest in a myriad scenarios, including when systems are deployed for predictive policing.
+%This is the task associated with determining the allocation of police officers to areas to detect crime, given historical crime incident data for these areas~\cite{lum2016predict,ensign2017runaway}.
+%The deployment of police officers in particular neighborhoods increases the likelihood of incidents being discovered by them in the same neighborhoods.
+
+%Informally, the former issue is concerned with the ability of a model to `generalize' beyond the training data.
+%A first attempt at solving this problem could be to retrain a model at some frequency.
+%An alternative view of adaptation to distribution shift is \textit{adversarially robust} learning. 
+%In adversarially robust learning, a model must learn to be robust to an adversary, given a threat model.
+
+%In this proposal, we posit that across multiple problems where adaptive machine learning systems need to be built, there exist underlying structures that can assist.
+%Structure may be implicit or explicit, and some structures may themselves change with time.
+%Nonetheless, in all scenarios, there exist meta-structures underlying these evolving structures which can help ameliorate the issues mentioned in the preceding text.
+
+%We primarily focus on text or text-like data, that is, strings constructed from some underlying symbol set (eg, alphabets). 
+%This includes both natural language text and text from formal languages with explicitly defined syntax. 
+%%here are implicit and explicit structures that exist in other modalities of data (eg. scene graphs in images~\citep{scenegraph}, narrative structures in videos~\citep{TODO}), we consider them beyond the scope of our work.
+%When our contributions are invariant to underlying data and models.
+%In these cases, we conduct case studies to demonstrate their applications beyond textual data.
+
+
+\section{Proposal Statement}
+In this proposal, we aim to establish structure-based mechanisms usable throughout the stages of development and deployment of a machine learning model that can help them adapt to changing scenarios. 
+Specifically, we posit that implicit and explicit structures present in language aid in the design of more adaptable machine learning systems.
+We focus our work on three specific challenges in this space, adversarial testing, online monitoring, and. domain generalization.
+Our contributions describe approaches that utilize core ideas to address each of these challenges.
+Specifically, we aim to answer the following questions: 
+\textit{Can we use syntactic structures to train more robust models?
+Are there suites of behavioral tests that can be designed to test and enhance the robustness of models prior to their deployment?
+Following the deployment of a model, can we quantify whether a model achieves or violates a fairness guarantee while minimizing the number of samples required?
+Are there procedures that can be used to improve a model built for a specific domain such that it can be generalized to a new domain?
+Can we use information from multiple related domains to further enhance a model built for a specific domain?}
+In the subsequent sections, we describe our contributions that help address these questions.
+
+\section{Our Contributions}
+
+\subsection{Improving the Classification of Phishing URLs using Transformers}
+The number of URLs and known phishing pages has continued to increase at a rapid pace.
+Browsers have started to include one or more machine learning classifiers as part of their security services that aim to better protect end users from harm.
+Browsers typically evaluate every unknown URL using some classifier in order to quickly detect these phishing pages.
+In this contribution, we first perform a comprehensive analysis of transformer models on the phishing URL detection task.
+We consider standard masked language models and additional domain-specific pre-training tasks and compare these models to fine-tuned BERT~\citep{devlin2019bert} and RoBERTa~\citep{liu2019roberta} models.
+We use insights from the design of denoising encoders~\cite{lewis2020bart,clark2020electra} for text and the \textit{structure} of URLs to design training objectives that improve the robustness of phishing URL detection models.
+Combining the insights from these experiments, we propose \URLTranSys, which uses transformers to significantly improve the performance of phishing URL detection over a wide range of very low false positive rates (FPRs) compared to other deep learning based methods.
+Further, we design \textit{adversarial tests} that help quantify the robustness of models to known phishing URL attack threat models. 
+We consider additional fine tuning with these adversarial samples and demonstrate that \URLTranSys can maintain low FPRs under these scenarios.
+
+\subsection{Auditing Fairness Online through Iterative Refinement}
+Machine learning algorithms are increasingly being deployed for high-stakes scenarios. 
+A sizeable proportion of currently deployed models make their decisions in a black-box manner. 
+Under these settings, at \textit{runtime}, monitoring the performance of machine learning models is a challenging task.
+%Such decision-making procedures are susceptible to intrinsic biases, which has led to a call for accountability in deployed decision systems.
+This problem is further compounded when aiming to quantify the fairness of decision-making models.
+In this contribution, we focus on user-specified accountability of decision-making processes of black box systems.
+Previous work has formulated this problem as run time fairness monitoring over decision functions.
+However, formulating appropriate specifications for situation-appropriate fairness metrics is challenging.
+We follow prior work~\citep{albarghouthi2019fairness,bastani2019probabilistic} in defining \textit{structured} grammars for a broad range of fairness metrics.
+We then construct \AVOIRmethodname{}, an automated inference-based optimization system that improves bounds for and generalizes prior work across these fairness metrics.
+\AVOIRmethodname{} uses the grammar to distribute uncertainty across different terms within the definition of a fairness metric to achieve more efficient bounds.
+It also offers an interactive and iterative process for exploring fairness violations aligned with governance and regulatory requirements.
+Our bounds improve over previous probabilistic guarantees for such fairness grammars in \textit{online} settings.
+Further, we also construct a novel visualization mechanism that can be used to investigate the context of reported fairness violations and guide users toward meaningful and compliant fairness specifications.
+This visualization makes use of the parse trees for fairness metrics that are generated from the grammar used to define them.
+%We then conduct case studies with fairness metrics on three different datasets and demonstrate how the visualization and improved optimization can detect fairness violations more efficiently and ameliorate the issues with faulty fairness metric design. 
+
+\subsection{Stylometry using Structure and Multitask Learning for Darkweb forums}
+Darknet market forums are frequently used to exchange illegal goods and services between parties who use encryption to conceal their identities.
+The Tor network is used to host these markets, which guarantees additional anonymization from IP and location tracking, making it challenging to link across malicious users using multiple accounts (sybils).
+Additionally, users migrate to new forums when one is closed, further increasing the difficulty of linking users across multiple forums. 
+Recent advances in forensic linguistic~\citep{juola2008authorship} strategies allowed  author identification to be used on short texts on online social media users~\citep{shrestha2017convolutional,andrews2019learning}.
+In our contribution, we use \textit{domain generalization} strategies to adapt these approaches to darkweb forums.
+We utilize the \textit{structure} of phpBB-based bulletin-board like forums\footnote{\url{https://www.phpbb.com/}} prevalent on the darkweb from 2013-2017 to enhance author representations.
+Our \textit{multitask learning} approach for natural language and model interactions using graph embeddings helps construct low-dimensional representations of short episodes of user activity for authorship attribution. 
+We provide a comprehensive evaluation of our methods across four different darknet forums demonstrating their efficacy.
+%over the state-of-the-art, with a lift of up to 2.5X on Mean Retrieval Rank and 2X on Recall@10.
+
+
+\section{Future Work}
+
+\subsection{Large Scale Structure-aware Authorship Attribution}
+%\textit{Domain adaptation}, scale, graph + NLP,
+Continuing the theme of \textit{domain adaptation} in our work on stylometry, in this extension, we aim to study how different domains and their associated structure correlate with the stylometric identifiability of authors.
+In recent work, \citet{barlas2020cross,riverastao2021learning} conducted large-scale studies of cross-domain transfer for authorship attribution. 
+Their results show that training on some domains leads to models that transfer better to other domains.
+The thesis of their work was that the diversity of topics discussed and the number of distinct authors in one domain drive better transferability.
+In the context of our aforementioned contribution to stylometry using structure on the darkweb, two questions arise.
+First, the number of users and posts is limited in the darkweb domain. 
+For example, the total number of forum posts across multiple years on large darkweb forums only lies in the 100,000-1,000,000 range.
+In comparison, there are over 70 million posts on Reddit over a single month~\citep{andrews2019learning} in an overlapping time period.
+This motivates our first question - can structure-based methods improve authorship attribution models when the availability of text/authors and size of models is scaled up by multiple orders of magnitude?
+The second question that we aim to explore is whether these structures are domain-specific or whether certain meta-structures common across domains can help generalize these to multiple domains.
+We aim for our analysis to supplement the findings around models that only use text~\cite{barlas2020cross,riverastao2021learning}, potentially providing alternative mechanisms for successful transfer.
+
+\subsection{Interpretable Stylometric Modeling}
+Recent work has demonstrated that representation learning models~\cite{andrews2019learning,maneriker2021sysml,riverastao2021learning} for authorship attribution can outperform more traditional models that utilize n-gram style features such as TF-IDF and SCAP~\cite{frantzeskou2007identifying}.
+Despite the improvements offered by these models, a large number of implemented systems continue to use unigram features for authorship attribution and related tasks, e.g. state-of-the-art ban evasion systems~\cite{niverthi2022characterizing}.
+A recent preprint~\citep{tyo2022state} questions the magnitude of the claimed gains from these representation learning techniques.
+Thus, to be able to use these models in practice, it is essential to explain the mechanisms by which authorship attribution models make decisions.
+Further, prior to the deployment of any representation learning models for content moderation, better explainability is also vital for helping decision-makers provide their motivation when enacting bans.
+Finally, the use of authorship attribution can impact the anonymity of individuals.
+Better explainability can help by providing prescriptive mechanisms for improving the privacy of concerned users.
+This is an active area of research with interest from organizations such as IARPA~(\citeyear{hiatus2022iarpa}).\todo{Does this statement add anything useful?}
+This problem is amplified when considering structure-based models, as two different modalities may influence decision-making.
+In the second direction of future work, we hope to make inroads into addressing these challenges using structured \textit{adversarial testing}.
+%\textit{Adversarial testing}, bilevel optimization, reinforcement learning.
+%calibration.
+%interpretability of style is different because models are superhuman!
+
+\subsection{Better Fairness Auditing in Non-IID Settings}
+In Chapter~\ref{chp:avoir}, we address the problem of fairness auditing using the structure of the monitored metrics.
+We utilize the adaptive Hoeffding concentration bound~\cite{zhao2016adaptive} to quantify the uncertainty of tracked fairness metric, which allows monitoring with arbitrary stopping mechanisms.
+However, using this inequality comes with certain assumptions of the data-generating process.
+The most restrictive of these is the assumption of a fixed fairness specification, stationary data distribution, and independent and identically distributed (IID) data.
+A multitude of scenarios in the real world do not conform to these assumptions.
+For example, the underlying data is unlikely to be from a stationary distribution.
+Drifts in the distributions are usually categorized based on the causal mechanisms that underlie them:
+those that arise from changes in the distribution of input features (covariate shift), the support distribution of the true labels (label shift), or changing relationships between the input and output (concept drift)~\citep{huyen2022designing}.
+Additionally, the metric that a user may want to monitor may change over time due to evolving regulatory environments.
+Finally, the data may be correlated with each other through network structures.
+We aim to address how recent work frames some of these challenges and motivate extensions to our system \AVOIRmethodname (Chapter \ref{chp:avoir}) to address some of these challenges.
+\todo{reread this once}
+%\todo{What does this mean, exactly, and how to model it? Anything from uncertainity quantification?}
+%non-iid data
+
+\section{Organization}
+The remainder of the proposal is organized as follows. 
+First, we discuss a method to improve the classification of phishing URLs using transformers in chapter \ref{chp:urltran}.
+We describe how, in the \textit{pre-deployment} stage, \textit{adversarial tests} can be constructed and used to evaluate the robustness of machine learning models for this task.
+Following this, we discuss a mechanism for monitoring the \textit{run time} fairness properties associated with \textit{deployed} machine learning models in chapter~\ref{chp:avoir}.
+In chapter~\ref{chp:sysml}, we describe how an authorship identification model trained on one domain can be \textit{generalized} to work across domains.
+Finally, in chapter~\ref{chp:future_work}, we describe the directions that we aim to focus on in future work. 
+This includes scaling authorship identification models to work across even more domains while utilizing the graphs associated with those domains and improving the interpretability of the associated models.
+Finally, we describe how fairness monitoring can be made more interactive and work across settings beyond those explored in chapter~\ref{chp:avoir}.
+
+
+\endinput

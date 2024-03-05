@@ -1,0 +1,67 @@
+\section{Introduction}
+\label{sec:urltran:intro}
+\todo{Background on adversarial testing at some point?} Phishing occurs when a malicious web page is created to mimic the legitimate login page used to access a popular online service for the purpose of harvesting the user's credentials or a web page whose purpose is to input credit card or other payment information.
+Typical phishing targets include online banking services, web-based email portals, and social media websites.
+Attackers use several methods to direct the victim to the phishing site in order to launch the attack.
+In some cases, they may send the user a phishing email containing the URL of a phishing page.
+Attackers may also use search engine optimization techniques to rank phishing pages high in a search result query.
+Modern email platforms use various machine learning models to detect phishing web page attacks.
+In this work, we propose a new deep learning model that analyzes URLs and is based on transformers which have shown state-of-the-art performance in many important natural language processing tasks.
+
+
+In order to prevent users from inadvertently uploading personal information to the attackers, web browsers provide additional security services to identify and block or warn a user from visiting a known phishing page.
+For example, Google's Chrome browser utilizes their Safe Browsing technology~\citep{safebrowsing_google} and Microsoft's Edge browser includes Windows Defender SmartScreen~\citep{smartscreen_microsoft}.
+In a related attack which is also addressed by these services, malicious URLs may point to a web page hosted by a misconfigured or unpatched server with the goal of exploiting browser vulnerabilities in order to infect the user's computer with malware (i.e., malicious software).
+Successful phishing web page detection includes a number of significant challenges.
+First, there is a huge class imbalance associated with this problem.
+The number of phishing pages on the internet is very small compared to the total number of web pages available to users. Second, phishing campaigns are often short-lived. In order to avoid detection, attackers may move the login page from one site to another multiple times per day.
+Third, phishing attacks continue to be a persistent problem.
+The number of known phishing sites continues to increase over time. Therefore, blocking phishing attacks only using a continuously growing list of known phishing sites often fails to protect users in practice.
+
+
+
+Popular web browsers may render hundreds of millions or even billions of web pages each day.
+In order to be effective, any phishing or malicious web page detection must be fast.
+For this reason, several researchers~\citep{blum2020lexical,le2018malicious,tajaddodianfar2020texception} have proposed detecting both phishing and malicious web pages based solely on analyzing the URL itself.
+\begin{comment}
+	Phishing cyberattacks have been occurring for approximately 25 years, and their main goal remains the same today: convincing the user to disclose their credentials and financial information which the attacker can then use for their own financial gain. Phishing attacks can be initiated through emails and social media, and they target financial, online payments, social media, entertainment and technological companies. The attacker usually impersonates a known and reputable brand (e.g. Bank of America, Google, Amazon, Facebook, Microsoft) and attempts to convince the victim to disclose personal information.
+\end{comment}
+With the proliferation and ease of access to phishing kits sold on the black market as well as the phishing as a service offering, it has become easy for attackers with little expertise to deploy phishing sites and initiate such attacks. Consequently, phishing is currently on the rise and costing over \$57 million from more than 114,000 victims in the US according to a recent FBI report~\citeyearpar{fbi2019internet}.
+The number of phishing attacks rose in Q3 of 2019 to a high level not seen since late 2016~\citep{helpnetsecurity2019phishing}.
+As phishing is proving to be more and more fruitful, the attacks have become increasingly sophisticated. At the same time, the lifespan of phishing URLs has continued to drop dramatically – from 10+ hours to minutes~\citep{zvelophish2020phishing}. 
+
+
+Given the significant repercussions of visiting a phishing or malicious web page, the detection of these URLs has been an active area of research~\citep{sahoo2017malicious}.
+Researchers have proposed the use of extracted feature-based natural language processing methods to detect malicious URLs~\citep{blum2020lexical}.
+Recent efforts have also begun to use deep learning models to detect these URLs~\citep{le2018malicious,tajaddodianfar2020texception}.
+%URLNet~\citep{le2018malicious} is a deep convolutional neural network (CNN) and includes separate character and word-level models for the malicious URL detection task.
+%The Texception~\citep{tajaddodianfar2020texception} model, which is used to detect phishing URLs,extends some ideas in URLNet by including small kernels which can be deployed in a wide variety of configurations in terms of width, depth or both.
+Concurrently, semi-supervised machine learning methods have been used to create text embeddings that offer state-of-the-art results in many natural language processing tasks.
+The key idea in these approaches is the inclusion of a transformer model~\citep{vaswani2017attention}.
+BERT~\citep{devlin2019bert,rogers2020primer} utilizes transformers to offer significant
+improvements in several natural language processing (NLP) tasks. 
+The GPT~\citep{ratdford2018improving,ratdford2019gpt2,brown2020gpt3} series of models have also followed a similar approach.
+The semantics and syntax of natural language are more complex than URLs, which must follow a syntax specification~\citep{rfc3986} in the finite-state automaton/regex level of the Chomsky hierarchy~\cite{chomsky1956three}.
+However, recent work using transformers has also demonstrated that these models can be applied to tasks involving data with more strict syntactic structures.
+These include tabular data~\citep{yin2020tabert}, python source code~\citep{kanade2020pre} and SQL queries~\citep{wang2020rat}.
+The success of these approaches further motivates us to apply transformers on URLs.
+
+In this paper, we compare two settings: 1) we pre-train and fine-tune an existing transformer architecture using only URL data, and 2)
+we fine-tune publicly available pre-trained transformer models.
+In the first approach, we apply the commonly used Cloze-style masked language modeling objective~\citep{taylor1953cloze} on  the BERT architecture. 
+In the second approach, we fine-tune BERT~\citep{devlin2019bert} and RoBERTa~\citep{liu2019roberta} on the URL classification task.
+Each of these systems forms an example of a \URLTranSys model.
+\mbox{\URLTranSysb} is the best performing model obtained from these approaches.
+Finally, we simulate two common black-box phishing attacks by perturbing URLs in our data using unicode-based homoglyph substitutions~\citep{woodbridge2018detecting} and inserting `-' characters between sub-words in a compound URL (e.g., `bankofamerica.com' $\rightarrow$ `bank-of-america.com'), along with a perturbation scenario under which the URL parameters are reordered, and the URL label remains unchanged to improve the robustness of \URLTranSys.
+
+
+Results on a large corpus of phishing and benign URLs show that transformers are able to significantly outperform recent state-of-the-art phishing URL detection models (URLNet, Texception) over a wide range of low false positive rates where such a phishing URL detector must operate. 
+At a false positive rate of 0.01\%, \URLTranSys increases the true positive rate from 71.20\% for the next best baseline (URLNet)
+to 86.80\% (21.9\% relative increase). Thus, browser safety services, such Google's Safe Browsing and Microsoft's SmartScreen, may potentially benefit using the proposed \URLTranSys system for the detection of phishing web pages.
+Further, we use the \textit{implicit} structure of URLs and common threat models to devise an \textit{adversarial testing} setup that facilitate development of more robust models.
+
+We summarize the contributions of our work. First, borrowing from recent advances in many natural language processing tasks, we propose the use of transformers to improve the detection of phishing URLs.
+Second, We build \URLTranSys, a large-scale system with production data and labels and demonstrate that transformers do offer a significant performance improvement compared to previous recent deep learning solutions over a wide range of very low false positive rates.
+Third, we analyze the impact of various design choices in terms of hyperparameters, pre-training tasks, and tokenizers to contribute to an improved model.
+Finally, we analyze the adversarially generated URLs from the system to understand the limitations of \URLTranSys, forming a benchmark that can also be used to evaluate the \textit{adaptation} of phishing URL detection models. 
+

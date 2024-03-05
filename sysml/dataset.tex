@@ -1,0 +1,36 @@
+\label{sec:sysml:dataset}
+\noindent \citet{munksgaard2016mixing} studied the politics of darknet markets using structured topic models on the forum posts across six  large markets.
+We start with this dataset and perform basic pre-processing to clean up the text for our purposes. We focus on four of the six markets - \textit{Silk Road} (\textbf{SR}), \textit{Silk Road 2.0}~({\textbf{SR2}}), \textit{Agora Marketplace}~(\textbf{Agora}), and \textit{Black Market Reloaded} (\textbf{BMR}). 
+We exclude `The Hub'  as it is not a standard forum but an `omni-forum'~\cite{munksgaard2016mixing} for discussion of other marketplaces and has a significantly different structure, which is beyond the scope of this work.
+We also exclude `Evolution Marketplace' since none of the posts had PGP information present in them and thus were unsuitable for migration analysis.
+%These markets are henceforth abbreviated SR, SR2, Agora, and BMR, respectively.
+
+\noindent \textbf{Pre-processing}
+We add simple regex and rule based filters to replace quoted posts (i.e., posts that are begin replied to), PGP keys, PGP signatures, hashed messages, links, and images each with different special tokens (\texttt{[QUOTE]}, \texttt{[PGP PUBKEY]}, \texttt{[PGP SIGNATURE]}, \texttt{[PGP ENCMSG]}, \texttt{[LINK]}, \texttt{[IMAGE]}).
+We retain the subset of users with sufficient posts to create at least two episodes worth of posts. In our analysis, we focus on episodes of up to 5 posts. %(i.e., threshold: users with $\geq$ 10 posts).
+To avoid leaking information across time, we split the dataset into approximately equal-sized train and test sets with a chronologically midway splitting point such that half the posts on the forum are before that time point.
+Statistics for data after pre-processing is provided in Table~\ref{tab:dataset_stats}. Note that the test data can contain authors not seen during training.
+
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{ccccc}
+    \toprule
+         Market &  Train Posts & Test Posts & \#Users train & \#Users test \\
+    \midrule
+         SR & 379382 & 381959 & 6585 & 8865\\
+         SR2 & 373905 & 380779 &  5346 & 6580 \\
+         BMR & 30083 &30474 & 855 & 931\\
+         Agora & 175978 & 179482 & 3115 & 4209\\
+    \bottomrule
+    \end{tabular}
+    \caption{Dataset Statistics for Darkweb Markets.}
+    \label{tab:dataset_stats}
+\end{table}
+
+
+\noindent \textbf{Cross-dataset Samples} 
+Past work has established PGP keys as strong indicators of shared authorship on darkweb markets~\cite{tai2019adversarial}. 
+To identify different user accounts across markets that correspond to the same author, we follow a two-step process. 
+First, we select the posts containing a PGP key, and then pair together users who have posts containing the same PGP key. 
+Following this, we still have a large number of potentially incorrect matches (including scenarios such as information sharing posts by users sharing the PGP key of known vendors from a previous market). 
+We manually check each pair to identify matches that clearly indicate whether the same author or different authors posted them, leading to approximately 100 reliable labels, with 33 pairs matched as migrants across markets.

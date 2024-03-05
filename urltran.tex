@@ -1,0 +1,42 @@
+\chapter{Detecting Phishing URLs using Transformers}
+\label{chp:urltran}
+%\todo{Add some general information connecting to the broader theme. + Make the introduction more relevant to the thesis.}
+%\todo{TODO: Make references local? For figures etc.}
+
+In this chapter, we present our work on phishing URL (Uniform Resource Locator) detection~\citep{maneriker2021urltran} conducted at Microsoft, contextualized within the broader theme of our thesis surrounding the use of structures to build \textit{adversarial testing} for \textit{pre-deployment} robustness. 
+We study the problem of detecting phishing URLs using transformer models.
+%We derive the main results from our conference paper.
+Browsers often include security features to detect phishing web pages. 
+In the past, some browsers evaluated unknown URLs for inclusion in lists of known phishing pages.
+However, phishing URLs and websites tend to have a very short life span~\citep{garera2007framework,chu2013protect}. 
+Therefore, models must be able to \textit{adapt} to rapidly changing data distribution.
+As the number of URLs and known phishing pages has continued to increase at a rapid pace, browsers have started to include one or more machine learning classifiers as part of their security services that aim to protect end users from harm better.
+%While additional information could be used, browsers typically evaluate every unknown URL using some classifier in order to quickly detect these phishing pages.
+%Early phishing detection used standard machine learning classifiers, but 
+Recent research has proposed using deep learning models for the phishing URL detection task~\cite{sahoo2017malicious,yerima2020high,ren2019bidirectional,peng2019joint,huang2019phishing,tajaddodianfar2020texception}.
+Concurrently, text embedding research using transformers has led to state-of-the-art results in many natural language processing tasks.
+In this contribution, we first perform a comprehensive analysis of transformer models on the phishing URL detection task.
+We consider both pre-trained models and end-to-end trained transformer models, with both standard masked language models and additional domain-specific pre-training tasks.
+We compare end-to-end training compare against fine-tuned BERT and RoBERTa models.
+Misclassifying a benign URL as malicious can be damaging for a phishing URL classification model%~\cite{TODO}\todo{Fix reference}.
+Therefore, phishing URL detection models are compared by measuring true positive rates at very low false positive rates.
+ The insights our experiments help us propose \URLTranSys, which uses transformers to significantly improve the performance of phishing URL detection over a wide range of very low false positive rates (FPRs) compared to other deep learning-based methods.
+For example, \URLTranSys yields a true positive rate (TPR) of 86.80\% compared to 71.20\% for the next best baseline at an FPR of 0.01\%, resulting in a relative improvement of over 21.9\%.
+We use insights from the structure of URL grammar~\cite{rfc3986}.
+
+As mentioned previously, phishing URL are carried out through short-lived and changing URL patterns.
+Therefore, the machine learning models must be retrained and redeployed at regular intervals.
+This procedure may lead to a \textit{catastrophic forgetting}~\citep{mccloskey1989catastrophic} phenomenon, whereby models forget the old patterns and only adapt to new ones.
+In our second contribution to this work, we propose a threat model and construct an \textit{adversarial testing} scenario to validate models against known threat patterns prior to deployment.
+We consider some classical adversarial black-box phishing attacks, such as those based on homoglyphs and compound word splits, to improve the robustness of \URLTranSys.
+Inspired by the behavioral testing paradigm~\citep{ribeiro2020beyond}, we provide algorithms to efficiently construct datasets that can help quantify the capabilities of trained models against known threat patterns.
+%We consider additional fine tuning with these adversarial samples and demonstrate that \URLTranSys can maintain low FPRs under these scenarios.
+
+\input{urltran/introduction}
+\input{urltran/related}
+\input{urltran/dataset}
+\input{urltran/methodology}
+\input{urltran/results}
+\input{urltran/conclusion}
+
+\endinput

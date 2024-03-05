@@ -1,0 +1,57 @@
+\subsection{Related Work}
+\label{sec:related}
+
+\begin{figure}[ht]
+    \centering
+    \begin{subfigure}[b]{0.47\linewidth}
+        \resizebox{\linewidth}{!}{
+            \centering
+            \input{avoir/images/bernoulli-n-comparison-pgf-tikz}
+        }
+        \caption{At the same concentration $\varepsilon$, lower failure probability $\delta$ for the majority class.}
+        \label{fig:n-comparison-hoeffding}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\linewidth}
+        \centering
+           \input{avoir/images/grammar}
+         \caption{ $\langle E \rangle$ refers to pure expressions and $\langle comp-op \rangle$ is any comparison operator $\in \{>, <, =, \neq\}$.}
+         \label{fig:grammar}
+    \end{subfigure}
+    \caption{\figleft{} Failure probability of Bernoulli r.v. being concentrated around its mean for different $n$. H = (online) Hoeffding, AH = Adaptive Hoeffding. \figright{} Modified Grammar for Specification.}
+\end{figure}
+
+There are a plethora of fairness criteria and subtle changes in their definition can change the implications on decision making~\citep{castelnovo2021zoo}.
+Practitioners need support when selecting, designing, and guaranteeing fairness for deployed machine learning algorithms.
+Prior work on fairness has helped develop nuanced notions and algorithms to help train more `fair' machine learning models.
+These include group fairness measures such as, inter alia, minimizing disparate impact~\citep{calders2009building,feldman2015certifying}, maximizing the equality of opportunity~\citep{hardt2016equality}
+In contrast with group fairness notions, causal notions of fairness~\cite{kusner2017counterfactual} and individualized notions of fairness~\cite{dwork2012fairness} provide alternative statistical mechanisms for understanding discriminatory behaviors of automated decision systems.
+\citet{thomas2019preventing} proposed the Seldonian Framework as a generic mechanism for model users to design algorithms that help train machine learning models that can regulate them against undesirable behaviors.
+
+We focus on the problem of detecting and diagnosing whether systems designed under any framework follow any prescribed regulatory constraints that are supported within the grammar of \AVOIRmethodname{}.
+\todo{More nuanced comparison}
+That is, we are agnostic to the design itself; rather, we are interested in testing the adherence of models to specified criteria.
+We use a probabilistic framework to verify this behavior.
+Alternative frameworks such as the AI Fairness 360~\citep{bellamy2019AI}  provide mechanisms to quantify fairness uncertainty, though they are restricted to pre-supported metrics.
+Uncertainty quantification~\citep{ghosh2021uncertainty,ginart2022mldemon} is an alternative mechanism to provides adaptive guarantees, however, existing work is designed for commonly used outcome metrics such as accuracy, F1-score, etc., rather than for fairness metrics. 
+Justicia~\citep{ghosh2021justicia} optimizes uncertainty for fairness metrics estimates using stochastic SAT solvers but can only be applied to a limited class of tree-based classification algorithms.
+
+Prior work on fairness testing is most closely related to \AVOIRmethodname{}.
+Fairness testing~\citep{galhotra2017fairness} provides a notion of causal fairness and generates tests to check the fairness of a given decision-making procedure.
+Given a specific definition of fairness, Fairtest~\citep{tramer2017fairtest} and Verifair~\citep{bastani2019probabilistic} build a comprehensive framework for investigating fairness in data-driven pipelines. 
+%By auditing the system's fairness, a more balanced rule can be generated for future use.
+Fairness-aware Programming (FP) \citep{albarghouthi2019fairness} combined the two demands of machine learning testing and fairness auditing to make fairness a first-class concern in programming. 
+Fairness-aware programming applies a runtime monitoring system for a decision-making procedure with respect to an initially stated fairness specification.
+The overall failure probability of an assertion is computed as the sum of failure probabilities of each constituting sub-expression (using the union bound).
+FP does not provide any specific mechanism for splitting uncertainty, and Verifair splits it equally across all constituent \textit{elementary subexpressions}.
+Thus, assertion bounds for subexpressions in both FP and Verifair are split inefficiently. 
+Proving guarantees for overall uncertainty across multiple groups can be ameliorated by balancing it across subexpressions with differences in the number of observed samples.
+For example, consider Bernoulli r.vs  $X_{1,2}$ for which we derive concentration guarantees $\Pr[|\E[X_i] - \BarE[X_i]| \geq \epsilon_{i}] \leq \delta_{i}$ after $t_{i}$ observations. 
+From the Hoeffding inequality, $\delta = 2e^{-2t\epsilon^2}$.
+\todo{Clarify the concentration.}
+We can claim tighter guarantees for $X_2$ if $t_2 > t_1$ as the failure probability is lower at the same concentration $\eps$.
+That is, $\eps_1 = \eps_2, t_2 > t_1 \implies \delta_1 > \delta_2$.
+Varying $\eps$ across subexpressions to minimize the overall $\delta = \delta_1 + \delta_2$ allows convergence in fewer iterations.
+This observation motivates us to optimize over sub-expressions and provide tighter overall concentration for compound expressions.
+%Figure~\ref{fig:n-comparison-hoeffding} demonstrates this for $n = \left<200, 1000\right>$.
+Adaptive versions of these inequalities also have similar patterns (see Figure~\ref{fig:n-comparison-hoeffding}).

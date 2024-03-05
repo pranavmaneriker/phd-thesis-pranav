@@ -1,0 +1,30 @@
+\label{sec:sysml:intro}
+Crypto markets are \textit{``online forums where goods and services are exchanged between parties who use digital encryption to conceal their identities''}~\citep{martin2014drugs}. 
+  They are typically hosted on the Tor network, which guarantees  anonymization in terms of IP and location tracking. 
+  The identity of individuals on a crypto-market is associated only with a username; therefore, building trust on these networks does not follow conventional models prevalent in eCommerce. 
+ % \textit{``The formation of trust, and the ultimate acceptance of the new user within the community, is often constructed via prospective users demonstrating their legitimacy through action''}~\cite{lacey2015s}. 
+  Interactions on these forums are facilitated by means of text posted by their users. 
+  This makes the analysis of textual style on these forums a compelling problem.
+  % TODO add a paragraph on why darkweb stylometry is important from the criminal side
+  
+  Stylometry is the branch of linguistics concerned with the analysis of authors' style.
+  Text stylometry was initially popularized in the area of forensic linguistics, specifically to the problems of author profiling and author attribution~\citep{juola2008authorship,rangel2013overview}.
+  Traditional techniques for authorship analysis on such data rely upon the existence of long text corpora from which features such as the frequency of words, capitalization, punctuation style, word and character n-grams, function word usage can be extracted and subsequently fed into any statistical or machine learning classification framework, acting as an author's `signature'. 
+  However, such techniques find limited use in short text corpora in a heavily anonymized environment.
+ 
+  
+  Advancements in using neural networks for character and word-level modeling for authorship attribution aim to deal with the scarcity of easily identifiable `signature' features and have shown promising results on shorter text~\citep{shrestha2017convolutional}. 
+  \citet{andrews2019learning} drew upon these advances in stylometry to propose a model for building representations of social media users on Reddit and Twitter. Motivated by the success of such approaches, we develop a novel methodology for building authorship representations for posters on various darknet markets. 
+  Specifically, our key contributions include: 
+  
+  \noindent \textbf{First}, a {\it representation learning} approach that couples temporal content stylometry with access identity (by levering forum interactions via \textit{meta-path graph context information}) to model and enhance user (author) representation; 
+
+  \noindent \textbf {Second}, a novel framework for training the proposed models in a \textit{multitask setting} across multiple darknet markets, 
+  using a small dataset of labeled migrations, 
+  to refine the representations of users within each individual market, while also providing a method to correlate users across markets; 
+  
+\noindent \textbf{Third}, a detailed drill-down {\it ablation study} discussing the impact of various optimizations and highlighting the benefits of both graph context and multitask learning  on forums associated with four darknet markets - \textit{Black Market Reloaded}, \textit{Agora Marketplace}, \textit{Silk Road}, and \textit{Silk Road 2.0} -
+ when compared to the state-of-the-art alternatives.
+  %Additionally, large pre-trained language models such as BERT and XLM~\cite{devlin2018bert,conneau2019unsupervised} have made it possible to adapt contextual representations learned from large corpora to new and challenging multi-language text analysis problems.
+  
+  

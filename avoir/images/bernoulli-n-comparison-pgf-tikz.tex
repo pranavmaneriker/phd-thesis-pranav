@@ -1,0 +1,31 @@
+\newcommand*{\n}{}% Ensure it is not already defined
+\newcommand*{\clr}{}% Ensure it is not already defined
+\begin{tikzpicture}
+                    \begin{axis}[
+                            grid=both,
+                            xlabel = {$\epsilon$},
+                            x tick label style={/pgf/number format/fixed},
+                            y tick label style={/pgf/number format/fixed},
+                            ylabel = {$\delta$},
+                            y label style={rotate=-90},
+                            axis lines=left,
+                            ymode=log,
+                            xmin=0.1,
+                            xmax=0.15,
+                            legend style={at={(0.03,0.2)},anchor=west},
+                            label style={font=\Large}
+                    ]
+                    \pgfplotsinvokeforeach{600/cb-lilac, 1000/cb-brown}
+                    {       
+                        \StrBefore{#1}{/}[\n]%
+                        \StrBehind{#1}{/}[\clr]%
+                        \edef\AddPlot{\noexpand\addplot[color=\clr,smooth,thick, dashed,-,domain=0:0.2] {min(2*\n*\n*exp(-2*\n*x*x), 1)};} %
+                        \AddPlot
+                        \addlegendentryexpanded{H: $t =\n$};
+                        \edef\AddPlot{\noexpand\addplot[color=\clr,smooth,thick,-,domain=0:0.2] {min(24*(( (log10(\n)/log10(1.1)) + 1)^1.08)*(exp(-1.8*\n*x*x)), 1)};} %
+                        \AddPlot
+                        \addlegendentryexpanded{AH: $t =\n$};
+                    }
+                    \end{axis}
+                    % https://tex.stackexchange.com/questions/325170/parameterizing-color-in-addplot
+\end{tikzpicture}

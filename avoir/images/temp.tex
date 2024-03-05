@@ -1,0 +1,25 @@
+\tikzstyle{bigbox} = [minimum height=2cm,draw,rounded corners, rectangle]
+\tikzstyle{box} = [minimum height=0.8cm,draw,rounded corners, draw,rectangle]
+\tikzstyle{graybox} = [minimum height=0.8cm,draw,rounded corners, draw,rectangle,fill=gray!10]
+\tikzset{
+block/.style = {draw,rectangle,text width = 4em,align=left, rounded corners=0ex,     minimum height=2.0em}
+}
+
+\tikzset{>=latex}
+\begin{figure}
+    \begin{tikzpicture}
+       \node[box] at (0,0) (a) {Data Assumptions};
+        %\node[box,above right = .15cm and 1cm of a,] (b) {B. Some text};
+        \node[box, below = .5cm of a,] (b) {Concentration Inequality};
+        \matrix (m) [above right=-0.7cm and 0.25 cm of b, row sep=2mm, column sep=2mm, inner sep=2mm, bigbox, matrix of nodes] {
+        Monitoring & System \\
+        \node[graybox] (c) {Inference Engine}; &
+        \node[graybox] (d) {Optimization Objective}; \\
+};
+        %% lines
+        \draw[->] (a.270) -- (b.90);
+        \draw[->] (b.0) -- (m.180);
+    \end{tikzpicture}
+    \caption{\methodname{} framework for fairness monitoring. The shaded nodes are \methodname{} contributions.}
+    \label{fig:framework}
+\end{figure}

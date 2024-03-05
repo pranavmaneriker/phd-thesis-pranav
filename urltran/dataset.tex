@@ -1,0 +1,18 @@
+\section{Dataset Description}
+\label{sec:urltran:data}
+The datasets used for training, validation and testing were collected from Microsoft’s Edge and Internet Explorer production browsing telemetry during the summer of 2019.
+The schema for all three datasets is similar and consists of the browsing URL and a boolean determination of whether the URL has been identified as phishing or benign.
+Six weeks of historical data were collected overall out of which four weeks of data were used for the training set, one week for the validation and one week for the test set.
+Due to the highly unbalanced nature of the datasets (roughly 1 in 50 thousand URLs is a phishing URL), we down-sampled the benign set and the resultant dataset consisted of a 1:20 ratio (phishing versus benign) for both the training and validation sets. 
+The corresponding total sizes were 1,039,413 records for training and 259,854 thousand for validation, respectively.
+The test set used for evaluating the models consists of 1,784,155 records, of which 8,742 are phishing URLs and the remaining 1,775,413 are benign. 
+
+The labels included in this dataset correspond to those used to train production classifiers for Microsoft Smartscreen~\citep{smartscreen_microsoft}.
+Phishing URLs are manually confirmed by analysts including those which have been reported as suspicious by end user feedback.
+Other manually confirmed URLs are also labeled as phishing when they are included and manually verified in known phishing URL lists including Phishtank. \footnote{At the time of this study, the total of $73,705$ valid phishing URLs was significantly larger than the number of phishing URLs reported by competitors such as Phishtank (\url{http://phishtank.org/stats.php}).}
+Benign URLs correspond to web pages which are known to not be involved with a phishing attack. In this case, these sites have been manually verified by manual analysis.
+In some cases, benign URLs can be confirmed by thorough (i.e., production grade) off-line automated analysis which is not an option for real-time detection required by the browser.
+None of the benign URLs have been included in known phishing lists or have been reported as phishing pages by users and later verified by analysts.
+%Although these last two criteria are not sufficient to add an unknown URL to the benign list.
+It is important to note that all URLs labeled as benign correspond to web pages that have been validated.
+They are not simply a collection of unknown URLs, i.e., ones which have not been previously detected as phishing sites. 

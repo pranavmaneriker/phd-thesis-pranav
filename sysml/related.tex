@@ -1,0 +1,47 @@
+%We describe related work in the domain of darknet market analysis, authorship attribution,  and multitask learning for text.
+\label{sec:sysml:related}
+\noindent {\bf Darknet Market Analysis:}
+Content on the dark web includes resources devoted to illicit drug trade, adult content, counterfeit goods and information, leaked data, fraud, and other illicit services~\citep{biryukov2014content}. 
+Also included are forums discussing politics, anonymization, and cryptocurrency. 
+\citet{biryukov2014content} found that while a vast majority of these services were in English (about $84\%$), a total of about 17 different languages were detected.
+%(e.g.  Indo-European, Slavic, Sino-Tibetan, and Afro-Asiatic languages). 
+Analysis of the volume of transactions and number of users on darknet markets indicates that they are resilient to closures; rapid migrations to newer markets occur when one market shuts down~\citep{elbahrawy2019collective}.
+%, and the total number of users remains relatively unaffected. 
+
+\begin{comment}
+\textcolor{teal}{Recent work analyzed vendor listings to identify sybil vendors and link them across markets~\cite{kumar2020edarkfind,tai2019adversarial}. 
+These works focus on the textual content of the vendor listing, along with heuristics based on the specific items on sale. 
+\citet{xiangwen2018you} integrated features from product photos available in listings to aid this analysis. However, most darknet markets also have associated forums where users discuss vendor identities and build trust~\cite{lorenzo2018know}, but these forums discussions remain underutilized for identity analysis, which is the focus of our work.} 
+\end{comment}
+
+\todo{TODO: Weird DBLP cites. }
+Recent work~\cite{fan2018automatic,hou2017hindroid,fu2017hin2vec,dong2017metapath2vec} has levered the notion of a heterogeneous information network (HIN) embedding to improve graph modeling, where different types of nodes, relationships (edges) and paths can be represented through typed entities.  
+\citet{zhang2019style} used a HIN to model marketplace vendor sybil\footnote{a single author can have multiple users accounts which are considered as \textit{sybils}} accounts on the darknet, where each node representing an object is associated with various features (e.g. content, photography style, user profile and drug information).
+%some attributes of its type. They extracted various features based on textual content, photography styles, user profiles, and drug information and adopted an attribute-aware sampling method, which enabled two objects of the same type with similar attributes to appear together more frequently in the sampled paths. 
+Similarly,~\citet{kumar2020edarkfind} proposed a multi-view unsupervised approach which incorporated features of text content, drug substances, and locations to generate vendor embeddings. We note that while such efforts~\cite{zhang2019style,kumar2020edarkfind} are related to our work, there are key distinctions. 
+First, such efforts focus only on vendor sybil accounts. 
+Second, in both cases, they rely on a host of multi-modal information sources (photographs, substance descriptions, listings, and location information) that are not readily available in our setting -  limited to forum posts.
+Third, neither effort exploits multitask learning. 
+
+\noindent {\bf Authorship Attribution of Short Text:}
+\citet{kim2014convolutional} introduced convolutional neural networks (CNNs) for text classification.
+Follow-up work on authorship attribution~\cite{ruder2016character, shrestha2017convolutional} leveraged these ideas to demonstrate that CNNs outperformed other models, particularly for shorter texts. 
+%Additionally, weight sharing between the convolutional filters allow models with fewer parameters to be trained for text classification. 
+The models proposed in these works aimed at balancing the trade-off between vocabulary size and sequence length budgets based on tokenization at either the character or word level.
+Further work on subword tokenization~\cite{sennrich2016neural}, especially byte-level tokenization, have made it feasible to share vocabularies across data in multiple languages. 
+Models built using subword tokenizers have achieved good performance on authorship attribution tasks for specific languages (e.g., Polish~\cite{grzybowski2019sparse}) and also across multilingual social media data~\cite{andrews2019learning}.
+Non-English as well as multilingual darknet markets have been increasing in number since 2013~\cite{ebrahimi2018detecting}.
+Our work builds upon all these ideas by using CNN models and experimenting with both character and subword level tokens.
+
+
+\noindent {\bf Multitask learning (MTL):}
+MTL~\cite{caruana1997multitask}, aims to improve machine learning models' performance on the original task by jointly training related tasks. 
+MTL enables deep neural network-based models to better generalize by sharing some of the hidden layers among the related tasks. 
+%multitask learning has been widely applied in various fields, such as natural language processing~\cite{liu2019multi}, drug discovery~\cite{ramsundar2015massively}, and computer vision~\cite{zhang2016joint}. 
+Different approaches to MTL can be contrasted based on the sharing of parameters across tasks - strictly equal across tasks (hard sharing) or constrained to be close (soft-sharing)~\cite{ruder2017an}.
+Such approaches have been applied to language modeling~\cite{howard2018universal}, machine translation~\cite{dong2015multi}, and dialog understanding~\cite{rastogi2018multi}.
+%To the best of our knowledge, we are the first to propose the use of multitask learning for stylometry on the dark web.  
+%\subsection{Graph Augmented Text Models}
+% HIN (Your style your identity)
+% Knowledge Base + generation (Pranav will add this)\textcolor{blue}{SP: May want to shorten this since our work is really not a HIN-like effort. The risk is we may be asked to compare with these strategies and that is not the point of our effort.\\ }
+%\textcolor{red}{\cite{zhang2019style} focused on leveraging both text and associated network data to jointly model the darknet. They created an attributed heterogeneous network where each node is of different types, and then learned node representations with an attribute-aware sampling rule. Our work shares the idea of integration of text and graph structure of associated forums, but we have a different methodology: we learn representations for both text and other attributes and use their combinations as the final embedding.} \textcolor{red}{Recent works such as~\cite{zhang2019style} focused on leveraging text with associated network data to jointly model the darknet. To better model the relationships between different types of objects in the associated graph, existing works like~\cite{fan2018automatic,hou2017hindroid} usually construct a heterogeneous information network (HIN) in which there are different types of nodes and edges. Many HIN embedding methods~\cite{fu2017hin2vec,dong2017metapath2vec} have been proposed to learn the node representations from the relationships within the network. Instead of only using structural information, \cite{zhang2019style} proposed to create an attributed HIN where each node representing an object is associated with some attributes of its type. They extracted various features based on writing and photography styles and adopted an attribute-aware sampling rule which allows two objects of same type with similar attributes to be more likely to appear together in the sampled path instances. Our work shares the idea of integration of text and graph structure of associated forums, but we have a different methodology: we learn representations for both text and other attributes and use their combinations as the final embedding.}

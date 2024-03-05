@@ -1,0 +1,52 @@
+\section{Related Work}
+\label{sec:urltran:related}
+%
+The \URLTranSys system is most closely related to phishing and malicious URL detection models which have been previously proposed in the literature.
+In this section, we first provide a short summary of the related work for deep learning-based text embeddings in general. 
+%These models have been derived for various natural language processing tasks.
+Following this, we describe some examples of adversarial attack models commonly used for testing the robustness of text embedding models.
+We then review related work in phishing and malicious web page detection using a webpage URL which builds upon the previous text embedding models proposed in the NLP domain. 
+In particular, we focus on two recent, deep learning URL detection models, URLNet and Texception, which helped to inspire this work.
+
+\noindent\textbf{Text Embeddings.}
+Deep learning models for text embeddings have been an active area of research recently.
+One family of models - character-level CNNs\footnote{Convolutional Neural Networks}  learn a text embedding from individual characters, and these embeddings are then processed using a sequential CNN and one or more dense layers depending on the task. 
+Recent examples of character-level CNNs include work by \citet{conneau2017very,zhang2015character}.
+In particular, \citet{conneau2017very} investigated very deep architectures for the purpose of classifying natural language text.
+Typically, these models are trained in an end-to-end fashion instead of from manually engineered features.
+Different formulations of recurrent Neural Networks for machine translation have also been  widely used~\citep{graves2013generating,hochreiter1997long,cho2014properties,bahdanau2015neural} for producing text embedding for text processing tasks.
+Transformers were introduced by \citet{vaswani2017attention} in the context of neural machine translation.
+A number of models use variations of the original transformer architecture for other natural language processing tasks including BERT~\citep{devlin2019bert,rogers2020primer}.%, GPT~\citep{ratdford2018improving,ratdford2019gpt2,brown2020gpt3}.
+RoBERTa~\citep{liu2019roberta} used careful optimization of the BERT parameters and training methodology to offer further improvements.
+Transformer-based models have been adopted for a wide number of tasks~\citep{bommasani2021foundationmodels} beyond natural language processing.
+
+\noindent \textbf{Adversarial Attacks on Text.}
+Adversarial example generation has been a focus of some recent work on understanding the robustness of various text classification tasks.
+The examples generated using these approaches aim to impose certain semantic constraints without modifying the label of the underlying text.
+White-box attacks (e.g., Hotflip~\citep{ebrahimi2018hotflip}) require access to the internals of the classification model used, such as the gradient on specific examples.
+The attack framework proposed in our work is more in line with  black-box attack frameworks such as DeepWordBug~\citep{ji2018deepwordbug} and TextAttack~\citep{morris2020textattack} where the construction of adversarial data is motivated by a threat model but independent of the classifier used.
+Validating behavior against well-designed tests is an important mechanism to measure whether language models capture specific linguistic properties~\citep{ribeiro2020beyond}.
+%Further, in the \textit{pre-deployment} stage, these tests can serve as a tool to build more robust systems. 
+We specialize these schemes for the URL context.
+
+
+\noindent\textbf{URL-Based Phishing and Malicious Web Page Detection.}
+%
+Previous related work on the detection of phishing and malicious web pages based on their URL has progressed in parallel. 
+We next review some important systems in chronological order.
+
+Early phishing page detection based on URLs followed conventional deep learning approaches. 
+A summary of these methods is provided by \citet{sahoo2017malicious}.
+\citet{blum2020lexical} proposed using confidence-weighted online learning on a set of lexical features extracted from the URL. To extract these features, the URL is first split using the following delimiters:  `?', `=', `/', `.',  and ` '. Next, individual features are set based on the path, domain, and protocol.
+\citet{le2018malicious} proposed the URLNet model to detect URLs which are references to malicious web pages.
+URLNet processes a URL using a character-level CNN and a word-level CNN. %For the character-level CNN, the URL is first tokenized by each of the characters.
+Inspired by the Xception deep object recognition model for images, Texception~\citep{tajaddodianfar2020texception} also uses separate character-level and word-level CNNs like URLNet. 
+However, the CNN kernels in Texception form different sized-text windows for both the character and word levels. 
+%Multiple Texception blocks and adaptive max pooling layers can be combined in different model configurations in terms of both depth and width.
+In addition, Texception utilizes contextual word embeddings in the form of either FastText~\citep{joulin2017bag} or Word2Vec~\cite{mikolov2013distributed} to convert the URL into the input embedding vector.
+Another CNN-based phishing detection model was proposed by \citet{yerima2020high}, who create a 31-dimensional feature vector using the contents of web pages and train a CNN based on this feature vector.
+%\URLTranSys differs from this work because it only processes the URL instead of extracting the page content which
+will be much slower for inference.
+Other work has proposed using LSTMs (i.e., recurrent sequential models) for phishing and malicious URL detection including~\citet{ren2019bidirectional,peng2019joint}.
+Processing LSTMs is expensive in terms of computation and memory for long URLs which makes them impractical for large-scale production. 
+\citet{huang2019phishing} also investigate using capsule networks for detecting phishing URLs.

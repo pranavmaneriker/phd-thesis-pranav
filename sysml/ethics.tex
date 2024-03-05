@@ -1,0 +1,26 @@
+\label{sec:sysml:ethics}
+The research conducted in this study was deemed to be {\it exempt research} by the Ohio State University's Office of Responsible Research Practices, since the forum data is classified as 'publicly available'. 
+Darknet forum data is readily available publicly across multiple markets~\cite{dnmArchives,munksgaard2016mixing} and we follow standard practices for the darkweb~\cite{kumar2020edarkfind} limiting our analysis to publicly available information only. 
+The data was originally collected to study the prevalence of illicit drug trade and the politics surrounding such trades.
+
+
+\noindent \textbf{Limiting Harm} To the best of our knowledge, the collected data does not contain leaked private information~\cite{munksgaard2016mixing}. Beyond relying on the exempt nature of the study, we also strive to take further steps for minimizing harms from our research.
+In accordance with the ACM Code of Ethics and to limit potential harm, we carry out substantial pre-processing (\S\ref{sec:sysml:dataset}) to remove links, images, and keys that may contain sensitive information.  
+Towards respecting the privacy of subjects, we do not connect the identity of users to any private information; our method serves only to link users across markets.
+Further, in this study, we restrict our analysis to darknet markets that have been inactive for several years. 
+The darknet market community has itself taken steps over the past few years to link identities of trustworthy members across market closure via development of information hubs such as Grams, Kilos, and Recon~\cite{broadhurst2021impact}. 
+Our efforts aim to understand the formative years that lead towards this centralization.
+
+\noindent \textbf{Inclusiveness} Our methods do not attempt to characterize any traits of the users making the posts. Based on our analysis, the datasets contain posts in English, German, and Italian. 
+Thus, our methods may be limited in applicability and biased in performance for languages belonging to these and related Indo-European languages.  
+%However, based on public publications~\cite{Noorshams2020TIESTI}, we speculate that similar efforts may already be underway at different private organizations. 
+%If accepted, we will ensure that we make both our code and analyses publicly available so that our results can be replicated in a transparent fashion.
+
+\noindent \textbf{Potential for Dual Use} Our goal is to understand how textual style evolves on darknet markets and how users on such markets may misuse them for scams and illicit activities. This digital forensic analysis can be put to good use for understanding trust signalling on these markets.
+%Our Institutional Review Board while noting the exempt nature of this research  also noted, and we concur, that the potential benefits from such studies has benefits that outweigh any potential harms.
+We understand the potential harm from dual use; stylometric methods could be used for the identification of users who may not want their identity to be made public, especially when they are subject of hostile governments.
+We believe that making the information about the existence of such stylometric advances public and providing prescriptions for avoidance techniques (\S\ref{sec:sysml:casestudy:qualitative}) would aid users who may not know of strategies that they can use to preserve their anonymity.
+Existing work~\cite{noorshams2020ties,andrews2019learning} has already expanded the use of stylometry to the open web. 
+Thus, we have made the analysis of patterns that lower stylometric identifiability one focus of our case study.
+
+%\noindent \textcolor{red}{In addition, we provide a datasheet and a model card to describe the ethical implications in an easily accessible format for potential future work so that it is cognizant of these ethical considerations.}

@@ -1,0 +1,28 @@
+\chapter{Auditing Fairness Online through Iterative Refinement}
+\label{chp:avoir}
+
+Machine learning algorithms are increasingly being deployed for high-stakes scenarios. 
+A sizeable proportion of currently deployed models make their decisions in a black-box manner. 
+Such decision-making procedures are susceptible to intrinsic biases, which has led to a call for accountability in deployed decision systems.
+In this work, we focus on user-specified accountability of decision-making processes of black box systems.
+Previous work has formulated this problem as run time fairness monitoring over decision functions.
+However, formulating appropriate specifications for situation-appropriate fairness metrics is challenging.
+We construct \AVOIRmethodname{}, an automated inference-based optimization system that improves bounds for and generalizes prior work across a wide range of fairness metrics.
+\AVOIRmethodname{} offers an interactive and iterative process for exploring fairness violations aligned with governance and regulatory requirements.
+Our bounds improve over previous probabilistic guarantees for such fairness grammars in online settings.
+We also construct a novel visualization mechanism that can be used to investigate the context of reported fairness violations and guide users toward meaningful and compliant fairness specifications. 
+We then conduct case studies with fairness metrics on three different datasets and demonstrate how the visualization and improved optimization can detect fairness violations more efficiently and alleviate the issues with faulty fairness metric design. 
+
+
+\input{avoir/Introduction}
+\input{avoir/RelatedWork}
+\input{avoir/Contributions}
+\input{avoir/Theoretical}
+\input{avoir/CaseStudies}
+\input{avoir/Discussion}
+\input{avoir/Conclusion}
+\input{avoir/Reproducibility}
+\input{avoir/appendix}
+
+
+\endinput

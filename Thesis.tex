@@ -1,0 +1,95 @@
+\documentclass[osudraft]{osudissert96}
+
+% https://marketplace.visualstudio.com/items?itemName=James-Yu.latex-workshop
+
+
+
+\input{premable}
+\input{my_definitions/my_definitions}
+
+%\newtoggle{compact-space}
+%\toggletrue{compact-space}
+%\togglefalse{compact-space}
+
+\newcommand{\pmcommentson}{true} % set to false if not
+
+
+% BibTeX from the BiBTeX Documentation
+
+\begin{document}
+
+%
+% First, declare the parts of your title page 
+%
+
+\author{Pranav Maneriker}
+\title{The Role of Structure in Building Adaptive Machine Learning}
+\unit{Department of Computer Science and Engineering}
+
+
+% \coadvisorname{Advisor 1, Advisor 2}
+\advisorname{Dr. Srinivasan Parthasarathy}
+\member{Dr. Andrew Perrault}
+\member{Dr. Micha Elsner}
+\date{November, 2022}
+
+
+\maketitle
+
+
+
+%
+% Abstract goes here.
+%
+
+
+\begin{normalsize}
+
+\begin{abstract}
+    \input{abstract}
+\end{abstract}
+
+\tableofcontents
+\pagebreak
+\listoftables
+\pagebreak
+\listoffigures
+\pagebreak
+%\todototoc
+%\listoftodos
+\end{normalsize}
+
+
+
+
+\begin{normalsize}
+\include{introduction}
+
+\include{urltran}
+
+\include{avoir}
+
+\include{sysml}
+
+\include{future_work}
+
+%\include{conclusion}
+
+\end{normalsize}
+
+
+\begin{footnotesize}
+\begin{spacing}{0.6}
+
+\bibliographystyle{acl_natbib}
+\bibliography{references}
+
+\end{spacing}
+\end{footnotesize}
+
+
+\end{document}
+
+
+
+

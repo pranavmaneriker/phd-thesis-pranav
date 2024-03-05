@@ -1,0 +1,5 @@
+We develop a novel stylometry-based multitask learning approach that leverages graph context to construct low-dimensional representations of short episodes of user activity for authorship and identity attribution. Our results on four different darknet forums suggest that both graph context and multitask learning provides a significant lift over the state-of-the-art. 
+In the future, we hope to evaluate how such methods can be levered to analyze how users maintain trust while retaining anonymous identities as they migrate across markets. 
+Further, we hope to quantitatively evaluate the migration detection to assess the evolution of textual style and language use on darknet markets. % as a key part of the digital forensics toolkit for studying such markets. 
+Characterizing users from a small number of episodes has important applications in limiting the propagation of bot and troll accounts, which will be another direction of future work.
+%\textcolor{red}{In the future we speculate that it may be feasible to adapt more complex embedding-dependent sampling strategy~\cite{wu2017sampling} that may improve upon softmax margins.}

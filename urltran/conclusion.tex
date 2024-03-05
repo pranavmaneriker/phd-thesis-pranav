@@ -1,0 +1,11 @@
+\section{Conclusion}
+\label{sec:conc}
+%
+This work focused on the \textit{pre-deplyment} stage for building more adaptive models by incorporating \textit{adversarial testing}.
+We have proposed a new transformer-based system called \URLTranSys whose goal is to predict the label of an unknown URL one which either references a phishing or a benign web page.
+Transformers have demonstrated state-of-the-art performance in many natural language processing tasks, and the secnd objective of this work is to understand if these methods can also work well in the cybersecurity domain.
+We demonstrated that transformers which are fine-tuned using standard BERT tasks and a BPE tokenizer also work remarkably well for the task of predicting phishing URLs.
+%Instead of extracting lexical features or using CNNs kernels which span multiple characters and words, common in previously proposed URL detection models, our system used BPE tokenizers for this task. 
+%Next, transformers convert the token sequence to an embedding vector which can then be used as input to a dense linear layer.
+Results indicate that \URLTranSys was able to significantly outperform recent baselines, particularly over a wide range of very low false positive rates.
+We also demonstrated that transformers can be made robust to novel attacks under specific threat models when we adversarially augment the training data used for training them. 
