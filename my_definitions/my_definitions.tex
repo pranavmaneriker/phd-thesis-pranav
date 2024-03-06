@@ -70,10 +70,23 @@
 \definecolor{darkspringgreen}{rgb}{0.09, 0.45, 0.27}
 
 
-\newcommand{\pmcomment}[1]{\ifthenelse{ \equal{true}{\pmcommentson} } {{\color{flame}{PM: #1}} } {} }
-\newcommand{\spcomment}[1]{\ifthenelse{ \equal{true}{\pmcommentson} } {{\color{red}{SP: #1}} } {} }
-
-
+% COMMENTS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\sidenote}[4]{
+    \ifthenelse{\equal{true}{\customcommentson}} {
+    \todo[author=#1,color=#2,#3]{#4} 
+    }
+    {
+        % else nothing
+    }
+} % default note settings, used by macros below
+% add a similar command for your comments 
+\newcommand{\pmcomment}[1]{
+    \sidenote{Pranav}{blue!40}{}{#1}
+}
+\newcommand{\pmComment}[1]{
+    \sidenote{Pranav}{blue!40}{inline}{#1}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Custom packages and definitions
 \graphicspath{{images/}} % images dir
 

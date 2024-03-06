@@ -18,6 +18,7 @@
 % Al Fencl, Manas Mandal, Jim Vaigl and a host of others who have gone
 % through the ordeal of getting the format through the Grad School at OSU.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 2024/03/06. Pranav Maneriker   - Spacing for copyright page
 % 2022/10/02. Pranav Maneriker   - Edited date addition
 % 2011/02/11. Theodore P. Pavlic - Added \blankpage for omitted
 %                                  \disscopyright
@@ -919,6 +920,7 @@
   \thispagestyle{empty}
   \vspace*{\fill}
   \begin{center}
+    \setstretch{1.5} %TODO check
     \copyright \ Copyright by\\
     \@author\\
     {\number\@graduationyear}
@@ -945,7 +947,7 @@
   \addcontentsline{toc}{front}{{\dedicationname}}
   %\vspace*{\fill}
   \vspace*{30pt}
-  \begin{center} #1 \end{center}
+  \begin{center} \textit{#1} \end{center}
 %% MM. 1994/08/17. See little point for this.
 %  \vspace{50pt}
   \vspace*{\fill}
