@@ -2258,3 +2258,131 @@ UK, September 9-12, 2019},
   pages={6118--6126},
   year={2020}
 }
+
+
+
+%%%% conformal
+@article{romano2020classification,
+  title={Classification with valid and adaptive coverage},
+  author={Romano, Yaniv and Sesia, Matteo and Candes, Emmanuel},
+  journal={Advances in Neural Information Processing Systems},
+  volume={33},
+  pages={3581--3591},
+  year={2020}
+}
+
+@article{angelopoulos2023conformal,
+  title={Conformal prediction: A gentle introduction},
+  author={Angelopoulos, Anastasios N and Bates, Stephen and others},
+  journal={Foundations and Trends{\textregistered} in Machine Learning},
+  volume={16},
+  number={4},
+  pages={494--591},
+  year={2023},
+  publisher={Now Publishers, Inc.}
+}
+
+@article{angelopoulos2021gentle,
+  title={A gentle introduction to conformal prediction and distribution-free uncertainty quantification},
+  author={Angelopoulos, Anastasios N and Bates, Stephen},
+  journal={arXiv preprint arXiv:2107.07511},
+  year={2021}
+}
+
+@inproceedings{guo2017calibration,
+  title={On calibration of modern neural networks},
+  author={Guo, Chuan and Pleiss, Geoff and Sun, Yu and Weinberger, Kilian Q},
+  booktitle={International conference on machine learning},
+  pages={1321--1330},
+  year={2017},
+  organization={PMLR}
+}
+
+@book{vovk2005algorithmic,
+  title={Algorithmic learning in a random world},
+  author={Vovk, Vladimir and Gammerman, Alexander and Shafer, Glenn},
+  volume={29},
+  year={2005},
+  publisher={Springer}
+}
+
+@book{hamilton2020graph,
+  title={Graph representation learning},
+  author={Hamilton, William L},
+  year={2020},
+  publisher={Morgan \& Claypool Publishers}
+}
+
+@article{wu2022graph,
+  title={Graph Neural Networks},
+  author={Wu, Lingfei and Cui, Peng and Pei, Jian and Zhao, Liang and Song, Le},
+  journal={Graph Neural Networks: Foundations, Frontiers, and Applications},
+  pages={27--37},
+  year={2022},
+  publisher={Springer}
+}
+
+@inproceedings{clarkson2023distribution,
+  title = 	 {Distribution Free Prediction Sets for Node Classification},
+  author =       {Clarkson, Jase},
+  booktitle = 	 {Proceedings of the 40th International Conference on Machine Learning},
+  pages = 	 {6268--6278},
+  year = 	 {2023},
+  editor = 	 {Krause, Andreas and Brunskill, Emma and Cho, Kyunghyun and Engelhardt, Barbara and Sabato, Sivan and Scarlett, Jonathan},
+  volume = 	 {202},
+  series = 	 {Proceedings of Machine Learning Research},
+  month = 	 {23--29 Jul},
+  publisher =    {PMLR},
+  pdf = 	 {https://proceedings.mlr.press/v202/clarkson23a/clarkson23a.pdf},
+  url = 	 {https://proceedings.mlr.press/v202/clarkson23a.html},
+  abstract = 	 {Graph Neural Networks (GNNs) are able to achieve high classification accuracy on many important real world datasets, but provide no rigorous notion of predictive uncertainty. Quantifying the confidence of GNN models is difficult due to the dependence between datapoints induced by the graph structure. We leverage recent advances in conformal prediction to construct prediction sets for node classification in inductive learning scenarios. We do this by taking an existing approach for conformal classification that relies on <em>exchangeable</em> data and modifying it by appropriately weighting the conformal scores to reflect the network structure. We show through experiments on standard benchmark datasets using popular GNN models that our approach provides tighter and better calibrated prediction sets than a naive application of conformal prediction.}
+}
+
+
+
+@InProceedings{zargarbashi23conformal,
+  title = 	 {Conformal Prediction Sets for Graph Neural Networks},
+  author =       {H. Zargarbashi, Soroush and Antonelli, Simone and Bojchevski, Aleksandar},
+  booktitle = 	 {Proceedings of the 40th International Conference on Machine Learning},
+  pages = 	 {12292--12318},
+  year = 	 {2023},
+  editor = 	 {Krause, Andreas and Brunskill, Emma and Cho, Kyunghyun and Engelhardt, Barbara and Sabato, Sivan and Scarlett, Jonathan},
+  volume = 	 {202},
+  series = 	 {Proceedings of Machine Learning Research},
+  month = 	 {23--29 Jul},
+  publisher =    {PMLR},
+  pdf = 	 {https://proceedings.mlr.press/v202/h-zargarbashi23a/h-zargarbashi23a.pdf},
+  url = 	 {https://proceedings.mlr.press/v202/h-zargarbashi23a.html},
+  abstract = 	 {Despite the widespread use of graph neural networks (GNNs) we lack methods to reliably quantify their uncertainty. We propose a conformal procedure to equip GNNs with prediction sets that come with distribution-free guarantees – the output set contains the true label with arbitrarily high probability. Our post-processing procedure can wrap around any (pretrained) GNN, and unlike existing methods, results in meaningful sets even when the model provides only the top class. The key idea is to diffuse the node-wise conformity scores to incorporate neighborhood information. By leveraging the network homophily we construct sets with comparable or better efficiency (average size) and significantly improved singleton hit ratio (correct sets of size one). In addition to an extensive empirical evaluation, we investigate the theoretical conditions under which smoothing provably improves efficiency.}
+}
+
+@article{huang2024uncertainty,
+ author = {Huang, Kexin and Jin, Ying and Candes, Emmanuel and Leskovec, Jure},
+ booktitle = {Advances in Neural Information Processing Systems},
+ editor = {A. Oh and T. Neumann and A. Globerson and K. Saenko and M. Hardt and S. Levine},
+ pages = {26699--26721},
+ publisher = {Curran Associates, Inc.},
+ title = {Uncertainty Quantification over Graph with Conformalized Graph Neural Networks},
+ url = {https://proceedings.neurips.cc/paper_files/paper/2023/file/54a1495b06c4ee2f07184afb9a37abda-Paper-Conference.pdf},
+ volume = {36},
+ year = {2023}
+}
+
+@article{vovk2015cross,
+  title={Cross-conformal predictors},
+  author={Vovk, Vladimir},
+  journal={Annals of Mathematics and Artificial Intelligence},
+  volume={74},
+  pages={9--28},
+  year={2015},
+  publisher={Springer}
+}
+@article{barber2021predictive,
+  title={Predictive Inference with the Jackknife+},
+  author={Barber, Rina Foygel and Cand{\`e}s, Emmanuel J and Ramdas, Aaditya and Tibshirani, Ryan J},
+  journal={The Annals of Statistics},
+  volume={49},
+  number={1},
+  pages={486--507},
+  year={2021}
+}

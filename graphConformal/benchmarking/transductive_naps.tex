@@ -1,0 +1,22 @@
+The Neighborhood Adaptive Prediction Sets (NAPS) can construct predictive sets via Conformal Prediction under relaxed exchangeability (or non-exchangeability) assumptions \textbf{CITE SOURCE}. In the context of graphs, NAPS was initially implemented in the inductive setting \textbf{CITE SOURCE}. However, it can be used in the transductive setting as well \textbf{CITE SOURCE}. 
+
+
+Transductive NAPS is based on APS where $s_i = A(\vx_i, y_i, u_i;\hat{\pi}_i)$, or $A(\vx_i, y_i;\hat{\pi}_i)$ if $\epsilon$ is not used, is computed for each node in $\gD_{\text{calib}}$. Using these scores, a weighted quantile is computed to produce a threshold for a class to be included in the prediction set as seen in Equation \ref{eq:NAPS:quantile} below by creating weighted point masses ($\delta$) at each score. The point mass at $+\infty$ indicates that the score for test node n+1 is unknown (and unbounded due to non-exchangeability), and thus, a point mass at the maximum value ($+\infty$) is required.\ascomment{I want to state the intuitive reason for the infinite point mass since it was not clearly stated in the NAPS paper.} 
+\begin{align}
+    \hat{q}^{\text{NAPS}}_{n+1} = \text{Quantile}\bigg(1-\alpha, \bigg[\sum_{i\in\gD_{\text{calib}}}\Tilde{w}_{i}\cdot \delta_{s_{i}}\bigg] + \Tilde{w}_{n+1}\cdot \delta_{+\infty}\bigg)
+    \label{eq:NAPS:quantile}
+\end{align}
+
+Since exchangeability is not assumed, a weight function leveraging graph homophily can be used to produce weights, $w_i\in [0,1]$, for nodes in the calibration set \textbf{CITE SOURCE}. The three implemented weight functions are uniform, $w(d_i) = 1$, hyperbolic $w(d_i) = \frac{1}{d_i}$, and exponential, $w(d_i) = 2^{-d_i}$ for nodes in the $k$ hop neighborhood of test node n+1, $\mathcal{N}_{n+1}^k$, where $d_i$ is the distance from the test node to node $i$ in the calibration set. Formally, the weight function - in the transductive setting - for each node, $i\in\gD_{\text{calib}}$ can be seen in Equation \ref{eq:NAPS:weight} below. These weights are then linearly normalized to compute $\Tilde{w}_i$ such that $1 = \sum_{i\in\gD_{\text{calib}}} \Tilde{w}_i + \Tilde{w}_{n+1}$  \textbf{CITE SOURCE}.
+\begin{align}
+    w_i = \begin{cases}
+w_i(d_i), & i\in \gD_{\text{calib}}\cap\mathcal{N}_{n+1}^k\\
+0,& i\in \gD_{\text{calib}}\setminus\mathcal{N}_{n+1}^k
+\end{cases}
+    \label{eq:NAPS:weight}
+\end{align}
+
+Using the NAPS quantile, $\hat{q}^{\text{NAPS}}_{n+1}$, the prediction sets can be constructed similarly to other Conformal Prediction algorithms. Lastly, it should be noted that transductive and inductive NAPS differ from each other since transductive NAPS applies non-zero weights only to a subset of calibration nodes, while inductive NAPS uses the entire k-hop neighborhood of a test node.\ascomment{Verify this claim (i.e. reread the paper)}  
+
+\subsubsection{A Word on Implementation}
+Computationally, the 

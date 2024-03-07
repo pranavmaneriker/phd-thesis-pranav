@@ -1,0 +1,27 @@
+Conformal prediction is used to quantify the uncertainty of a model by providing prediction sets/intervals with coverage guarantees.
+We will focus on conformal prediction in the classification setting.
+Given a calibration dataset $\gD_{\text{calib}} = \{(\vx_i, y_i)\}_{i=1}^n$, where $\vx_i \in \gX = \R^d$ and $y_i \in \gY = \{1, \dots, K\}$, conformal prediction can be used to construct a prediction set $C$ such that
+\begin{align*}
+    \Pr\left[y_{n+1} \in C(\vx_{n+1}) \right] \geq 1 - \alpha
+\end{align*}
+where $1 - \alpha \in [0, 1]$ is a user-specified coverage level.
+The only assumption required for the coverage guarantee is that $\gD_{\text{calib}} \cup \{(\vx_{n+1}, y_{n+1})\}$ is exchangeable.
+
+The following theorem provides a general recipe for constructing a prediction set with coverage guarantee.
+\begin{theorem}[\citet{vovk2005algorithmic}]
+    Suppose $\{(\vx_i, y_i)\}_{i=1}^{n+1}$ are exchangeable, $s: \gX \times \gY \rightarrow \R$ is a score function, and $\alpha \in [0, 1]$ is a target significance level.
+    Let $\hat{q}(\alpha) = \text{Quantile}\left(\frac{\ceil{(n+1)(1-\alpha)}}{n}; \{s(\vx_i, y_i)\}_{i=1}^{n}\right)$
+    Define $C_{\alpha}(X) = \{y \in \gY: s(\vx, y) \leq \hat{q}(\alpha)\}$.
+    Then,
+    \begin{align}
+        1 - \alpha +\frac{1}{n+1} \geq \Pr\left[y_{n+1} \in C_{\alpha}(\vx_{n+1}) \right] \geq 1 - \alpha
+        \label{eq:CP:coverage}
+    \end{align}
+    \label{thm:CP:coverage}
+\end{theorem}
+
+While Theorem~\ref{thm:CP:coverage} does not place any restrictions on the choice of the score function, the choice of the score function can have a significant impact on the size of the prediction set.
+$s$ is usually called the non-conformity score function which measures the degree of non-agreement between the input $\vx$ and the label $y$ i.e., larger scores indicate worse agreement between $\vx$ and $y$.
+Note that the setup of theorem~\ref{thm:CP:coverage} is called split CP, which is a special case of CP.
+Further, it only provides a marginal coverage guarantee.
+\pmcomment{discuss the difference between marginal and conditional coverage and requirements for conditional coverage. Additionally, discuss beta distribution?}

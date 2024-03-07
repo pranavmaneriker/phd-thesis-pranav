@@ -1,0 +1,34 @@
+\section{Optimal $\tau$ for APS}
+\label{appx:APS:tau}
+For simplicity, assume that the probabilities are distinct.
+
+From the definition of $A$ \eqref{eq:APS:score}
+\begin{align*}
+    A(\vx, y, u;\hat{\pi}) &= \min\{\tau \in [0, 1]: y \in S(\vx, u; \hat{\pi}, \tau)\}
+\end{align*}
+Define 
+\[
+\Sigma_{\hat{\pi}}(\vx, m) = \sum\limits_{i=1}^m \hat{\pi}_{(i)}(\vx)
+\]
+From the definition of $S(\vx, u; \hat{\pi}, \tau)$ from \eqref{eq:APS:S}, conisder the following cases:
+
+\textbf{Case 1:} $\tau = \Sigma_{\hat{\pi}}(\vx, r_y)$, then $L(x; \hat{\pi}, \tau) = y$ and thus, $V(\vx; \pi, \tau) = 0$.
+Thus $\Pr[u > V(\vx; \pi, \tau)] = 1$ and hence, $P[y \in S(\vx, u; \hat{\pi}, \tau)] = 1$.
+
+\textbf{Case 2:} $\tau = \Sigma_{\hat{\pi}}(\vx, r_y-1)$, then $y \not\in S(\vx, u, \hat{\pi}, \tau)$ in either case, since only classes with $\hat{\pi}_i(\vx) > \hat{\pi}_y(\vx)$ could be included. \pmcomment{This is the edge case where tie breaking is required for a completely general proof.}
+
+\textbf{Case 3:} $\tau = \Sigma_{\hat{\pi}}(\vx, r_y) - \varepsilon \hat{\pi}_y$.
+Then we have $L(x; \hat{\pi}, \tau) = y$ again, and 
+\begin{align*}
+    V(\vx; \pi, \tau) &= \frac{1}{\hat{\pi}_y(\vx)}\left\{ \left[ \sum_{j=1}^{r_y} \hat{\pi}_{(j)}(\vx) \right] - \tau \right\} \\
+                      &= \frac{1}{\hat{\pi}_y(\vx)}\left\{ \left[ \sum_{j=1}^{r_y} \hat{\pi}_{(j)}(\vx) \right] - (\Sigma_{\hat{\pi}}(\vx, r_y) - \varepsilon \hat{\pi}_y) \right\}\\
+                      &= \varepsilon
+\end{align*}
+For $y$ to be included in $S(\vx, u; \hat{\pi}, \tau)$, we would require that $u \geq V(\vx; \pi, \tau)$, i.e., $u \geq \varepsilon$. 
+We want the minimal $\tau$, which is equivalent to maximizing $\varepsilon$. 
+Thus, $\tau = \Sigma_{\hat{\pi}}(\vx, r_y) - u \hat{\pi}_y$ is the required solution.
+
+\subsection{Non-randomized set}
+The inclusion criterion for the score given the threshold $\tau$ is $\Tilde{A}(\vx, y; \hat{pi}) \leq \tau$
+
+To include the currct label $y_i$ while minimizing the chosen threshold $\tau$, we would require $\tau = \sum\limits_{j=1}^{r_{y_i}} \hat{\pi}_{(j)}(\vx)$ 

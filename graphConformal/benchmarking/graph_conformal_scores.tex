@@ -1,0 +1,145 @@
+\subsection{Dataset splits and Training}
+In split CP, the dataset is partitioned as $\mathcal{D} = \gD_{\text{train}}\cup \gD_{\text{valid}}\cup \gD_{\text{calib}}\cup  \gD_{\text{test}}$. A base model $\pi: \gX \to \Delta_{\gY}$, where $\Delta_{\gY}$ is the probability simplex over the elements of $\gY$, is learned using the training and validation sets $\parens{\gD_{\text{train}}}$ and $\parens{\gD_{\text{valid}}}$. The calibration set $\parens{\gD_{\text{calib}}}$ is used to determine the $\hat{q}(\alpha)$ from Theorem \ref{thm:CP:coverage} and the test set $\parens{\gD_{\text{test}}}$ is the set for which we want to compute our prediction sets.
+
+There are several different methods of partitioning the data to get these different sets. Two methods which are used in other works on graph conformal prediction for classification are (1) full-split paritioning and (2) label-based sample partitioning.\avcomment{Add citations for methods that use each one} %These methods originate from works that consider the classification task in either a supervised or semi-supervised setting, respectively.
+ 
+\subsubsection{Full-Split Paritioning}
+
+In such a case, the choice of data split can be done such that each subset of the parition adheres to a size constraint. For example, in CF-GNN \cite{huang2024uncertainty} the authors split the datasets in their experiments randomly, but adhering to a $20/10/70$ split of $\gD_{\text{train}}, \gD_{\text{valid}},$ and $\gD_{\text{calib}}\cup \gD_{\text{test}}$....
+
+\subsubsection{Label-Based Sample Paritioning}
+In the case of 
+
+Suppose all of the labeling information is not given. This can be the case if the GNN is trained through semi-supervised learning or if an inductive learning setting is simulated....
+
+\subsection{On TPS and adaptability}
+
+\subsection{The $\varepsilon$ that makes a difference}
+The most commonly used baseline in work on (graph) conformal prediction is adaptive prediction sets (APS)~\citep{romano2020classification}. 
+\pmcomment{TODO: Include a bunch of papers that use APS as a baseline}
+The authors introduce it in terms of the oracle probability; suppose we have a prediction function $\hat{f}$ that correctly models the oracle probability $\Pr[Y=y|X_{test}=\vx] = \pi_y(\vx)$ for each $y \in \gY = \{1, \dots, K\}$ 
+Let $\pi_{(1)}(\vx), \dots, \pi_{(K)}(\vx)$ be the sorted probabilities in descending order.
+For any $\tau \in [0, 1]$, define the generalized conditional quantile funciton at $\tau$ as
+\begin{align}
+    L(x; \pi, \tau) =  \min\left\{ k \in \{1, \dots, K\}, \sum\limits_{j=1}^k \pi_{(j)}(\vx) \geq \tau \right\}
+    \label{eq:APS:L}
+\end{align}
+Then the corresponding prediction set, $C_\alpha^{\text{or}}(\vx)$ can be constructed from the probabilities needed to reach $1-\alpha$ coverage.
+\[
+    C_\alpha^{\text{or+}}(\vx) = \{y \in \gY: \pi_y(\vx) \geq \pi_{(L(\vx; \pi, 1-\alpha))}(\vx)\}
+\]
+where $\text{or}$ indicates the usage of the oracle probability.
+It is possible to construct tighter prediction sets in a randomized fashion using an additional uniform random variable $u \sim \text{Uniform}(0, 1)$ as a parameter to construct a generalized inverse. 
+This idea draws upon the idea of uniformly most powerful tests in the Neyman-Pearson lemma for level-$\alpha$ sets.\pmcomment{cite, potentially link to Karlin-Rubin}. 
+Define
+\pmcomment{$\leq$ vs $<$ and its effect on proof}
+\begin{align}
+    S(\vx, u; \pi, \tau) = \begin{cases}
+        \{y \in \gY: \pi_y(\vx) > \pi_{(L(\vx; \pi, \tau))}(\vx)\} & u < V(\vx; \pi, \tau) \\
+        \{y \in \gY: \pi_y(\vx) \geq \pi_{(L(\vx; \pi, \tau))}(\vx)\} & \text{otherwise}
+    \end{cases}
+    \label{eq:APS:S}    
+\end{align}
+i.e., the class at the $L(\vx; \pi, \tau)$ rank is included in the prediction set with probability $1 - V(\vx; \pi, \tau)$, where
+\[
+V(\vx; \pi, \tau) = \frac{1}{\pi_{(L(\vx; \pi, \tau))}(x)} \left\{ \left[\sum\limits_{j=1}^{L(\vx; \pi, \tau)}{\pi_{(j)}(x)} \right] - \tau \right\}
+\]
+Thus, the corresponding prediction sets are $C_\alpha^{\text{or}}(\vx) = S(\vx, U; \pi, 1 - \alpha)$, $U \sim U(0, 1)$
+Note that the coverage guarantees provided in conformal prediciton are only in expectation over the randomness in $(\vx_i, y_i), i = 1, \dots, n+1$, so these randomized prediction sets continue to provide the guarantee.
+To make this work for a non-oracle probability $\hat{\pi}(\vx)$, define a conformity score $A$
+\begin{align}
+    A(\vx, y, u;\hat{\pi}) = \min\{\tau \in [0, 1]: y \in S(\vx, u; \hat{\pi}, \tau)\}
+    \label{eq:APS:score}
+\end{align}
+
+Assume that $\hat{\pi}$ are all distinct - for ease of defining rank.
+Suppose the rank of the true class amongst the sorted $\hat{\pi}$ be $r_y$, i.e., $\sum\limits_{i=1}^K \1[\hat{\pi}_i(\vx) \geq \hat{\pi}_{y}] = r_y$
+Solving for $\tau$ as a function of $\hat{\pi}$  (see Appendix~\ref{appx:APS:tau}, for proof),
+\begin{align}
+A(\vx, y, u;\hat{\pi}) = \left[ \sum\limits_{i=1}^{r_y} \hat{\pi}_{(i)}(\vx) \right] - u \hat{\pi}_{y}
+\end{align}
+
+Instead, if a deterministic set is used to define the conformal score instead (i.e., the randomized set construction is not carried out), then we could just add the probabilities until the true class is included:
+\begin{align}
+    \Tilde{A}(\vx, y;\hat{\pi}) = \left[ \sum\limits_{i=1}^{r_y} \hat{\pi}_{(i)}(\vx) \right]
+\end{align}
+This version of APS still provides the same conditional coverage guarantees and has a simpler exposition as the prediction sets are constructed by greedily including the classes until the true label is included.
+ Thus, this version is provided as the implementation in the popular monograph on conformal prediction by~\citet{angelopoulos2021gentle, angelopoulos2023conformal}.
+
+However, the lack of randomization may sacrifice on the efficiency. 
+This modification of score affects both the quantile threshold computation during the calibration phase and the prediction set during the test phase.
+We will now show this formally.
+
+Let 
+\[
+    \hat{q}_{A} = \text{Quantile}\left(\frac{\ceil{(n+1)(1-\alpha)}}{n}; \{A(\vx_i, y_i, u_i; \hat{\pi})\}_{i=1}^{n}\right)
+\]
+and
+\[
+    \hat{q}_{\Tilde{A}} = \text{Quantile}\left(\frac{\ceil{(n+1)(1-\alpha)}}{n}; \{\Tilde{A}(\vx_i, y_i; \hat{\pi})\}_{i=1}^{n}\right)
+\]
+Define $A_i(y) := A(\vx_i, y, u_i; \hat{\pi})$ and $\Tilde{A}_i(y) := \Tilde{A}(\vx_i, y, u_i; \hat{\pi})$
+From the definition of the prediction sets and non-conformity scores, we have 
+\[
+    C_A(\vx_{n+1}) = \{y \in \gY: A_{n+1}(y) \leq \hat{q}_{A}\}
+\] and 
+\[
+    C_{\Tilde{A}}(\vx_{n+1}) = \{y \in \gY: \Tilde{A}_{n+1}(y) \leq \hat{q}_{\Tilde{A}}\}
+\] 
+denote the prediction sets corresponding to the two score functions (with and without randomization).
+
+\begin{theorem}
+The prediction set constructed using randomization is more efficient than without. Formally, 
+\[
+    \E\left[|C_{\Tilde{A}}(\vx_{n+1})| - |C_A(\vx_{n+1})|\right]  \geq 0
+\]   
+\label{them:APS:efficiency}
+\end{theorem}
+\begin{proof}
+Consider the case with only two potential class labels $K = \{1, 2\}$. 
+%Let $\Pr[y_{n+1} = 1] = \eta = 1 - \Pr[y_{n+1} = 2]$.
+Define $C_{A}^{i} = C_{A}(\vx_{i})$. 
+Let $y'_i = \{1, 2\} \setminus \{y_i\}$ be the incorrect class label for each $\vx_i$.
+Define 
+\[
+    \alpha_c = \alpha \in [0, 1], \hat{q}_A \leq \text{Quantile}\left( \frac{\ceil{(n+1)(1 - \alpha)}}{n}; \{A(\vx_i, y'_i, u_i; \hat{\pi})\}_{i=1}^n \right)
+\]    
+From the definition of $C_A^i$
+%\[
+%    \alpha_c = \min\left\{\alpha \in [0, 1] : \hat{q}_A \leq \text{Quantile}\left( \frac{\ceil{(n+1)(1 - \alpha)}}{n}; \{A(\vx_i, y'_i, u_i; \hat{\pi})\}_{i=1}^n \right)\right\}
+%\]    
+\pmcomment{Such an $\alpha$ may not exist.}
+We have
+\begin{align*}
+    \E\left[|C_{A}^{n+1}|\right] &= \E\left[\sum\limits_{i=1, 2}\1[i \in C_{A}^{n+1})]\right] \\
+                                 &= \E\left[\1[1 \in C_{A}^{n+1})]\right] + \E\left[\1[2 \in C_{A}^{n+1})]\right]  & \text(linearity)\\
+                                 &= \Pr[1 \in C_{A}^{n+1}] + \Pr[2 \in C_{A}^{n+1}] & \text{$\E[\1[A]] = \Pr[A]$}\\
+                                 &= \Pr[y_{n+1} = 1 \cap 1 \in C_{A}^{n+1}] + \Pr[y_{n+1} = 2 \cap 1 \in C_{A}^{n+1}] \\
+                                 &+ \Pr[y_{n+1} = 2 \cap 2 \in C_{A}^{n+1}] + \Pr[y_{n+1} = 1 \cap 2 \in C_{A}^{n+1}] & \text{total probability}\\
+\end{align*}
+From the exchangeability of 
+such that 
+$\Pr[y_{n+1}=i \cap j \in C_{A}^{n+1}] = \Pr[y_{n+1}=i]P[j \in C_{A}^{n+1} | y_{n+1} = i]$
+
+\end{proof}
+
+\begin{theorem}
+    Difference in quantile
+\end{theorem}
+
+\pmcomment{empirical quantiles with epsilon}
+
+%\begin{align*}
+%   |S(\vx_{n+1}, u; \hat{\pi}, \tau_A)| - |\Tilda{S}(\vx_{n+1}; \hat{\pi}, \tau_{})|
+%\end{align*}
+
+
+
+
+\subsection{Notes on Transductive NAPS}
+\input{graphConformal/benchmarking/transductive_naps}
+
+\subsection{ConfGNN efficiencies}
+
+
+\subsection{Scalability}

@@ -1,0 +1,12 @@
+The usual tasks of interest in graph data are node classification, link prediction, and graph classification. 
+In this work, we focus on the usage of node classification and its extensions to conformal prediction.
+\subsection{Node Classification in Graphs}
+Consider an attributed homogeneous graph $\gG = (\gV, \gE, \mX)$, where $\gV$ is the set of nodes, $\gE$ is the set of edges and $\mX$ is the set of node attributes.
+Let $\gY = \{1, \dots, K\}$ denote set of class labels associated.
+For $v \in \gV$, $\vx_v \in \R^d$ denotes the features and $y_v \in \{1, \dots, K\}$ denotes the corresponding class label.
+\pmcomment{Exchangeability for transductive, and potential for inductive}
+
+\subsection{Conformal Prediction for Node Classification}
+Let $f: \gX \to \R_K$ denote the class wise scores associated with a  model trained on a separate split of the data ($\gD_{\text{train}}$).
+For example, these could be the pre-final output layer of a neural network (either before or after softmax normalization).
+and a trained model with classwise prediction the goal is to learn a model $\pi: \gX \to \Delta_K$, where $\Delta_K$ is the $K$-dimensional probability simplex.
