@@ -41,7 +41,7 @@ Second, can we combine data from the dark web and clear web to build better mode
         Reddit-201912 & 7,439,040 & 126,992,546 & 155,864 \\
         \bottomrule
     \end{tabular}
-    \caption{Dataset statistics for comparing LUAR on clear and dark web forums.}
+    \caption{Dataset statistics prior to preprocessing for comparing LUAR on clear and dark web forums.}
     \label{tab:stylometry_extensions:followingTrail:datasets}
 \end{table}
 
@@ -89,4 +89,58 @@ This indicates that authors on Reddit may have interests in diverse topics, or t
 Thus, even from a summary statistics perspective, there are fundamental differences in author behaviors across the clear and dark web forums.
 However, it is unclear how these differences at the macro level will affect the generalization capabilities of LUAR.
 
-\subsubsection{Preprocessing for Author Identification}
+\subsubsection{Preprocessing and Setup for Author Identification}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{stylometryExtensions/figures/train_query_target_split}
+    \caption{Setup of splits for the Author Identification task. Each color represents a different author.}
+    \label{fig:stylometry_extensions:followingTrail:datasets:splits}
+\end{figure}
+We divide each dataset temporally into a 70-30 split.
+That is, the first 70\% of each dataset is used for training models for experiments and the final 30\% is used for evaluation.
+The evaluation set is further split into half for constructing a set of query and targets for each author.
+Thus, there are three splits for each dataset labeled `train', `test\_query', and `test\_target'.
+The models will be evaluated on their ability to match the representation for an author using an episode from the query set against the corresponding one in the target set.
+Figure~\ref{fig:stylometry_extensions:followingTrail:datasets:splits} provides a visual representation of the setup for the author identification task. 
+We filter the posts to include authors with at least 2 posts and a maximum of 1500 posts.
+Further, to control for the significantly higher number of users in the Reddit datasets, we sample authors from Reddit to ensure that there is an equal number of authors in the Dread dataset and each Reddit dataset.
+Figure~\ref{fig:stylometry_extensions:followingTrail:datasets:final_splits} shows the number of posts and authors in each dataset and split after preprocessing.
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{stylometryExtensions/figures/FinalSplits}
+    \caption{Number of authors in each dataset after preprocessing.}
+    \label{fig:stylometry_extensions:followingTrail:datasets:final_splits}
+\end{figure}
+
+\subsection{Results}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{stylometryExtensions/figures/results/rq1_zeroshot} 
+    \caption{Zero-shot performance of LUAR on the test set from Reddit-201801, Reddit-201912, Dread, and TheHub. seq\_len denotes the number of tokens sampled in each window.}
+    \label{fig:stylometry_extensions:followingTrail:results:rq1_zeroshot}   
+\end{figure}
+
+We first evaluate the original LUAR model \texttt{LUAR-orig} in a zero-shot setting.
+That is, we evaluate the model on the test set from the Reddit-201801 and Reddit-201912 datasets, and the Dread and TheHub datasets without any additional tuning.
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{stylometryExtensions/figures/results/rq2_trainedmodels} 
+    \caption{Heatmap comparing Recall@8 across models. Each row represents the training dataset used for training the LUAR model, while each column represents the test dataset.}
+    \label{fig:stylometry_extensions:followingTrail:results:rq2_trainedmodels}
+\end{figure}
+
+\pmComment{Add details for the following results.}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{stylometryExtensions/figures/results/rq3_combine} 
+    \caption{Heatmap comparing Recall@8 across models. }
+    \label{fig:stylometry_extensions:followingTrail:results:rq3_combine}
+\end{figure}
+
+
+\endinput

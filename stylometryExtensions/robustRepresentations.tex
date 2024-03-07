@@ -1,0 +1,100 @@
+\section{Robustness and Uncertainty Quantification}
+
+In this section, we are concerned with evaluating the impact of temporal data drift, latent author demographic attributes, and their interaction on authorship attribution.
+We find that both the time elapsed between writing samples and latent demographic attributes can have a significant impact on attribution performance, which we attribute to temporal data shifts that are more significant for certain groups, notably younger authors whose style evolves over time.
+This is problematic since these groups may suffer from higher error rates and suffer potential negative outcomes, such as false attributions in forensic applications.
+Our experiments suggest this degradation in performance is due to fundamental data shifts, rather than model estimation error, which motivates us to propose a conformal prediction based mechanism to provide statistically sound performance guarantees for authorship attribution with a computationally efficient approach.
+
+\subsection{Motivation}
+
+The objective of contrastive training is to learn a mapping from an input space---writing samples in our case---to a lower dimensional vector space wherein distance between feature vectors implies a measure of semantic similarity. 
+For example, supervised contrastive learning, which is employed by several models evaluated in this work, uses labels associated with each example to ``pull'' representations sharing the same semantic label closer together, while ``pushing'' representations for examples with different semantic labels further apart~\cite{khosla2020supervised}. 
+
+For authorship representation learning, we use author labels as supervision, and we interpret the vector similarity as a measure of the likelihood that two writing samples have the same author. 
+The contrastive training objective can be thought of as attempting to enforce certain \emph{invariances} on the learned representations.
+In the case of authorship, we desire representations that are invariant to text attributes that exhibit large variance for a single author, such as the particular topics being written about, while capturing stable author features such as writing style, which are more constant over time~\cite{andrews2019learning}.
+However, although recent work has successfully improved performance of author representations in downstream tasks, such as social media account linking, for example by training on datasets comprising millions of anonymous authors~\cite{khan2021deep}, their limitations remain poorly understood. 
+Section~\ref{chp:stylometry_extensions:followingTrail} describes some limitations of these models in their domain generalization capabilities.
+
+As a first step to better understanding these limitations, in this work we focus on two central questions. First, do author representations encode systematic biases associated with author demographics? 
+We answer this question in the affirmative, finding that authorship attribution performance degrades significantly across demographic groups, including age and gender. 
+Second, we consider the impact of temporal shifts in attribution performance.
+Finally, we propose a conformal prediction approach to provide statistically sound performance guarantees for authorship attribution with a computationally efficient approach.
+
+\subsubsection{Datasets}
+We started from a curated version of the Pushshift Reddit dataset~\cite{baumgartner2020pushshift} by filtering for users who had at least X comments for user modeling over time. 
+Additionally, we filtered out users having more than .. in an attempt to exclude bots. 
+\pmcomment{missing filter number}
+We restricted the time period of the data from January 2015 to November 2019.
+In each setting, we follow a query/target temporal setup similar to previous work on retrieval-based authorship verfication~\cite{andrews2019learning,khan2021deep}.
+That is, we first selected a set of users and then include all of the posts written by each selected user across two non-overlapping time periods.
+The author identification task in such a setting takes a user's posts from the query time period as input and outputs a list of users ranked by their likelihood of matching the query user using their posts from the target time period.
+A positive match requires having a top/high rank for the posts by the same user during the target time period.
+We constructed multiple such datasets to help quantify the robustness of authorship attribution models.
+Specifically, we created two types of datasets: TemporalReddit and DemographicReddit.
+
+\noindent \textbf{TemporalReddit} 
+In each dataset, we sampled users having between $p_{\rm{min}}$ and $p_{\rm{max}}$ posts in both the query and the target period. 
+Specifically, we selected query/target temporal pairs with a fixed time difference between them.
+Suppose the queries span time period $(Q_{\rm{start}}, Q_{\rm{end}}) = (q_1, q_2)$ and the targets span $(T_{\rm{start}}, T_{\rm{end}}) = (t_1, t_2)$.
+We ensured that $\Delta_\tau = q_2 - t_2$ was similar across all datasets. 
+However, we varied $q_1$ to obtain multiple, non-overlapping datasets.
+We chose quer from January 2015 to January 2019 (5 query sets, each one month long) and targets from December 2015 to December 2018 and October 2019.
+\pmcomment{General rationale - keep a random sample of authors to see model drift.}
+In the following texts, we refer to these datasets as \DSfixeddelta{}.
+$p_{\rm{min}} = 16, p_{\rm{max}} = 2000$ with a set of 50k users sampled in \DSfixeddelta{}{}.
+For the second dataset, we selected a single, fixed query split and multple target splits. 
+The query period chosen was Jan 2015, and the target periods chosen were Dec 2015--2018, Oct 2019. 
+We sampled a set of 50k users having $p_{\rm{min}} = 16, p_{\rm{max}} = 2000$ in the query as well as in each target split.
+We refer to this dataset as \DSvarydelta{}. 
+
+\textbf{DemographicReddit}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{lrr}
+    \toprule
+    group & fraction & count \\
+    \midrule
+    adult & 0.525000 & 1575 \\
+    teenager & 0.398333 & 1195 \\
+    senior & 0.022000 & 66 \\
+    middle-aged & 0.054667 & 164 \\
+    \bottomrule
+    \end{tabular}
+    \caption{Distribution of demographics for age groups}
+    \label{tab:demographics:age_dist}
+\end{table}
+
+\begin{table}[]
+    \centering
+    \begin{tabular}{lrr}
+    \toprule
+    gender & fraction & count \\
+    \midrule
+    f & 0.511667 & 614 \\
+    m & 0.488333 & 586 \\
+    \bottomrule
+    \end{tabular}
+    \caption{Distribution of demographics for gender}
+    \label{tab:demographics:gender_dist}
+\end{table}
+
+We used the RedDust dataset~\cite{tigunova2020reddust} to collect self-identified demographic attributes associated with Reddit users. 
+Specifically, we investigated two latent demographic attributes (age and gender) and their correlation with author identifiability.
+We followed the authors' original definition for categorizing users into age groups (13-23: Teenager, 24-45: Adult, 45-65: Middle-Aged, 65+: Senior).
+To create each of these datasets, we first subset the data to include only those users who lie in the intersection of CRUD and RedDust-Age and RedDust-Gender. 
+Following this, we selected a sequence of consecutive monthly splits from these intersecting users having $p_{min} = 8$ for at least five consective months. 
+We restricted the users to be present across all the splits to ensure that the demographics do not change over splits.
+Furthermore, to control for temporal variation, we only considered query/target pairs from consecutive months, i.e., $T_{start} - Q_{start} = 1~\rm{month}$.
+We select a sequence of months that ensure that we can maximize the number of users that lie in the intersection of CRUD and RedDust.
+The selected splits are January to May 2019.
+We sampled 3k users' posts from this period with known age, giving us \DSagefixed{}, and 1.2k users' posts with known gender, \DSgenderfixed{}, derived from RedDust-Age and RedDust-Gender, respectively.
+Note that the age in the data was adjusted to reflect the age of the user in January 2019 for all splits.
+
+\textbf{TDReddit}
+In addition to constructing query/target pairs with a fixed $T_{start} - Q_{start} = 1~\rm{month}$, we can additionally consider all possible pairs of query/target from the splits collected for creating the DemographicReddit datasets.
+These pairs correspond to $\Perm{5}{2} = 20$ query/target pairs.
+The two corresponding demographic datasets are labeled \DSagevary{} and \DSgendervary{} for age and gender, respectively.
+
+\pmComment{TODO: Add the remaining sections}

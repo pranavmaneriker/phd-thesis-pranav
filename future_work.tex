@@ -2,259 +2,259 @@
 \label{chp:future_work}
 
 \pmcomment{Adjust for completed work}
-In this preceding chapters, we described structures that help models be more adaptive at the three different stages of their lifecycle.
-Specifically, we used implicit and explicit structures along with \textit{adversarial testing}, \textit{online monitoring}, and \textit{domain adaptation} to build more adaptive machine learning systems.
-We now discuss how we plan to extend these techniques in future work.
-
-\section{Large Scale Structure-aware Authorship Attribution}
-\label{sec:future_work:scale}
-In this extension, our goal is to test the generalizability of our findings related to the improvements offered by utilizing forum graph structures on the darkweb (Chapter~\ref{chp:sysml}).
-Recent work on cross-domain authorship attribution using text has determined that certain domains (eg. Reddit) are more useful for training authorship attribution models that generalize to other domains~\cite{barlas2020cross,riverastao2021learning}.
-Specifically, \citet{riverastao2021learning} demonstrate that in the source domain, diversity in the expressed topics and larger number of unique users play a role in explaining better transfer to target domains.
-However, this work does not utilize the additional structure and context present in different domains.
-We posit that these graphs can provide information orthogonal to that which is already present in the text.
- With our future work, we aim to demonstrate that even in scenarios with an abundance of text/users (over 100k users/1M text posts), these graph structures help improve authorship identification within a single domain, and also help better generalize across domains.
- Chapter~\ref{chp:sysml} shows that this is true in the complementary setting with fewer users ($\approx$ 1-10k)
-In the remainder of this section, we first describe the choices that are involved in constructing graph structures and their similarities across domains. 
-We then describe our preliminary work on utilizing these structures for authorship attribution on Reddit and share our preliminary findings.
-To conclude this section, we describe additional directions that we hope to explore, including the associated datasets and techniques that help with \textit{domain generalization}.
-
-\subsection{Graphs in Authorship Attribution}
-
-Prior to the prevalence of neural network approaches, seminal work in computational authorship attribution~\cite{stamatatos2009survey} often used syntax-based features including, part-of-speech tags, phrase structures, and syntactic error-based features, among others.
-These features may also improve neural authorship attribution models but are not the graphs focal to our analysis.
-Instead, we center our work on online content platforms and identify the organizational structures that they use.
-A multitude of platforms that involve individuals posting content online have associated graph structures.
-We focus on structures common to platforms that face potential challenges with content moderation where authorship identification has the potential to play an important role.
-%Figure~\ref*{fig:future_work:scale:graphs:ocp} demonstrates that 
-While individual platforms may differ, there exists a shared, underlying, meta-structure, which can be used to identify patterns that aid in stylometric analyses across domains.
-In Figure~\ref{fig:future_work:scale:preliminary:reddit_meta} we show a metagraph for a specific platform but note that the the thread-comment-user structure is shared across other platforms as well.
-Additional nodes in the metagraph are specific to the platform of interest.
-In the following section, we focus on a specific platform - Reddit - and utilize its structure to provide preliminary evidence for its potential.
-
-\begin{comment}
-\begin{figure}
-    \centering
-    \begin{subfigure}{0.48\linewidth}
-    \centering
-        \begin{tikzpicture}[main/.style = {draw, circle}] 
-            \node[main] (1) {node};
-        \end{tikzpicture}    
-    \end{subfigure}
-    \begin{subfigure}{0.48\linewidth}
-        \centering
-        \begin{tikzpicture}[main/.style = {draw, circle}] 
-            \node[main] (1) {node};
-        \end{tikzpicture}
-    \end{subfigure}
-    \begin{subfigure}{0.48\linewidth}
-        \centering
-        \begin{tikzpicture}[main/.style = {draw, circle}] 
-            \node[main] (1) {node};
-        \end{tikzpicture}
-    \end{subfigure}
-    \caption{Example of shared meta-structure in graph structures on Online Content Platforms}
-    \label{fig:future_work:scale:graphs:ocp}
-\end{figure}
-\end{comment}
-
-\subsection{Preliminary Analysis: Reddit Graph-aware Authorship Identification}
-
-\subsubsection{Dataset}
-\begin{figure}
-    \begin{subfigure}{0.34\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{future_work/figures/reddit_metagraph.pdf}
-    \end{subfigure}
-    \begin{subfigure}{0.64\linewidth}
-        \resizebox{\linewidth}{!}{
-         \begin{tikzpicture}
-            \node [ellipse,fill=green!30,line width=1.5mm] (subreddit) {Subreddit};
-            \node [rectangle,fill=red!40, line width=1.5mm, below right=1cm of subreddit] (thread) {Thread};
-            \node [ellipse, fill=blue!50, below right=1cm of thread] (comment) {Comment};
-            \node [rectangle, fill=yellow!30,below left=0.5cm and 3cm of comment] (user) {User};
-            \node [ellipse, fill=cb-rose,above left = 1cm of user] (flair) {User Flair};
-            \draw[thick,<->] (subreddit) -- (thread);
-            \draw[thick,<->] (thread) to[bend right] (comment);
-            \draw[thick,->] (thread) to[bend left] node[fill=white] {child} (comment);
-            \draw[thick,->] (comment) to[loop right] node {child} (comment);
-            \draw[thick,<->] (comment) to[bend left] (user);
-            \draw[thick,<->] (user) -- (flair);
-            \draw[thick,<->] (flair) -- (subreddit);
-        \end{tikzpicture}
-        }
-    \end{subfigure}
-    \centering
-    \caption{Metagraph of Reddit used for preliminary analysis.}
-    \label{fig:future_work:scale:preliminary:reddit_meta}
-\end{figure}
-We collected data from a snapshot of Reddit comments over one month (Aug 2016) from the collection released by \citet{baumgartner2020pushshift}.
-Figure~\ref*{fig:future_work:scale:preliminary:reddit_meta} describes the metagraph corresponding to the graph that we construct from this snapshot.
-We use directed edges to distinguish comments that are direct descendants of the parent comment/thread. 
-Note that the raw data collected includes only the comments posted within the month; thus, for certain comments, the text corresponding to the direct parent thread/comment may be unavailable as they are posted in the previous month. 
-These comments could lead to disconnected components in the graph.
-To ensure that the graph is connected, we add a bidirectional edge from each comment to the thread where it was posted.
-Table~\ref*{tab:future_work:scale:preliminary:reddit_stats} shows summary statistics about the graph constructed for this dataset.
-
-\begin{table}
-    \centering
-    \begin{tabular}{cc}
-        \toprule
-        Entity & Approximate Count \\
-        \midrule 
-        Subreddits &  $63,000$ \\
-        Authors & $3,250,000$ \\
-        Comments & $70,000,000$ \\
-        Nodes & $79,100,000$ \\
-        Edges & $300,000,000$\\
-        \bottomrule
-    \end{tabular}
-    \caption{Dataset used for preliminary analysis of graphs for authorship attribution on Reddit.}
-    \label{tab:future_work:scale:preliminary:reddit_stats}
-\end{table}
-
-\subsubsection{Goals}
-We aim to evaluate our proposed approaches for author identification in a retrieval based setup commonly used in this setting in prior work~\cite{andrews2019learning,riverastao2021learning,khan2021deep,maneriker2021sysml}.
-That is, we get a sample query text(s) and must retrieve the nearest author from a collection of target texts.
-The query and target texts that the methods are evaluated on are each collected from a different time periods compared to the training set.
-This ensures that the embeddings for specific authors are robust to temporal shifts.
-Ensuring this is particularly challenging in the graph setting as there are multiple mechanisms to construct graphs across different time periods.
-There may be authors who post in both the training, test query, and test target time periods.
-In chapter~\ref{chp:sysml}, we describe one strategy where we only use subforum embeddings.
-While they do provides improvements (Sec~\ref{sec:sysml:eval}), in this work we aim to incorporate further structural information.
-Using the same node to denote the author in disjoint time periods would lead to a trivial embedding solution (unique node embedding for the author).
-One strategy to deal with the temporal challenge is to use separate graphs for the training and testing time periods, aligning node embeddings across them.
-This corresponds to the vertex nomination problem across multiple graphs, and strategies include using orthogonal procrustes~\cite{agterberg2020vertex}) for alignment.
-Alternatively, node attributes such as text, time, and label could be used to construct heterogeneous, attributed graphs.
-In the latter construction, certain inductive representation learning techniques for large graphs may be applied~\cite{hamilton2017inductive,xu2020inductive}.
-We will now describe our initial explorations with these approaches and follow with potential future directions.
-
-\subsubsection{Methods}
-%We investigate two preliminary approaches to use the graph corresponding to the metagraph provided in Figure~\ref{fig:future_work:scale:preliminary:reddit_meta}.
-\textbf{Structure-based}
-\begin{figure}
-    \centering
-    \includegraphics[width=0.9\linewidth]{future_work/figures/reddit_structure_based.pdf}
-    \caption{Structure-based Author Identification Embedding}
-    \label{fig:future_work:scale:preliminary:reddit_structure_embedding}
-\end{figure}
-In the first approach, which we designate as the \textit{structure-based} approach, we use separately generate embeddings from the structure of the Reddit graph, use a separate neural network to embed text/metadata in each episode, and then fuse the two embeddings to generate a structure-aware embedding. 
-The graph embedding may need to be transformed/scaled before it is combined with the embeddings of non-graph features to ensure that their magnitudes are comparable.
-Thus, we transform the embeddings prior to fusing them.
-Figure~\ref{fig:future_work:scale:preliminary:reddit_structure_embedding} demonstrates the structure-based embedding approach for author identification.
-
-\textbf{Context-based}
-\begin{figure}
-    \centering
-    \includegraphics[width=0.5\linewidth]{future_work/figures/reddit_context_based.pdf}
-    \caption{Context based Author Identification Embedding}
-    \label{fig:future_work:scale:preliminary:reddit_context_embedding}
-\end{figure}
-The second approach, designated as the \textit{context-based} approach uses the structure of the Reddit graph to collect surrounding context for each post prior to embedding it. 
-We systematically add the context from parent nodes ((grand)parent comment, thread, subreddit), each of which are individually embedded using a shared text embedding neural network.
-Each layer of the architecture adds some context before applying a non-linear transformation.
-Figure~\ref{fig:future_work:scale:preliminary:reddit_context_embedding} provides a  visual representation of the transformations.
-
-\textbf{Preliminary Results}
-\begin{figure}
-    \centering
-    \includegraphics[width=0.8\linewidth]{future_work/figures/reddit_scale_graph.pdf}
-    \caption{Results on author identification with preliminary approaches on a validation split. R@8 = recall at 8.}
-    \label{fig:future_work:scale:preliminary:results}
-\end{figure}
-We test these approaches using SVDs of the adjacency matrix for structure-aware embeddings (à la \citet{agterberg2020vertex}) and text CNNs for embedding texts.
-Figure~\ref{fig:future_work:scale:preliminary:results} demonstrates that these directions have the potential for improving author identification even on a large scale dataset.
-
-\subsection{Future Directions}
-The preliminary results are promising and demonstrate improvements over the text-based baseline.
-In future work, we aim to explore the impact of alternative structure embeddings, including GNN based~\cite{velivckovic2018graph,hamilton2017inductive} and anonymous walk-based embeddings~\citep{ivanov2018anonymous,wang2020inductive}.
-In particular, successes from scaling GraphSAGE-based~\cite{hamilton2017inductive,ying2018graph} approaches motivate their potential use in a hybrid fashion, where both the structure and text embeddings may be fused more effectively.
-Additionally, the results in Figure~\ref{fig:future_work:scale:preliminary:results} are evaluated on a specific validation dataset.
-Additional experiments need to be carried out to test whether the different stages (embedding, alignment) are affected by temporal shifts.
-Finally, we aim to test the impact of using structure and context to help in better adaptation across different domains.
-Specifically, we aim to test whether structure-aware embedding would adapt to authorship identification datasets from Dread (Darknet version of Reddit) and Twitter.
-We will use datasets of Dread posts~\cite{pastrana2018crimebb} and Twitter posts~\cite{andrews2019learning} for these tasks.
-
-\section{Interpretable Stylometric Modeling}
-\label{sec:future_work:interpret}
-In this direction of future work, we aim to build to improve the interpretability of representation learning models for authorship identification, including those that may use multiple modalities (such as graphs and text).
-In Section~\ref{sec:sysml:analysis}, we demonstrated the use of gradient-based methods as a preliminary approach for interpretation for the authorship identification task.
-However, unlike other common NLP tasks such as such as sentiment analysis, relation extraction, and question answering, stylometric evidence may not be directly associated with single spans of text.
-For example, the occurrence of spans having positive words/phrases may provide evidence for positive sentiment predictions by a machine learning model.
-This can be associated with a gradient-based explanation, for example, if the removal of this phrase would cause the model to change its output.
-However, in the authorship identification setting, the removal of a phrase from a single text may not be sufficient to change the output of a model since the phrase may continue to occur in a sufficient number of alternative posts created by the same author.
-Thus, in the \textit{episode}-based setup where we combine multiple posts by a single author, an explanation may be associated with a set of related modifications rather than a single removal.
-Exploring the contribution of different changes within a set provides a setup for exploiting \textit{structure} for interpretation.
-We propose two directions of exploration for future work.
-
-\subsection{Goals}
-Our goal is to generate explanations that are faithful to the model used for authorship attribution while also being useful for end uses of these models for decision making.
-In an ideal scenario, we would be privy to the proprietary tools used by various social media platforms such as \citet{reddit2020banevasion} and \citet{twitch2021banevasion} for content moderation, and also be able to access the justifications provided by humans when making these decisions.
-However, the tools and justifications are usually not publicly available.
-
-\subsection{Datasets and Methods}
-
-Due to the paucity of public datasets, we aim to study the Wikipedia Sockpuppet Investigation data~\cite{wiki2008SPI} and associated tools~\cite{smith2020wikipediaSPItools}, which  include publicly accessible justifications to understand the factors that are weighed by humans when making these decisions.
-Concurrently, we aim to game theoretic mechanisms for exploring \textit{structure} for explanations of machine learning models.
-These models~\cite{datta2016algorithmic,lundberg2017unified,sundararajan2020many,yan2021if} use Shapley values to generate attribution scores which are more suited for set-based explanations.
-Shapley values can be used to understand the weight of contributions of different elements of a set of changes in the output of the author identification models. 
-We will use the wikipedia sockpuppet datasets to understand the scope of modifications that can actually help in decision making, in conjunction with an \textit{adversarial testing} setup to study how different perturbations affect the value function for explanations.
-Training a model to learn the value function associated with an authorship identification model can help provide explanations that may be useful to end-users.
-
-\section{Monitoring Metrics in Non-iid Settings}
-\label{sec:future_work:monitoring}
-
-In chapter~\ref{chp:avoir},  we described a confidence sequence based approach for monitoring fairness metrics associated with a decision-making function.
-However, there are some assumptions underlying the derivations that allow \AVOIRmethodname{} to be used for monitoring.
-In this extension, we aim to make the \AVOIRmethodname{} system more interactive, and generalize to more scenarios for more effective \textit{online monitoring}.
-
-\subsection{Goals}
-Our first goal is to make \AVOIRmethodname{} more interactive.
-A user may want to change the specification that they monitor as requirements and regulations for specifications continue to evolve over time.
-In the current implementation, an update of the specification requires monitoring from scratch after re-initializing all tracked expressions.
- We aim to enable more efficient modification of the monitored specification.  
-The second goal is to make \AVOIRmethodname{} generalize to more diverse monitoring scenarios.
-An important assumption for tracking terms in \AVOIRmethodname{} (from using the Adaptive Hoeffding inequality~\cite{zhao2016adaptive}) is that the underlying data generating process is stationary.
-In the real world, this assumption may not hold.
-The second assumption is the independence of decisions $y_i$ given an input $x_i$ , i.e., $y_i = f(x_i)$.
-When the decision making function is based-on a non-parametric or graph-based model, this assumption may not hold.
-
-
-\subsection{Datasets and Methods}
-To accomplish our first goal and enable editing of specifications, we aim to implement a caching mechanism within \AVOIRmethodname{}.
-We will cache the values of each \textit{elementary} subexpression and potentially certain other expressions that may help in deriving guarantees for new specifications.
-In conjunction we will explore datasets and methods for fairness monitoring in non-stationary environments.
-Recent work on monitoring of model performance metrics~\cite{ginart2022mldemon} test monitoring on three streaming datasets.
-These include a non-stationary spam-detection dataset~\cite{katakis2005utility}, weather prediction dataset\footnote{\url{https://www.kaggle.com/datasets/jsphyg/weather-dataset-rattle-package}}, and a face detection dataset~\cite{wang2020masked}.
-Along with a subset of thase and furthering our goals of exploring the non-independent decision setting, we will collect common graph datasets from SNAP~\cite{snapnets} and the Open Graph Benchmark~\cite{hu2020open}.
-In terms of methods, we aim to explore recent work on improving uncertainty estimation in various non-independent and drift scenarios.
-These include: black-box label shift detection~\cite{lipton2018detecting}, covariate shift~\cite{tibshirani2019conformal}, and general distribution free concentration confidence sets~\cite{howard2021time}. 
-We will also contrast our setup against alternative fairness auditing mechanisms~\cite{yan2022active} that measure efficiency in terms of number of queried labels rather than the number of post-deployment observations. 
-
-\section{Project Schedule and Timeline}
-In Table~\ref{tab:future_work:timeline}, we define a plausible timeline over which we aim to accomplish the future work discussed in this section.
-The duration is aligned with The Ohio State University academic calendar.
-We anticipate that some of the work may roll-over into Spring 2024, contingent upon encountering roadblocks in the course of research.
-
-\begin{table}
-    \centering
-    \begin{tabular}{llcc}
-    \toprule
-        Project & Task & Priority & Duration  \\
-        \midrule 
-     \multirow{3}{*}{\ref{sec:future_work:scale}} & Structure + Alignment Approaches & High & Fall '22\\
-        & Context-based and Hybrid Approaches & High & Fall '22 - Spring '23 \\
-        & Cross domain experiments & Medium & Spring '22 \\
-    \midrule
-    \multirow{2}{*}{\ref{sec:future_work:interpret}} & Wikipedia sockpuppet data analysis & Medium & Summer '23 - Fall '23  \\
-    & Shapley value based explanations & Medium & Summer '23 - Fall '23\\
-    \midrule 
-    \multirow{2}{*}{\ref{sec:future_work:monitoring}} & Caching for better interaction & Medium & Summer '23 - Fall '23\\
-    & Non-IID uncertainity estimation & High & Spring '23 - Summer '23\\
-    \bottomrule
-    \end{tabular}
-    \caption{Plausible Project Schedule for Proposed Future Work.}
-    \label{tab:future_work:timeline}
-\end{table}
+%In this preceding chapters, we described structures that help models be more adaptive at the three different stages of their lifecycle.
+%Specifically, we used implicit and explicit structures along with \textit{adversarial testing}, \textit{online monitoring}, and \textit{domain adaptation} to build more adaptive machine learning systems.
+%We now discuss how we plan to extend these techniques in future work.
+%
+%\section{Large Scale Structure-aware Authorship Attribution}
+%\label{sec:future_work:scale}
+%In this extension, our goal is to test the generalizability of our findings related to the improvements offered by utilizing forum graph structures on the darkweb (Chapter~\ref{chp:sysml}).
+%Recent work on cross-domain authorship attribution using text has determined that certain domains (eg. Reddit) are more useful for training authorship attribution models that generalize to other domains~\cite{barlas2020cross,riverastao2021learning}.
+%Specifically, \citet{riverastao2021learning} demonstrate that in the source domain, diversity in the expressed topics and larger number of unique users play a role in explaining better transfer to target domains.
+%However, this work does not utilize the additional structure and context present in different domains.
+%We posit that these graphs can provide information orthogonal to that which is already present in the text.
+% With our future work, we aim to demonstrate that even in scenarios with an abundance of text/users (over 100k users/1M text posts), these graph structures help improve authorship identification within a single domain, and also help better generalize across domains.
+% Chapter~\ref{chp:sysml} shows that this is true in the complementary setting with fewer users ($\approx$ 1-10k)
+%In the remainder of this section, we first describe the choices that are involved in constructing graph structures and their similarities across domains. 
+%We then describe our preliminary work on utilizing these structures for authorship attribution on Reddit and share our preliminary findings.
+%To conclude this section, we describe additional directions that we hope to explore, including the associated datasets and techniques that help with \textit{domain generalization}.
+%
+%\subsection{Graphs in Authorship Attribution}
+%
+%Prior to the prevalence of neural network approaches, seminal work in computational authorship attribution~\cite{stamatatos2009survey} often used syntax-based features including, part-of-speech tags, phrase structures, and syntactic error-based features, among others.
+%These features may also improve neural authorship attribution models but are not the graphs focal to our analysis.
+%Instead, we center our work on online content platforms and identify the organizational structures that they use.
+%A multitude of platforms that involve individuals posting content online have associated graph structures.
+%We focus on structures common to platforms that face potential challenges with content moderation where authorship identification has the potential to play an important role.
+%%Figure~\ref*{fig:future_work:scale:graphs:ocp} demonstrates that 
+%While individual platforms may differ, there exists a shared, underlying, meta-structure, which can be used to identify patterns that aid in stylometric analyses across domains.
+%In Figure~\ref{fig:future_work:scale:preliminary:reddit_meta} we show a metagraph for a specific platform but note that the the thread-comment-user structure is shared across other platforms as well.
+%Additional nodes in the metagraph are specific to the platform of interest.
+%In the following section, we focus on a specific platform - Reddit - and utilize its structure to provide preliminary evidence for its potential.
+%
+%\begin{comment}
+%\begin{figure}
+%    \centering
+%    \begin{subfigure}{0.48\linewidth}
+%    \centering
+%        \begin{tikzpicture}[main/.style = {draw, circle}] 
+%            \node[main] (1) {node};
+%        \end{tikzpicture}    
+%    \end{subfigure}
+%    \begin{subfigure}{0.48\linewidth}
+%        \centering
+%        \begin{tikzpicture}[main/.style = {draw, circle}] 
+%            \node[main] (1) {node};
+%        \end{tikzpicture}
+%    \end{subfigure}
+%    \begin{subfigure}{0.48\linewidth}
+%        \centering
+%        \begin{tikzpicture}[main/.style = {draw, circle}] 
+%            \node[main] (1) {node};
+%        \end{tikzpicture}
+%    \end{subfigure}
+%    \caption{Example of shared meta-structure in graph structures on Online Content Platforms}
+%    \label{fig:future_work:scale:graphs:ocp}
+%\end{figure}
+%\end{comment}
+%
+%\subsection{Preliminary Analysis: Reddit Graph-aware Authorship Identification}
+%
+%\subsubsection{Dataset}
+%\begin{figure}
+%    \begin{subfigure}{0.34\linewidth}
+%        \centering
+%        \includegraphics[width=\linewidth]{future_work/figures/reddit_metagraph.pdf}
+%    \end{subfigure}
+%    \begin{subfigure}{0.64\linewidth}
+%        \resizebox{\linewidth}{!}{
+%         \begin{tikzpicture}
+%            \node [ellipse,fill=green!30,line width=1.5mm] (subreddit) {Subreddit};
+%            \node [rectangle,fill=red!40, line width=1.5mm, below right=1cm of subreddit] (thread) {Thread};
+%            \node [ellipse, fill=blue!50, below right=1cm of thread] (comment) {Comment};
+%            \node [rectangle, fill=yellow!30,below left=0.5cm and 3cm of comment] (user) {User};
+%            \node [ellipse, fill=cb-rose,above left = 1cm of user] (flair) {User Flair};
+%            \draw[thick,<->] (subreddit) -- (thread);
+%            \draw[thick,<->] (thread) to[bend right] (comment);
+%            \draw[thick,->] (thread) to[bend left] node[fill=white] {child} (comment);
+%            \draw[thick,->] (comment) to[loop right] node {child} (comment);
+%            \draw[thick,<->] (comment) to[bend left] (user);
+%            \draw[thick,<->] (user) -- (flair);
+%            \draw[thick,<->] (flair) -- (subreddit);
+%        \end{tikzpicture}
+%        }
+%    \end{subfigure}
+%    \centering
+%    \caption{Metagraph of Reddit used for preliminary analysis.}
+%    \label{fig:future_work:scale:preliminary:reddit_meta}
+%\end{figure}
+%We collected data from a snapshot of Reddit comments over one month (Aug 2016) from the collection released by \citet{baumgartner2020pushshift}.
+%Figure~\ref*{fig:future_work:scale:preliminary:reddit_meta} describes the metagraph corresponding to the graph that we construct from this snapshot.
+%We use directed edges to distinguish comments that are direct descendants of the parent comment/thread. 
+%Note that the raw data collected includes only the comments posted within the month; thus, for certain comments, the text corresponding to the direct parent thread/comment may be unavailable as they are posted in the previous month. 
+%These comments could lead to disconnected components in the graph.
+%To ensure that the graph is connected, we add a bidirectional edge from each comment to the thread where it was posted.
+%Table~\ref*{tab:future_work:scale:preliminary:reddit_stats} shows summary statistics about the graph constructed for this dataset.
+%
+%\begin{table}
+%    \centering
+%    \begin{tabular}{cc}
+%        \toprule
+%        Entity & Approximate Count \\
+%        \midrule 
+%        Subreddits &  $63,000$ \\
+%        Authors & $3,250,000$ \\
+%        Comments & $70,000,000$ \\
+%        Nodes & $79,100,000$ \\
+%        Edges & $300,000,000$\\
+%        \bottomrule
+%    \end{tabular}
+%    \caption{Dataset used for preliminary analysis of graphs for authorship attribution on Reddit.}
+%    \label{tab:future_work:scale:preliminary:reddit_stats}
+%\end{table}
+%
+%\subsubsection{Goals}
+%We aim to evaluate our proposed approaches for author identification in a retrieval based setup commonly used in this setting in prior work~\cite{andrews2019learning,riverastao2021learning,khan2021deep,maneriker2021sysml}.
+%That is, we get a sample query text(s) and must retrieve the nearest author from a collection of target texts.
+%The query and target texts that the methods are evaluated on are each collected from a different time periods compared to the training set.
+%This ensures that the embeddings for specific authors are robust to temporal shifts.
+%Ensuring this is particularly challenging in the graph setting as there are multiple mechanisms to construct graphs across different time periods.
+%There may be authors who post in both the training, test query, and test target time periods.
+%In chapter~\ref{chp:sysml}, we describe one strategy where we only use subforum embeddings.
+%While they do provides improvements (Sec~\ref{sec:sysml:eval}), in this work we aim to incorporate further structural information.
+%Using the same node to denote the author in disjoint time periods would lead to a trivial embedding solution (unique node embedding for the author).
+%One strategy to deal with the temporal challenge is to use separate graphs for the training and testing time periods, aligning node embeddings across them.
+%This corresponds to the vertex nomination problem across multiple graphs, and strategies include using orthogonal procrustes~\cite{agterberg2020vertex}) for alignment.
+%Alternatively, node attributes such as text, time, and label could be used to construct heterogeneous, attributed graphs.
+%In the latter construction, certain inductive representation learning techniques for large graphs may be applied~\cite{hamilton2017inductive,xu2020inductive}.
+%We will now describe our initial explorations with these approaches and follow with potential future directions.
+%
+%\subsubsection{Methods}
+%%We investigate two preliminary approaches to use the graph corresponding to the metagraph provided in Figure~\ref{fig:future_work:scale:preliminary:reddit_meta}.
+%\textbf{Structure-based}
+%\begin{figure}
+%    \centering
+%    \includegraphics[width=0.9\linewidth]{future_work/figures/reddit_structure_based.pdf}
+%    \caption{Structure-based Author Identification Embedding}
+%    \label{fig:future_work:scale:preliminary:reddit_structure_embedding}
+%\end{figure}
+%In the first approach, which we designate as the \textit{structure-based} approach, we use separately generate embeddings from the structure of the Reddit graph, use a separate neural network to embed text/metadata in each episode, and then fuse the two embeddings to generate a structure-aware embedding. 
+%The graph embedding may need to be transformed/scaled before it is combined with the embeddings of non-graph features to ensure that their magnitudes are comparable.
+%Thus, we transform the embeddings prior to fusing them.
+%Figure~\ref{fig:future_work:scale:preliminary:reddit_structure_embedding} demonstrates the structure-based embedding approach for author identification.
+%
+%\textbf{Context-based}
+%\begin{figure}
+%    \centering
+%    \includegraphics[width=0.5\linewidth]{future_work/figures/reddit_context_based.pdf}
+%    \caption{Context based Author Identification Embedding}
+%    \label{fig:future_work:scale:preliminary:reddit_context_embedding}
+%\end{figure}
+%The second approach, designated as the \textit{context-based} approach uses the structure of the Reddit graph to collect surrounding context for each post prior to embedding it. 
+%We systematically add the context from parent nodes ((grand)parent comment, thread, subreddit), each of which are individually embedded using a shared text embedding neural network.
+%Each layer of the architecture adds some context before applying a non-linear transformation.
+%Figure~\ref{fig:future_work:scale:preliminary:reddit_context_embedding} provides a  visual representation of the transformations.
+%
+%\textbf{Preliminary Results}
+%\begin{figure}
+%    \centering
+%    \includegraphics[width=0.8\linewidth]{future_work/figures/reddit_scale_graph.pdf}
+%    \caption{Results on author identification with preliminary approaches on a validation split. R@8 = recall at 8.}
+%    \label{fig:future_work:scale:preliminary:results}
+%\end{figure}
+%We test these approaches using SVDs of the adjacency matrix for structure-aware embeddings (à la \citet{agterberg2020vertex}) and text CNNs for embedding texts.
+%Figure~\ref{fig:future_work:scale:preliminary:results} demonstrates that these directions have the potential for improving author identification even on a large scale dataset.
+%
+%\subsection{Future Directions}
+%The preliminary results are promising and demonstrate improvements over the text-based baseline.
+%In future work, we aim to explore the impact of alternative structure embeddings, including GNN based~\cite{velivckovic2018graph,hamilton2017inductive} and anonymous walk-based embeddings~\citep{ivanov2018anonymous,wang2020inductive}.
+%In particular, successes from scaling GraphSAGE-based~\cite{hamilton2017inductive,ying2018graph} approaches motivate their potential use in a hybrid fashion, where both the structure and text embeddings may be fused more effectively.
+%Additionally, the results in Figure~\ref{fig:future_work:scale:preliminary:results} are evaluated on a specific validation dataset.
+%Additional experiments need to be carried out to test whether the different stages (embedding, alignment) are affected by temporal shifts.
+%Finally, we aim to test the impact of using structure and context to help in better adaptation across different domains.
+%Specifically, we aim to test whether structure-aware embedding would adapt to authorship identification datasets from Dread (Darknet version of Reddit) and Twitter.
+%We will use datasets of Dread posts~\cite{pastrana2018crimebb} and Twitter posts~\cite{andrews2019learning} for these tasks.
+%
+%\section{Interpretable Stylometric Modeling}
+%\label{sec:future_work:interpret}
+%In this direction of future work, we aim to build to improve the interpretability of representation learning models for authorship identification, including those that may use multiple modalities (such as graphs and text).
+%In Section~\ref{sec:sysml:analysis}, we demonstrated the use of gradient-based methods as a preliminary approach for interpretation for the authorship identification task.
+%However, unlike other common NLP tasks such as such as sentiment analysis, relation extraction, and question answering, stylometric evidence may not be directly associated with single spans of text.
+%For example, the occurrence of spans having positive words/phrases may provide evidence for positive sentiment predictions by a machine learning model.
+%This can be associated with a gradient-based explanation, for example, if the removal of this phrase would cause the model to change its output.
+%However, in the authorship identification setting, the removal of a phrase from a single text may not be sufficient to change the output of a model since the phrase may continue to occur in a sufficient number of alternative posts created by the same author.
+%Thus, in the \textit{episode}-based setup where we combine multiple posts by a single author, an explanation may be associated with a set of related modifications rather than a single removal.
+%Exploring the contribution of different changes within a set provides a setup for exploiting \textit{structure} for interpretation.
+%We propose two directions of exploration for future work.
+%
+%\subsection{Goals}
+%Our goal is to generate explanations that are faithful to the model used for authorship attribution while also being useful for end uses of these models for decision making.
+%In an ideal scenario, we would be privy to the proprietary tools used by various social media platforms such as \citet{reddit2020banevasion} and \citet{twitch2021banevasion} for content moderation, and also be able to access the justifications provided by humans when making these decisions.
+%However, the tools and justifications are usually not publicly available.
+%
+%\subsection{Datasets and Methods}
+%
+%Due to the paucity of public datasets, we aim to study the Wikipedia Sockpuppet Investigation data~\cite{wiki2008SPI} and associated tools~\cite{smith2020wikipediaSPItools}, which  include publicly accessible justifications to understand the factors that are weighed by humans when making these decisions.
+%Concurrently, we aim to game theoretic mechanisms for exploring \textit{structure} for explanations of machine learning models.
+%These models~\cite{datta2016algorithmic,lundberg2017unified,sundararajan2020many,yan2021if} use Shapley values to generate attribution scores which are more suited for set-based explanations.
+%Shapley values can be used to understand the weight of contributions of different elements of a set of changes in the output of the author identification models. 
+%We will use the wikipedia sockpuppet datasets to understand the scope of modifications that can actually help in decision making, in conjunction with an \textit{adversarial testing} setup to study how different perturbations affect the value function for explanations.
+%Training a model to learn the value function associated with an authorship identification model can help provide explanations that may be useful to end-users.
+%
+%\section{Monitoring Metrics in Non-iid Settings}
+%\label{sec:future_work:monitoring}
+%
+%In chapter~\ref{chp:avoir},  we described a confidence sequence based approach for monitoring fairness metrics associated with a decision-making function.
+%However, there are some assumptions underlying the derivations that allow \AVOIRmethodname{} to be used for monitoring.
+%In this extension, we aim to make the \AVOIRmethodname{} system more interactive, and generalize to more scenarios for more effective \textit{online monitoring}.
+%
+%\subsection{Goals}
+%Our first goal is to make \AVOIRmethodname{} more interactive.
+%A user may want to change the specification that they monitor as requirements and regulations for specifications continue to evolve over time.
+%In the current implementation, an update of the specification requires monitoring from scratch after re-initializing all tracked expressions.
+% We aim to enable more efficient modification of the monitored specification.  
+%The second goal is to make \AVOIRmethodname{} generalize to more diverse monitoring scenarios.
+%An important assumption for tracking terms in \AVOIRmethodname{} (from using the Adaptive Hoeffding inequality~\cite{zhao2016adaptive}) is that the underlying data generating process is stationary.
+%In the real world, this assumption may not hold.
+%The second assumption is the independence of decisions $y_i$ given an input $x_i$ , i.e., $y_i = f(x_i)$.
+%When the decision making function is based-on a non-parametric or graph-based model, this assumption may not hold.
+%
+%
+%\subsection{Datasets and Methods}
+%To accomplish our first goal and enable editing of specifications, we aim to implement a caching mechanism within \AVOIRmethodname{}.
+%We will cache the values of each \textit{elementary} subexpression and potentially certain other expressions that may help in deriving guarantees for new specifications.
+%In conjunction we will explore datasets and methods for fairness monitoring in non-stationary environments.
+%Recent work on monitoring of model performance metrics~\cite{ginart2022mldemon} test monitoring on three streaming datasets.
+%These include a non-stationary spam-detection dataset~\cite{katakis2005utility}, weather prediction dataset\footnote{\url{https://www.kaggle.com/datasets/jsphyg/weather-dataset-rattle-package}}, and a face detection dataset~\cite{wang2020masked}.
+%Along with a subset of thase and furthering our goals of exploring the non-independent decision setting, we will collect common graph datasets from SNAP~\cite{snapnets} and the Open Graph Benchmark~\cite{hu2020open}.
+%In terms of methods, we aim to explore recent work on improving uncertainty estimation in various non-independent and drift scenarios.
+%These include: black-box label shift detection~\cite{lipton2018detecting}, covariate shift~\cite{tibshirani2019conformal}, and general distribution free concentration confidence sets~\cite{howard2021time}. 
+%We will also contrast our setup against alternative fairness auditing mechanisms~\cite{yan2022active} that measure efficiency in terms of number of queried labels rather than the number of post-deployment observations. 
+%
+%\section{Project Schedule and Timeline}
+%In Table~\ref{tab:future_work:timeline}, we define a plausible timeline over which we aim to accomplish the future work discussed in this section.
+%The duration is aligned with The Ohio State University academic calendar.
+%We anticipate that some of the work may roll-over into Spring 2024, contingent upon encountering roadblocks in the course of research.
+%
+%\begin{table}
+%    \centering
+%    \begin{tabular}{llcc}
+%    \toprule
+%        Project & Task & Priority & Duration  \\
+%        \midrule 
+%     \multirow{3}{*}{\ref{sec:future_work:scale}} & Structure + Alignment Approaches & High & Fall '22\\
+%        & Context-based and Hybrid Approaches & High & Fall '22 - Spring '23 \\
+%        & Cross domain experiments & Medium & Spring '22 \\
+%    \midrule
+%    \multirow{2}{*}{\ref{sec:future_work:interpret}} & Wikipedia sockpuppet data analysis & Medium & Summer '23 - Fall '23  \\
+%    & Shapley value based explanations & Medium & Summer '23 - Fall '23\\
+%    \midrule 
+%    \multirow{2}{*}{\ref{sec:future_work:monitoring}} & Caching for better interaction & Medium & Summer '23 - Fall '23\\
+%    & Non-IID uncertainity estimation & High & Spring '23 - Summer '23\\
+%    \bottomrule
+%    \end{tabular}
+%    \caption{Plausible Project Schedule for Proposed Future Work.}
+%    \label{tab:future_work:timeline}
+%\end{table}
 
 \endinput
