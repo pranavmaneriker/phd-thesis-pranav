@@ -1,0 +1,47 @@
+\begin{tikzpicture}
+    \begin{axis}[
+            %xtick = \empty,    ytick = \empty,
+            grid=both,
+            xlabel = {$\delta_1$},
+            %x label style = {at={(1,0)},anchor=west},
+            ylabel = {$\delta_2$},
+            %y label style = {at={(0,1)},rotate=-90,anchor=south},
+            y label style = {rotate=-90},
+            axis lines=left,
+            xmin=0.03, xmax=0.06,
+            ymin=0.04, ymax=0.07,
+            label style={font=\Large}
+        ]
+        \addplot[color=cb-rose,thick,smooth,domain=0:0.1]{x};
+        \addlegendentry{$\delta_1 = \delta_2$}
+        
+        
+        \addplot[name path=delta, color=cb-lilac,thick,smooth,domain=0:0.1,forget plot]{0.1-x};
+        \path[name path=axis2] (0,0) -- (0.1,0);
+        \addplot [
+            thick,
+            color=cb-lilac,
+            fill=cb-lilac, 
+            fill opacity=0.05,
+            draw=cb-lilac
+        ]
+        fill between[
+            of=axis2 and delta, soft clip={domain=0:0.1}
+        ];
+        \addlegendentry{$\delta_1 + \delta_2 \leq 0.1$};
+        \addplot[name path=constraint,color=cb-brown,smooth,thick,-,domain=0:0.1,forget plot] {24/exp((9/5)*(((0.2 - sqrt(2.6146 + 5*ln(24/x)/9)/(5*sqrt(62)))^2) * 310 - 2.46838))};
+        \path[name path=axis3] (0,0.1) -- (1,0.1);
+        \addplot [
+            thick,
+            color=cb-brown,
+            fill=cb-brown, 
+            fill opacity=0.05,
+            draw=cb-brown
+        ]
+        fill between[
+            of=constraint and axis3,
+            soft clip={domain=0:0.1}
+        ];
+        \addlegendentry{$\epsilon_1 + \epsilon_2 \leq 0.2$}
+    \end{axis}
+\end{tikzpicture}
