@@ -1,4 +1,4 @@
-\section{Robustness and Uncertainty Quantification}
+\section{Robustness and Uncertainty}
 
 In this section, we are concerned with evaluating the impact of temporal data drift, latent author demographic attributes, and their interaction on authorship attribution.
 We find that both the time elapsed between writing samples and latent demographic attributes can have a significant impact on attribution performance, which we attribute to temporal data shifts that are more significant for certain groups, notably younger authors whose style evolves over time.
@@ -21,7 +21,7 @@ We answer this question in the affirmative, finding that authorship attribution 
 Second, we consider the impact of temporal shifts in attribution performance.
 Finally, we propose a conformal prediction approach to provide statistically sound performance guarantees for authorship attribution with a computationally efficient approach.
 
-\subsubsection{Datasets}
+\subsection{Datasets}
 We started from a curated version of the Pushshift Reddit dataset~\cite{baumgartner2020pushshift} by filtering for users who had at least X comments for user modeling over time. 
 Additionally, we filtered out users having more than .. in an attempt to exclude bots. 
 \pmcomment{missing filter number}
@@ -97,4 +97,369 @@ In addition to constructing query/target pairs with a fixed $T_{start} - Q_{star
 These pairs correspond to $\Perm{5}{2} = 20$ query/target pairs.
 The two corresponding demographic datasets are labeled \DSagevary{} and \DSgendervary{} for age and gender, respectively.
 
-\pmComment{TODO: Add the remaining sections}
+\subsection{Experiments}\
+
+\subsubsection{Baselines}
+
+\noindent \textbf{Onehot-Subreddit (OS):}
+One-hot overlap of subreddits.
+
+\noindent \textbf{TFIDF-Subreddit (TFS)}:
+TF-IDF over subreddit tokens as words.
+
+\noindent \textbf{TFIDF-Text (TFT)}:
+TF-IDF over the text posted by each user
+
+\noindent \textbf{SBERT} \cite{reimers2019sentencebert}
+
+\noindent \textbf{STEL} \cite{wegmann2021capture}
+
+\noindent \textbf{LUAR} \cite{riverastao2021learning}
+
+
+\pmComment{Consider whether to include the probing classifier expts - not particularly informative}
+\subsubsection{Probing Classifier}
+In order to test for bias present in the representations themselves, we train a probing classifier on each model's embeddings. A probing classifier is often used as a means of interpreting a deep neural network's ability to encode a particular property (see \citet{belinkov2022} for a thorough overview). If the classifier performs well, the property is presumably encoded in the embeddings and thus is assumed to play a role in the neural network's performance on the main task. Probing classifiers have some limitations, such as uncertainty over how to interpret the classifier's performance, %and the classifier's use of a property not necessarily correlating to the neural network's use of that property 
+but for our exploratory purposes, we include the experiment as an indication of potential explanations for the models' performance.
+
+We train logistic regression classifiers on the LUAR, SBERT, and STEL representations and test the classifiers' performance on 1) distinguishing gender and 2) distinguishing age. If a classifier performs well at distinguishing either demographic feature, it would seem that that feature is encoded in the embeddings to some degree. 
+
+\subsection{Results}
+Table~\ref{tab:temporal_fixed} shows the evaluation results of recall@8 for \DSfixeddelta{}. LUAR significantly outperforms all other models across all fixed time periods.
+\begin{table*}[]
+    \centering
+\begin{tabular}{lrrrrrr}
+\toprule
+method & OS & TFS & TFT & SBERT & STEL & LUAR \\
+Q/T &  &  &  &  &  &  \\
+\midrule
+15-1/15-12 & 0.236660 & 0.260280 & 0.191880 & 0.232300 & 0.135340 & \textbf{0.778740} \\
+16-1/16-12 & 0.265440 & 0.283820 & 0.212460 & 0.250740 & 0.148480 & \textbf{0.795860} \\
+17-1/17-12 & 0.278040 & 0.297200 & 0.223520 & 0.262440 & 0.137220 & \textbf{0.732580} \\
+18-1/18-12 & 0.283220 & 0.302520 & 0.231700 & 0.280600 & 0.171020 & \textbf{0.769940} \\
+19-1/19-10 & 0.315960 & 0.343180 & 0.234520 & 0.289820 & 0.143080 & \textbf{0.759620} \\
+\bottomrule
+\end{tabular}
+    \caption{Recall@8 results across different models on \DSfixeddelta{}. Only LUAR is controlled for training dataset time. Best performance is bolded.   }
+    \label{tab:temporal_fixed}
+\end{table*}
+
+\pmComment{Need better presentation option for this}
+
+% TODO: At least make this a faceted plot 
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}{0.48\linewidth}
+    \includegraphics[width=\linewidth]{stylometryExtensions/figures/heat/os.png}
+    \caption{OS}
+    \label{fig:tempral_vary:os}
+    \end{subfigure}
+    \begin{subfigure}{0.48\linewidth}
+    \includegraphics[width=\linewidth]{stylometryExtensions/figures/heat/tfs.png}
+    \caption{TFS}
+    \label{fig:tempral_vary:tfs}
+    \end{subfigure}
+    
+    \begin{subfigure}{0.48\linewidth}
+    \includegraphics[width=\linewidth]{stylometryExtensions/figures/heat/tft.png}
+    \caption{TFT}
+    \label{fig:tempral_vary:tft}
+    \end{subfigure}
+    \begin{subfigure}{0.48\linewidth}
+    \includegraphics[width=\linewidth]{stylometryExtensions/figures/heat/sbert.png}
+    \caption{SBERT}
+    \label{fig:tempral_vary:sbert}
+    \end{subfigure}
+
+    
+    \begin{subfigure}{0.48\linewidth}
+    \includegraphics[width=\linewidth]{stylometryExtensions/figures/heat/stel.png}
+    \caption{STEL}
+    \label{fig:tempral_vary:stel}
+    \end{subfigure}
+    \begin{subfigure}{0.48\linewidth}
+    \includegraphics[width=\linewidth]{stylometryExtensions/figures/heat/luar.png}
+    \caption{LUAR}
+    \label{fig:tempral_vary:LUAR}
+    \end{subfigure}
+
+    \caption{Recall@8 results on \DSvarydelta{}}
+    \label{fig:temporal_vary}
+\end{figure}
+
+\subsubsection{Demographics}
+Figure~\ref{fig:demographic_fixed:age} shows the recall@8 results for age... 
+We note that all models consistenly underperform on (self-identified) teenage users.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.48\linewidth]{stylometryExtensions/figures/demo/fixeddelta_demographics_age.png}
+    \includegraphics[width=0.48\linewidth]{stylometryExtensions/figures/demo/fixeddelta_demographics_age_groupwise.png}
+    \caption{Overall results on \DSagefixed{} (top), and split by age group (bottom). }
+    \label{fig:demographic_fixed:age}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.48\linewidth]{stylometryExtensions/figures/demo/fixeddelta_demographics_gender.png}
+    \includegraphics[width=0.48\linewidth]{stylometryExtensions/figures/demo/fixeddelta_demographics_gender_groupwise.png}
+    \caption{Overall results on \DSgenderfixed{} (top), and split by each group (bottom). We note that all models consistenly underperform on (self-identified) female users.}
+    \label{fig:demographic_fixed:gender}
+\end{figure}
+
+\pmComment{separate these plots}
+\begin{figure}[h]
+    \centering
+    \includegraphics[height=0.8\textheight]{stylometryExtensions/figures/demo/varydelta_demographic_groupwise_age.png}
+    \caption{Overall results on \DSagevary{}. We note that across all $|T_{\rm{start}} - Q_{\rm{start}}|$ and all models, teenage users are consistenly the least identifiable.}
+    \label{fig:demographic_vary:age}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[height=0.8\textheight]{stylometryExtensions/figures/demo/varydelta_demographic_groupwise_gender.png}
+    \caption{Overall results on \DSgendervary{}. We note that across all $|T_{\rm{start}} - Q_{\rm{start}}|$ and all models, female users are consistenly the least identifiable.}
+    \label{fig:demographic_vary:gender}
+\end{figure}
+
+\subsubsection{Robustness}
+
+\subsubsection{Probing Classifier}
+Two possible stories to explain the probing classifier results:
+\begin{itemize}
+    \item[1.] Performance is better for groups for which there is more training data. If most Reddit users are male, then the model will probably be better at identifying male authors, which may in turn improve the probing classifier's ability to distinguish gender.
+    \item[2.] If style ranges widely across groups, there is nothing in particular for the representation to learn.
+\end{itemize}
+
+Comparing spread of ROC curves across groups: ...
+\pmComment{Uncomment below for probing results}
+\begin{comment}
+\begin{figure*}[h]
+\begin{subfigure}{.5\linewidth}
+    \includegraphics[width=\linewidth]{figures/probe/roc_sepgender_luar.png}
+    \caption{Probing classifier results for LUAR-Gender}
+    \label{fig:probe_luargender_sep}
+    \end{subfigure}
+    \begin{subfigure}{.5\linewidth}
+    \includegraphics[width=\linewidth]{figures/probe/roc_5folds_age_luar_v2.png}
+    \caption{Probing classifier results for LUAR-Age}
+    \label{fig:probe_luarage}
+    \end{subfigure}
+    
+    \begin{subfigure}{.5\linewidth}
+    \includegraphics[width=\linewidth]{figures/probe/roc_sepgender_sbert.png}
+    \caption{Probing classifier results for SBERT-Gender}
+    \label{fig:probe_sbertgender_sep}
+    \end{subfigure}
+    \begin{subfigure}{.5\linewidth}
+    \includegraphics[width=\linewidth]{figures/probe/roc_5folds_age_sbert_v2.png}
+    \caption{Probing classifier results for SBERT-Age}
+    \label{fig:probe_sbertage}
+    \end{subfigure}
+
+    \begin{subfigure}{.5\linewidth}
+    \includegraphics[width=\linewidth]{figures/probe/roc_sepgender_stel.png}
+    \caption{Probing classifier results for STEL-Gender}
+    \label{fig:probe_stelgender_sep}
+    \end{subfigure}
+    \begin{subfigure}{.5\linewidth}
+    \includegraphics[width=\linewidth]{figures/probe/roc_5folds_age_stel_v2.png}
+    \caption{Probing classifier results for STEL-Age}
+    \label{fig:probe_stelage}
+    \end{subfigure}
+\end{figure*}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure*}[h]\vspace{-1.6cm}
+\begin{subfigure}{.33\linewidth}
+    \includegraphics[width=\linewidth]{figures/probe/roc_ovo_age_luar_0.png}
+    % \caption{\tiny OvO ROC for Age - LUAR}
+    \label{fig:probe_ovoluarage}
+    \end{subfigure}\vspace{-.35cm}
+    \begin{subfigure}{.33\linewidth}
+    \includegraphics[width=\linewidth]{figures/probe/roc_ovo_age_sbert_0.png}
+    % \caption{\tiny OvO ROC for Age - SBERT}
+    \label{fig:probe_ovosbertage}
+    \end{subfigure}\vspace{-.35cm}
+    \begin{subfigure}{.33\linewidth}
+    \includegraphics[width=\linewidth]{figures/probe/roc_ovo_age_stel_0.png}
+    % \caption{\tiny OvO ROC for Age - STEL}
+    \label{fig:probe_ovostelage}
+    \end{subfigure}\vspace{-.35cm}
+\begin{subfigure}{.33\linewidth}
+    \includegraphics[width=\linewidth]{figures/probe/roc_ovo_age_luar_1.png}
+    \end{subfigure}\vspace{-.2cm}
+    \begin{subfigure}{.33\linewidth}
+    \includegraphics[width=\linewidth]{figures/probe/roc_ovo_age_sbert_1.png}
+    \end{subfigure}\vspace{-.2cm}
+    \begin{subfigure}{.33\linewidth}
+    \includegraphics[width=\linewidth]{figures/probe/roc_ovo_age_stel_1.png}
+    \end{subfigure}\vspace{-.2cm}
+\begin{subfigure}{.33\linewidth}
+    \includegraphics[width=\linewidth]{figures/probe/roc_ovo_age_luar_2.png}
+    \end{subfigure}\vspace{-.2cm}
+    \begin{subfigure}{.33\linewidth}
+    \includegraphics[width=\linewidth]{figures/probe/roc_ovo_age_sbert_2.png}
+    \end{subfigure}\vspace{-.2cm}
+    \begin{subfigure}{.33\linewidth}
+    \includegraphics[width=\linewidth]{figures/probe/roc_ovo_age_stel_2.png}
+    \end{subfigure}\vspace{-.2cm}
+\begin{subfigure}{.33\linewidth}
+    \includegraphics[width=\linewidth]{figures/probe/roc_ovo_age_luar_3.png}
+    \end{subfigure}\vspace{-.2cm}
+    \begin{subfigure}{.33\linewidth}
+    \includegraphics[width=\linewidth]{figures/probe/roc_ovo_age_sbert_3.png}
+    \end{subfigure}\vspace{-.2cm}
+    \begin{subfigure}{.33\linewidth}
+    \includegraphics[width=\linewidth]{figures/probe/roc_ovo_age_stel_3.png}
+    \end{subfigure}\vspace{-.2cm}
+\begin{subfigure}{.33\linewidth}
+    \includegraphics[width=\linewidth]{figures/probe/roc_ovo_age_luar_4.png}
+    \end{subfigure}\vspace{-.2cm}
+    \begin{subfigure}{.33\linewidth}
+    \includegraphics[width=\linewidth]{figures/probe/roc_ovo_age_sbert_4.png}
+    \end{subfigure}\vspace{-.2cm}
+    \begin{subfigure}{.33\linewidth}
+    \includegraphics[width=\linewidth]{figures/probe/roc_ovo_age_stel_4.png}
+    \end{subfigure}\vspace{-.2cm}
+\begin{subfigure}{.33\linewidth}
+    \includegraphics[width=\linewidth]{figures/probe/roc_ovo_age_luar_5.png}
+    \end{subfigure}\vspace{-.3cm}
+    \begin{subfigure}{.33\linewidth}
+    \includegraphics[width=\linewidth]{figures/probe/roc_ovo_age_sbert_5.png}
+    \end{subfigure}\vspace{-.3cm}
+    \begin{subfigure}{.33\linewidth}
+    \includegraphics[width=\linewidth]{figures/probe/roc_ovo_age_stel_5.png}
+    \end{subfigure}\vspace{-.3cm}
+\end{figure*}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure*}[h]
+\begin{subfigure}{.33\linewidth}
+    \includegraphics[width=\linewidth]{figures/probe/roc_5folds_gender_luar.png}
+    \caption{\tiny Probing classifier results for LUAR-Gender1}
+    \label{fig:probe_luargender}
+    \end{subfigure}
+    \begin{subfigure}{.33\linewidth}
+    \includegraphics[width=\linewidth]{figures/probe/roc_5folds_gender_sbert.png}
+    \caption{\tiny Probing classifier results for SBERT-Gender1}
+    \label{fig:probe_sbertgender}
+    \end{subfigure}
+    \begin{subfigure}{.33\linewidth}
+    \includegraphics[width=\linewidth]{figures/probe/roc_5folds_gender_stel.png}
+    \caption{\tiny Probing classifier results for STEL-Gender1}
+    \label{fig:probe_stelgender}
+    \end{subfigure}
+\end{figure*}
+    
+% \begin{figure*}
+%     \centering
+%     \includegraphics[width=\linewidth]{figures/probe/roc_5folds_gender_luar.png}
+%     \includegraphics[width=\linewidth]{figures/probe/roc_5folds_gender_sbert.png}
+%     \caption{}
+%     \label{fig:probe_gender}
+% \end{figure*}
+
+% \begin{figure*}
+%     \centering
+%     \includegraphics[width=\linewidth]{figures/probe/roc_5folds_age_luar.png}
+%     \includegraphics[width=\linewidth]{figures/probe/roc_5folds_age_sbert.png}
+%     \caption{}
+%     \label{fig:probe_age}
+% \end{figure*}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{comment}
+\subsubsection{Calibration}
+
+\DSfixeddelta{}
+Steps to generate validation split for calibration:
+\begin{enumerate}
+    \item Select query/target from one split (We choose LUAR 1-15/12-15).
+    \item Calculate all pairwise cosine similarities and sum of magnitudes.
+    \item Sample a subset of users.
+    \item For each user, create a data point with label 1 and score $ = cos(f(q_{u}), f(t_{u}))$, magnitude $=\norm{f(q_{u})} + \norm{f(t_{u})}$, where $f$ is the LUAR model.
+    \item In addition, sample $n_{neg} = 5$ negative samples, with label 0 and score $ = cos(f(q_{u}), f(t_{u'}))$, magnitude $=\norm{f(q_{u})} + \norm{f(t_{u'})}$.
+    \item Make distributional plots for these (Figure~\ref{fig:calibration:density}.
+    \item Train logistic regression models which takes these (score/mag) as input and predicts the label. Create a reliability diagram for all of these models (Figure~\ref{fig:calibration:relaibility_2015}).
+    \item Plot the ROC curves corresponding to these models (Figure~\ref{fig:calibration:roc_2015})
+    \item Create similar reliability diagrams for other splits - marked degradation in calibration - room to improve (FIgure~\ref{fig:calibration:reliability_2016_2019})
+\end{enumerate}
+\begin{table}[]
+    \centering
+\begin{tabular}{lrrrr}
+\toprule
+verified ece & guo ece & em ece & year \\
+\midrule
+ 0.000000 & 0.003675 & 0.000437 & 2015 \\
+ 0.000000 & 0.003591 & 0.000438 & 2016 \\
+ 0.000000 & 0.003645 & 0.000368 & 2017 \\
+ 0.000000 & 0.005089 & 0.001455 & 2018 \\
+ 0.003243 & 0.007548 & 0.003914 & 2019 \\
+ \bottomrule
+\end{tabular}
+    \caption{Initial calibration results using \cite{kumar2019verified}, and calibrating a LinearSVC from sklearn}
+    \label{tab:calib:init}
+\end{table}
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{stylometryExtensions/figures/calibration_expts/cos_dist_2015.png}
+    \end{subfigure} %
+    \begin{subfigure}{0.48\linewidth}
+    \centering
+    \includegraphics[width=0.5\linewidth]{stylometryExtensions/figures/calibration_expts/mag_dist_2015.png}
+    \end{subfigure} %
+    \caption{Density plots of cosine similarity (left) and magnitude sum (right).}
+    \label{fig:calibration:density}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\linewidth]{stylometryExtensions/figures/calibration_expts/calibrate_2015.png}
+    \caption{Reliability diagrams for LUAR 2015 scores.}
+    \label{fig:calibration:relaibility_2015}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{stylometryExtensions/figures/calibration_expts/roc_2015.png}
+    \caption{ROC curve for LUAR 2015.}
+    \label{fig:calibration:roc_2015}
+\end{figure}
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{stylometryExtensions/figures/calibration_expts/eval_calibration.png}
+    \caption{Evaluating the logistic regression model calibrated on q/t in 2015 across different years.}
+    \label{fig:calibration:reliability_2016_2019}
+\end{figure}
+
+\begin{comment}
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{figures/magnitude_plots/fixeddelta_mag_density.png}
+    \caption{Magnitude density plots for different splits of \DSfixeddelta{} for LUAR}
+    \label{fig:temporal_fixed:magnitude:density}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{figures/magnitude_plots/fixeddelta_mag_vs_n_posts.png}
+    \includegraphics[width=\linewidth]{figures/magnitude_plots/fixeddelta_mag_vs_rrank.png}
+    \caption{Magnitude negatively correlated with number of posts, not correlated with reciprocal rank for \DSfixeddelta{}}
+    \label{fig:temporal_fixed:manitude:density_n_posts}
+\end{figure}
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{figures/magnitude_plots/varydelta_mag_density.png}
+    \caption{Magnitude density plot for \DSvarydelta{}}
+    \label{fig:tempral_vary:magnitude:density}
+\end{figure}
+\end{comment}
+
+\pmComment{TODO: Add a section summarizing conformal idea}
