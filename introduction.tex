@@ -23,8 +23,7 @@ The main subject of study of this proposal is the utility of these structures fo
 A formal language refers to a set of strings of symbols that are derived from a finite alphabet and specified by a set of rules that generate them~\citep{scott2000programming}.
 Formal languages are grouped into increasingly large classes that can be organized into the Chomsky hierarchy~\citep{chomsky1956three}.
 These classes can be characterized by the nature of the rules that are used to generate strings and the complexity of the \textit{formal machine} that recognizes the language.
-Further, the study of grammars and their innateness in formal languages has also played a crucial role in the study of machine learning on natural language\todo{citation here}%~\cite{missing},
-though not without critics~\citep{pullum2002empirical,linzen2021syntactic}.
+Further, the study of grammars and their innateness in formal languages has also played a crucial role in the study of machine learning on natural language  though not without critics~\citep{pullum2002empirical,linzen2021syntactic}.
 
 The preceding text references both \textit{implicit} and \textit{explicit} structures. 
 We use \textit{implicit} structures to reference those that play a direct role in the derivation of strings/sentences in a language.
@@ -38,7 +37,7 @@ Following this discussion of the broad range of available choices for structures
 While there are claims of large language models as a panacea~\citep{bommasani2021foundationmodels} for solving language-related tasks, through this proposal, we aim to demonstrate scenarios where it is necessary to take advantage of structure to achieve \textit{adaptive} machine learning systems.
 \todo{what makes style different from other issues in the llm continuum}\
 %footnote{\url{https://twitter.com/yoavgo/status/1318567498653061122}}
-\todo{Cite the twitter thread correctly, arguing with the dilemma faced by modern NLP practitioners}
+%\todo{Cite the twitter thread correctly, arguing with the dilemma faced by modern NLP practitioners}
 %this proposal focuses on building and monitoring systems that are robust across time, i.e., \textit{adaptive} machine learning systems.
 
 %The most common machine learning setup includes a train-validate-evaluate setup~\citep{train-test} \todo{introduced in?}.
@@ -52,10 +51,11 @@ Machine learning systems in the real world must adapt to new concepts and deal w
 The problem of continuing to learn new tasks without forgetting knowledge from previous tasks, commonly referred to as \textit{continual learning} or \textit{life-long learning}, has been a subject of study since at least the 1990s~\citep{thrun1998lifelong}.
 However, in general, one cannot assume anything about how a model trained on data from the past may perform in the future or in another domain. 
 We examine these issues in view of the three stages of the life cycle of a machine learning model, viz. pre-deployment, runtime monitoring, and post-hoc analysis.
-With each stage, we can associate a corresponding challenge with building \textit{adaptable} ML.
-These are \textit{adversarial testing}, 
-\textit{online monitoring}, and \textit{domain generalization}.
-\todo{Talk about focusing on temporal splits.}
+With each stage, we can associate challenges with building \textit{adaptable} ML.
+For the pre-deployment stage, we study \textit{adversarial testing}.
+In the runtime monitoring stage, we study \textit{online monitoring} and \textit{monitoring for structured data}.
+Finally, in the post-deployment stage, we study \textit{domain generalization} and \textit{temporal robustness}. 
+%\todo{Talk about focusing on temporal splits.}
 
 \noindent \textbf{Adversarial Testing}
 The standard paradigm for the evaluation of an ML model is using train-validation-test splits to estimate the performance of a model. 
@@ -66,7 +66,7 @@ However, alternative splits of the data cannot model all behaviors that may be e
 One mechanism of measurement of the ability of a model to capture specific required properties is by validating its behavior against well-designed tests~\cite{ribeiro2020beyond}.
 Further, in the \textit{pre-deployment} stage, these tests can serve as a tool to build more robust systems. 
 Coming up with domain-specific test suites for generating adversarial examples efficiently remains a challenging task.
-\todo{Potentially mention synthetic data?}
+%\todo{Potentially mention synthetic data?}
 
 \noindent \textbf{Online Monitoring}
 Once a model has been deployed and begins to influence decisions being made in the real world, it is important to monitor it to understand whether it achieves the expected performance.
@@ -76,12 +76,17 @@ Effective monitoring of an ML system at \textit{runtime} requires building monit
 Monitoring is also imperative for auditing the compliance of decision-making ML systems with regulatory requirements.
 Creating efficient monitoring tools that can establish when a deployed model cannot reach regulatory or performance targets is a difficult task.
 
+\noindent \textbf{Monitoring for Structured Data}
+\pmcomment{writeup}
+
 \noindent \textbf{Domain Generalization}
 While there is some disparity in the notion of what constitutes a \textit{domain}, one frequently used notion of a \textit{domain} is to reference data that are sampled from a fixed, joint distribution of inputs and outputs~\cite{wang2022generalizing}.
 In the \textit{post-deployment} phase, a model that has been built for a specific domain may be adapted for use in other analogous settings, each having its own joint distribution.
 This motivates the problem of \textit{domain generalization}. 
 Representative strategies for \textit{domain generalization} include multi-task learning~\cite{caruana1997multitask} and transfer learning~\cite{zhuang2020comprehensive}.
 The third challenge that we study in this proposal is the setting up of model architectures, training algorithms, and understanding the impact of domain generalization in specific contexts.
+
+\noindent \textbf{Temporal Robustness}
 
 %Therefore, building robust and reliable systems requires making certain assumptions about the behavior (over time and domain) of the underlying data distributions.
 %On the other hand, shifts may happen either due to the training data distribution differing from that which the system encounters when deployed, or due to degenerate feedback loops.

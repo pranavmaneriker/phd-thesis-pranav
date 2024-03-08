@@ -1,4 +1,4 @@
-\chapter{Uncertainty Quantification and Fairness in Graph Structured Data}
+\chapter{Conformal Prediction and Fairness in Graph Structured Data}
 In the previous chapter, confidence intervals were used to generate online, anytime-valid bounds for the outputs associated with different decision-making models.
 However, confidence intervals require a strong assumption on the data-generating distribution at test time i.e, independent and identically distributed (i.i.d) data.
 For graph structured data, the edges between different nodes denote potential dependencies between the nodes.
@@ -31,7 +31,20 @@ Our theoretical and empirical results provide the rationale for our recommendati
 
 
 \section{Graph Models and Fairness through Conformal Prediction}
+The standard formulation for conformal prediction (Theorem~\ref{thm:CP:coverage}) provides a score-based mechanism to control for miscoverage in the prediction sets.
+However, when dealing with fairness, we may want to reason over guarantees over other expressions that involve the inputs, labels, and predictions.
+Such guarantees can be considered as a form of thresholded risk Control.
+In the conformal setting, the Learn Then Test~\citep{angelopoulos2021learn} and conformal risk control~\citep{angelopoulos2024conformal} frameworks provide a way to control for model risks for specific classes of risk functions.
+In the following sections, we first describe each of these frameworks and their limitations, and then provide a mechanism to construct fairness guarantees using risk control over different population subgroups.
+Note that we will describe the split CP version of each of these frameworks.
 
+\subsection{Learn Then Test for Risk Control}
+\input{graphConformal/fairness/learn_then_test}
+
+\subsection{Conformal Risk Control}
+\input{graphConformal/fairness/conformal_risk_control}
+
+\subsection{Risk Control for Fairness}
 
 \begin{subappendices}
     \input{graphConformal/benchmarking/appendix.tex}
