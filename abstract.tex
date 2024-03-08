@@ -10,7 +10,7 @@ Graph structures, both implicit and explicit, are ubiquitous in Natural Language
 Implicit structures are derived from language morphology, syntax, and semantics and expressed using attributed tree graphs.
 External structures capture world knowledge and semantics using knowledge graphs and ontologies.
 Additionally, textual data may have associated metadata in external graphs, such as network structure for social media interactions.
-In this proposal, we posit that an abundance of associated structural information is underutilized for scaling and adaptation.
+In this dissertation, we posit that an abundance of associated structural information is underutilized for scaling and adaptation.
 The prevalence of these structures behooves us to utilize them to improvise, adapt, and overcome the challenges posed by scaling and drifts in data.
 
 %I the role of graph structures in augmenting natural language processing and machine learning in order to make them adapt to changes in the underlying data over time. 
@@ -29,15 +29,15 @@ Specifically, we study the syntax of commonly used fairness metrics
 Our contribution improves the probabilistic guarantees for such grammars in an interactive and online setting.
 We construct a novel visualization mechanism that can be used to investigate the context of reported fairness violations and guide users toward meaningful and compliant fairness specifications.
 Our framework requires certain assumptions about the data generating process at run time.
-As a natural follow up, we investigate techniques which can help expand probabilistic guarantees under weaker assumptions.
-In particular, the setting of interest to us is one where dependencies between different data points are represented through a (predefined) network structure. We critically analyze the choices made and describe the tradeoffs associated with existing work in this domain.
+Following up to this work, we investigate techniques which can help expand probabilistic guarantees under weaker assumptions.
+In particular, the setting of interest to us is one where dependencies between different data points are represented through a (predefined) network structure. We critically analyze the choices made and describe the trade offs associated with existing work in this domain.
 We conclude this direction with a discussion of how these technqiues may be extended to study the fairness of decision-making models trained for graph structured data.
 
 Finally, in our third broad direction, we study the problem of author identification.
-Our work demonstrates that it is possible to appropriately intermingle graph representation learning with textual representations to utilize the orthogonal signals from each and improve Author identificaiton across time-disjoint task settings.
+Our work demonstrates that it is possible to appropriately intermingle graph representation learning with textual representations to utilize the orthogonal signals from each and improve Author identification across time-disjoint task settings.
 We first develop a novel stylometry-based multitask learning approach for natural language and model interactions using graph embeddings to construct low-dimensional representations of short episodes of user activity for authorship attribution. 
 We comprehensively evaluate our methods across four darkweb forums demonstrating their efficacy over the state-of-the-art, with a lift of up to 2.5X on Mean Retrieval Rank and 2X on Recall@10.
-Next, we focusing on the textual component of the author identification models.
+Next, we focus on the textual component of the author identification models.
 We demonstrate that it is possible to use models trained on large, clear web datasets to improve author identification on darkweb forums.
 We conclude this direction with a study of the limitations of the text-based models to generalize across time and demographics.
 
@@ -46,9 +46,9 @@ We conclude this direction with a study of the limitations of the text-based mod
 
 For the latter two directions, our work has potential extensions, which we discuss in a concluding chapter on future work.
 First, we expand on our work on our theoretical framework on fairness in graph structured data.
-Our theory relies on a spcific setting for graph machine learning, but we propose future work that may by used to study fairness in graph structured data in a more general setting.
+Our theory relies on a specific setting for graph machine learning, but we propose future work towards extending these ideas to study fairness in graph structured data in a more general setting.
 Second, we empirically demonstrate that structure can be used to improve the author identification even with large scale datasets.
 We provide concrete architectural suggestions that may be used to train models that utilize both the structure and content of large datasets.
-Finally, based on the observed limitations on the robustness of author identification models, we propose extensions of ideas explored in our uncertainty quantification work that may be used to provide bounds on the generalization capabilities of these models with a method having both computational and data efficiency.
+Finally, based on the observed limitations on the robustness of author identification models, we propose extensions of ideas explored in our work on temporal robustness that may be used to provide bounds on the generalization capabilities of these models.
 
 \endinput
