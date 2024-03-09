@@ -120,10 +120,10 @@ We used dynamic masking~\cite{liu2019roberta}, i.e., different tokens masked fro
  
  \subsection{Adversarial Attacks and Data Augmentation}
  \label{sec:urltran:adv_attack}
- \todo{Potentially discuss covariate shift here?}
+\pmcomment{Potentially discuss covariate shift here?}
  
 \textbf{Threat Model}
-\todo{Consider rewording this seciton}
+\pmcomment{Consider rewording this seciton}
 The approach we use for generating data for an adversarial attack includes generating separate augmented training, validation and test datasets based on their original dataset.%~\cite{Goodfellow2014}.
 For each URL processed in these datasets, we generate
 a random number. If it is less than 0.5, we augment the URL, or otherwise, we include it in its original form. For URLs which are to be augmented,
@@ -172,7 +172,7 @@ The compound word problem can be formulated recursively as
 	\end{cases}
 \end{align}
 Using this recursive definition, we implemented a dynamic programming algorithm that can compute whether a domain can be split and the corresponding splits.
-\todo{Maybe add the dynamic program algorithm here, and talk about the computational complexity?}
+\pmcomment{Maybe add the dynamic program algorithm here, and talk about the computational complexity?}
 These splits are then concatenated with hyphens between the discovered words.
 Note that the base case check  $d[i\dots j] \in \gD$ is performed in a case insensitive manner to ensure that the dictionary checks do not miss proper nouns.
 

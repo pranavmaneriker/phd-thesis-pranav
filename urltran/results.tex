@@ -35,10 +35,10 @@ However, this data is derived from text articles, which are structured different
 We trained the \URLTranSysc model based solely on the URL data found in our datasets to compare the results of finetuning using BERT (\URLTranSysb) and RoBERTa (\URLTranSysc) pretrained models to models pretrained only on in-domain URL data. 
 The difference in dataset size and data domain make it important to understand the impact of different hyperparameters used when training transformers from scratch.
 We compared runs across different hyperparameters on the basis of area under ROC (AUROC) and TPR@0.01\% FPR.
-Figure~\ref{fig:urltran:pretrain_scratch}\todo{Some figure font manipulation may be needed} demonstrates that the training is not very sensitive to sequence length. 
+Figure~\ref{fig:urltran:pretrain_scratch} demonstrates that the training is not very sensitive to sequence length. 
 Smaller byte-level vocabularies tend to be better overall, but at low FPR, the difference is not significant.
 Finally, we found that the 3 layer model generalized the best.
-We hypothesize that the better performance of the model with fewer layers is because of limited pre-training data.\todo{pre-training vs pretraining consistent}
+We hypothesize that the better performance of the model with fewer layers is because of limited pre-training data.%\todo{pre-training vs pretraining consistent}
 In the next few sections, we validate this hypothesis by evaluating fine-tuned model (\URLTranSysb, \URLTranSysr) that are tuned on a larger dataset.
 
 \begin{figure}

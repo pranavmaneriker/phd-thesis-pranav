@@ -115,32 +115,57 @@ Figure~\ref{fig:stylometry_extensions:followingTrail:datasets:final_splits} show
 \end{figure}
 
 \subsection{Results}
+
+For the following results, we set the episode length to 4. We consider sequence lengths (number of tokens sampled per window) at $32$ and $64$.
+
+\subsubsection{Zero-shot Transfer}
 \begin{figure}
     \centering
     \includegraphics[width=0.9\linewidth]{stylometryExtensions/figures/results/rq1_zeroshot} 
     \caption{Zero-shot performance of LUAR on the test set from Reddit-201801, Reddit-201912, Dread, and TheHub. seq\_len denotes the number of tokens sampled in each window.}
     \label{fig:stylometry_extensions:followingTrail:results:rq1_zeroshot}   
 \end{figure}
-
 We first evaluate the original LUAR model \texttt{LUAR-orig} in a zero-shot setting.
 That is, we evaluate the model on the test set from the Reddit-201801 and Reddit-201912 datasets, and the Dread and TheHub datasets without any additional tuning.
+Figure~\ref{fig:stylometry_extensions:followingTrail:results:rq1_zeroshot} shows the results of this experiment.
+We evaluate the Recall@8 and Mean Retrieval Rank (MRR) for the LUAR model (see Section~\ref{sec:sysml:eval} for definitions of these metrics).
+The results show that the LUAR model performs well on the Reddit datasets (R@8 $>0.5$ for a sequence length of $64$), but has a significant drop in performance on the Dread and TheHub datasets.
+This indicates that a zero-shot transfer of the LUAR model from Reddit to Dread and TheHub is not sufficiently effective.
+For the remainder of the experiments, we use the sequence length of $64$ as it provides the best performance on the Reddit datasets.
 
-
+\subsubsection{Darkweb vs Clearweb Models}
 \begin{figure}
     \centering
-    \includegraphics[width=0.5\linewidth]{stylometryExtensions/figures/results/rq2_trainedmodels} 
+    \includegraphics[width=0.8\linewidth]{stylometryExtensions/figures/results/rq2_trainedmodels} 
     \caption{Heatmap comparing Recall@8 across models. Each row represents the training dataset used for training the LUAR model, while each column represents the test dataset.}
     \label{fig:stylometry_extensions:followingTrail:results:rq2_trainedmodels}
 \end{figure}
+To better understand the impact of different datasets, we train a separate LUAR model on the training split of each of the datasets.
+The heatmap in figure~\ref{fig:stylometry_extensions:followingTrail:results:rq2_trainedmodels} shows the results of this experiment.
+Each row corresponds to the dataset used to train the LUAR model, and each column corresponds to the test dataset.
+The first row corresponds to the results from the original LUAR model trained on one year of Reddit data.
+We find that the Dread-based training dataset is significantly better than the Reddit-based training datasets for generalizing to stylometry on Darkweb data.
+In fact, the performance of the model trained on Dread generalizes better to TheHub than the model trained on one full year of Reddit data.
+At the same time, we note that the Dread-based model falls short of the Reddit-based models on the Reddit datasets.
+This motivates us to try a hybrid approach, where we train the LUAR model on a combination of Reddit and Dread data.
 
-\pmComment{Add details for the following results.}
-
+\subsubsection{Hybrid Dataset: Combining Clear and Dark Web Data}
 \begin{figure}
     \centering
-    \includegraphics[width=0.5\linewidth]{stylometryExtensions/figures/results/rq3_combine} 
-    \caption{Heatmap comparing Recall@8 across models. }
+    \includegraphics[width=0.8\linewidth]{stylometryExtensions/figures/results/rq3_combine} 
+    \caption{Heatmap comparing Recall@8 across models with a combined dataset and individual datasets.}
     \label{fig:stylometry_extensions:followingTrail:results:rq3_combine}
 \end{figure}
+
+Finally, in Figure~\ref{fig:stylometry_extensions:followingTrail:results:rq3_combine}, we evaluate the performance of the LUAR model trained on a combination of Reddit and Dread data.
+The R@8 for this model improves upon the R@8 of the models trained on Reddit or Dread alone in its ability to generalize to TheHub.
+This supports our hypothesis that combining data from the clear and dark web can lead to better generalization capabilities for author identification models.
+
+\subsection{Discussion}
+The results of the experiments show that the LUAR model trained on Reddit data alone does not generalize well to darkweb datasets (Dread and TheHub).
+However, creating a hybrid dataset by combining data from Reddit and Dread leads to better generalization capabilities.
+This supports our thesis that combining data from the clear and dark web can lead to better generalization capabilities for author identification models.
+Further work in this direction could explore the impact of different proportions of clear and dark web data on the generalization capabilities of author identification models.
 
 
 \endinput

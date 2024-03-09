@@ -1,9 +1,11 @@
-\section{Robustness and Uncertainty}
+\section{Robustness and Generalization within a Domain}
 
-In this section, we are concerned with evaluating the impact of temporal data drift, latent author demographic attributes, and their interaction on authorship attribution.
-We find that both the time elapsed between writing samples and latent demographic attributes can have a significant impact on attribution performance, which we attribute to temporal data shifts that are more significant for certain groups, notably younger authors whose style evolves over time.
+An interesting observation from Figure~\ref*{fig:stylometry_extensions:followingTrail:results:rq1_zeroshot} is that the performance of the LUAR model on the Reddit data is worse on the dataset collected in 2019 compared to the dataset collected in 2018.
+In light of this observation, in this section, we are concerned with evaluating the impact of temporal data drift, latent author demographic attributes, and their interaction on authorship attribution.
+We find that both the time elapsed between writing samples and latent demographic attributes can have a significant impact on performance, which we attribute to temporal data shifts.
+Further, we find that these shifts are more significant for certain groups, notably younger authors whose style evolves over time.
 This is problematic since these groups may suffer from higher error rates and suffer potential negative outcomes, such as false attributions in forensic applications.
-Our experiments suggest this degradation in performance is due to fundamental data shifts, rather than model estimation error, which motivates us to propose a conformal prediction based mechanism to provide statistically sound performance guarantees for authorship attribution with a computationally efficient approach.
+Our experiments suggest this degradation in performance is due to fundamental data shifts, rather than model estimation error, which motivates us to propose a recalibration-based mechanism to improve the robustness of authorship attribution models.
 
 \subsection{Motivation}
 
@@ -16,39 +18,40 @@ In the case of authorship, we desire representations that are invariant to text 
 However, although recent work has successfully improved performance of author representations in downstream tasks, such as social media account linking, for example by training on datasets comprising millions of anonymous authors~\cite{khan2021deep}, their limitations remain poorly understood. 
 Section~\ref{chp:stylometry_extensions:followingTrail} describes some limitations of these models in their domain generalization capabilities.
 
-As a first step to better understanding these limitations, in this work we focus on two central questions. First, do author representations encode systematic biases associated with author demographics? 
+As another step to better understand these limitations, in this section we focus on two central questions. 
+First, do author representations capture representations that allow author identification to generalize across time?
+Through careful experiment design, we find that the degradation in author identification performance may originate from temporally evolving styles rather than model estimation error.
+Second, do author representations encode systematic biases associated with author demographics? 
 We answer this question in the affirmative, finding that authorship attribution performance degrades significantly across demographic groups, including age and gender. 
-Second, we consider the impact of temporal shifts in attribution performance.
-Finally, we propose a conformal prediction approach to provide statistically sound performance guarantees for authorship attribution with a computationally efficient approach.
 
 \subsection{Datasets}
-We started from a curated version of the Pushshift Reddit dataset~\cite{baumgartner2020pushshift} by filtering for users who had at least X comments for user modeling over time. 
-Additionally, we filtered out users having more than .. in an attempt to exclude bots. 
-\pmcomment{missing filter number}
+We start from the Pushshift Reddit dataset~\cite{baumgartner2020pushshift} generating the different splits. 
+%by filtering for users who had at least  comments for user modeling over time. 
+%Additionally, we filtered out users having more than 10,000 posts in an attempt to exclude bots. 
 We restricted the time period of the data from January 2015 to November 2019.
-In each setting, we follow a query/target temporal setup similar to previous work on retrieval-based authorship verfication~\cite{andrews2019learning,khan2021deep}.
-That is, we first selected a set of users and then include all of the posts written by each selected user across two non-overlapping time periods.
+In each setting, we follow a query/target temporal setup similar to previous work on retrieval-based authorship verification~\cite{andrews2019learning,khan2021deep}.
+That is, we first selected a set of users and then include all the posts written by each selected user across two non-overlapping time periods.
 The author identification task in such a setting takes a user's posts from the query time period as input and outputs a list of users ranked by their likelihood of matching the query user using their posts from the target time period.
 A positive match requires having a top/high rank for the posts by the same user during the target time period.
 We constructed multiple such datasets to help quantify the robustness of authorship attribution models.
 Specifically, we created two types of datasets: TemporalReddit and DemographicReddit.
 
-\noindent \textbf{TemporalReddit} 
+\subsubsection{TemporalReddit} 
 In each dataset, we sampled users having between $p_{\rm{min}}$ and $p_{\rm{max}}$ posts in both the query and the target period. 
 Specifically, we selected query/target temporal pairs with a fixed time difference between them.
 Suppose the queries span time period $(Q_{\rm{start}}, Q_{\rm{end}}) = (q_1, q_2)$ and the targets span $(T_{\rm{start}}, T_{\rm{end}}) = (t_1, t_2)$.
 We ensured that $\Delta_\tau = q_2 - t_2$ was similar across all datasets. 
 However, we varied $q_1$ to obtain multiple, non-overlapping datasets.
-We chose quer from January 2015 to January 2019 (5 query sets, each one month long) and targets from December 2015 to December 2018 and October 2019.
-\pmcomment{General rationale - keep a random sample of authors to see model drift.}
+We chose queries from January 2015 to January 2019 (5 query sets, each one month long) and targets from December 2015 to December 2018 and October 2019 with$p_{\rm{min}} = 16, p_{\rm{max}} = 2000$ with a set of 50k users sampled for each query-target pair.
 In the following texts, we refer to these datasets as \DSfixeddelta{}.
-$p_{\rm{min}} = 16, p_{\rm{max}} = 2000$ with a set of 50k users sampled in \DSfixeddelta{}{}.
-For the second dataset, we selected a single, fixed query split and multple target splits. 
+A degradation in performance of author identification models over \DSfixeddelta{} would suggest that model estimation is not stable to temporal data shifts, and that the model would need to be retrained to maintain performance over time.
+For the second dataset, we selected a single, fixed query split and multiple target splits. 
 The query period chosen was Jan 2015, and the target periods chosen were Dec 2015--2018, Oct 2019. 
 We sampled a set of 50k users having $p_{\rm{min}} = 16, p_{\rm{max}} = 2000$ in the query as well as in each target split.
 We refer to this dataset as \DSvarydelta{}. 
+A degradation in performance in \DSvarydelta{} would indicate that temporal changes of author style lead to a degradation in performance of author identification models.
 
-\textbf{DemographicReddit}
+\subsubsection{DemographicReddit}
 
 \begin{table}[h]
     \centering
@@ -56,13 +59,17 @@ We refer to this dataset as \DSvarydelta{}.
     \toprule
     group & fraction & count \\
     \midrule
-    adult & 0.525000 & 1575 \\
-    teenager & 0.398333 & 1195 \\
-    senior & 0.022000 & 66 \\
-    middle-aged & 0.054667 & 164 \\
+    adult & 0.52 & 1575 \\
+    teenager & 0.39 & 1195 \\
+    senior & 0.02 & 66 \\
+    middle-aged & 0.05 & 164 \\
+    %adult & 0.525000 & 1575 \\
+    %teenager & 0.398333 & 1195 \\
+    %senior & 0.022000 & 66 \\
+    %middle-aged & 0.054667 & 164 \\
     \bottomrule
     \end{tabular}
-    \caption{Distribution of demographics for age groups}
+    \caption{Distribution of demographics for age groups in \DSagefixed{}.}
     \label{tab:demographics:age_dist}
 \end{table}
 
@@ -72,30 +79,33 @@ We refer to this dataset as \DSvarydelta{}.
     \toprule
     gender & fraction & count \\
     \midrule
-    f & 0.511667 & 614 \\
-    m & 0.488333 & 586 \\
+    f & 0.51 & 614 \\
+    m & 0.49 & 586 \\
+   % f & 0.511667 & 614 \\
+   % m & 0.488333 & 586 \\
     \bottomrule
     \end{tabular}
-    \caption{Distribution of demographics for gender}
+    \caption{Distribution of demographics for gender in \DSgenderfixed{}.}
     \label{tab:demographics:gender_dist}
 \end{table}
 
 We used the RedDust dataset~\cite{tigunova2020reddust} to collect self-identified demographic attributes associated with Reddit users. 
 Specifically, we investigated two latent demographic attributes (age and gender) and their correlation with author identifiability.
 We followed the authors' original definition for categorizing users into age groups (13-23: Teenager, 24-45: Adult, 45-65: Middle-Aged, 65+: Senior).
-To create each of these datasets, we first subset the data to include only those users who lie in the intersection of CRUD and RedDust-Age and RedDust-Gender. 
-Following this, we selected a sequence of consecutive monthly splits from these intersecting users having $p_{min} = 8$ for at least five consective months. 
+To create each of these datasets, we first subset the data to include only those users who lie in the intersection of our subset of the Pushshift dataset with RedDust-Age and RedDust-Gender. 
+Following this, we selected a sequence of consecutive monthly splits from these intersecting users having $p_{min} = 8$ for at least five consecutive months. 
 We restricted the users to be present across all the splits to ensure that the demographics do not change over splits.
 Furthermore, to control for temporal variation, we only considered query/target pairs from consecutive months, i.e., $T_{start} - Q_{start} = 1~\rm{month}$.
-We select a sequence of months that ensure that we can maximize the number of users that lie in the intersection of CRUD and RedDust.
-The selected splits are January to May 2019.
+We select a sequence of months that ensure that we can maximize the number of users with known demographics from RedDust.
+The selected splits under this constraint corresponded to the months of January to May 2019.
 We sampled 3k users' posts from this period with known age, giving us \DSagefixed{}, and 1.2k users' posts with known gender, \DSgenderfixed{}, derived from RedDust-Age and RedDust-Gender, respectively.
 Note that the age in the data was adjusted to reflect the age of the user in January 2019 for all splits.
 
-\textbf{TDReddit}
+\subsubsection{TDReddit}
 In addition to constructing query/target pairs with a fixed $T_{start} - Q_{start} = 1~\rm{month}$, we can additionally consider all possible pairs of query/target from the splits collected for creating the DemographicReddit datasets.
 These pairs correspond to $\Perm{5}{2} = 20$ query/target pairs.
 The two corresponding demographic datasets are labeled \DSagevary{} and \DSgendervary{} for age and gender, respectively.
+\pmcomment{TODO}
 
 \subsection{Experiments}\
 
@@ -369,97 +379,3 @@ Comparing spread of ROC curves across groups: ...
 % \end{figure*}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \end{comment}
-\subsubsection{Calibration}
-
-\DSfixeddelta{}
-Steps to generate validation split for calibration:
-\begin{enumerate}
-    \item Select query/target from one split (We choose LUAR 1-15/12-15).
-    \item Calculate all pairwise cosine similarities and sum of magnitudes.
-    \item Sample a subset of users.
-    \item For each user, create a data point with label 1 and score $ = cos(f(q_{u}), f(t_{u}))$, magnitude $=\norm{f(q_{u})} + \norm{f(t_{u})}$, where $f$ is the LUAR model.
-    \item In addition, sample $n_{neg} = 5$ negative samples, with label 0 and score $ = cos(f(q_{u}), f(t_{u'}))$, magnitude $=\norm{f(q_{u})} + \norm{f(t_{u'})}$.
-    \item Make distributional plots for these (Figure~\ref{fig:calibration:density}.
-    \item Train logistic regression models which takes these (score/mag) as input and predicts the label. Create a reliability diagram for all of these models (Figure~\ref{fig:calibration:relaibility_2015}).
-    \item Plot the ROC curves corresponding to these models (Figure~\ref{fig:calibration:roc_2015})
-    \item Create similar reliability diagrams for other splits - marked degradation in calibration - room to improve (FIgure~\ref{fig:calibration:reliability_2016_2019})
-\end{enumerate}
-\begin{table}[]
-    \centering
-\begin{tabular}{lrrrr}
-\toprule
-verified ece & guo ece & em ece & year \\
-\midrule
- 0.000000 & 0.003675 & 0.000437 & 2015 \\
- 0.000000 & 0.003591 & 0.000438 & 2016 \\
- 0.000000 & 0.003645 & 0.000368 & 2017 \\
- 0.000000 & 0.005089 & 0.001455 & 2018 \\
- 0.003243 & 0.007548 & 0.003914 & 2019 \\
- \bottomrule
-\end{tabular}
-    \caption{Initial calibration results using \cite{kumar2019verified}, and calibrating a LinearSVC from sklearn}
-    \label{tab:calib:init}
-\end{table}
-
-\begin{figure}[h]
-    \centering
-    \begin{subfigure}{0.48\linewidth}
-    \centering
-    \includegraphics[width=\linewidth]{stylometryExtensions/figures/calibration_expts/cos_dist_2015.png}
-    \end{subfigure} %
-    \begin{subfigure}{0.48\linewidth}
-    \centering
-    \includegraphics[width=0.5\linewidth]{stylometryExtensions/figures/calibration_expts/mag_dist_2015.png}
-    \end{subfigure} %
-    \caption{Density plots of cosine similarity (left) and magnitude sum (right).}
-    \label{fig:calibration:density}
-\end{figure}
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.5\linewidth]{stylometryExtensions/figures/calibration_expts/calibrate_2015.png}
-    \caption{Reliability diagrams for LUAR 2015 scores.}
-    \label{fig:calibration:relaibility_2015}
-\end{figure}
-
-\begin{figure}
-    \centering
-    \includegraphics[width=0.5\linewidth]{stylometryExtensions/figures/calibration_expts/roc_2015.png}
-    \caption{ROC curve for LUAR 2015.}
-    \label{fig:calibration:roc_2015}
-\end{figure}
-
-
-\begin{figure}
-    \centering
-    \includegraphics[width=0.5\linewidth]{stylometryExtensions/figures/calibration_expts/eval_calibration.png}
-    \caption{Evaluating the logistic regression model calibrated on q/t in 2015 across different years.}
-    \label{fig:calibration:reliability_2016_2019}
-\end{figure}
-
-\begin{comment}
-\begin{figure}
-    \centering
-    \includegraphics[width=\linewidth]{figures/magnitude_plots/fixeddelta_mag_density.png}
-    \caption{Magnitude density plots for different splits of \DSfixeddelta{} for LUAR}
-    \label{fig:temporal_fixed:magnitude:density}
-\end{figure}
-
-\begin{figure}
-    \centering
-    \includegraphics[width=\linewidth]{figures/magnitude_plots/fixeddelta_mag_vs_n_posts.png}
-    \includegraphics[width=\linewidth]{figures/magnitude_plots/fixeddelta_mag_vs_rrank.png}
-    \caption{Magnitude negatively correlated with number of posts, not correlated with reciprocal rank for \DSfixeddelta{}}
-    \label{fig:temporal_fixed:manitude:density_n_posts}
-\end{figure}
-
-
-\begin{figure}
-    \centering
-    \includegraphics[width=\linewidth]{figures/magnitude_plots/varydelta_mag_density.png}
-    \caption{Magnitude density plot for \DSvarydelta{}}
-    \label{fig:tempral_vary:magnitude:density}
-\end{figure}
-\end{comment}
-
-\pmComment{TODO: Add a section summarizing conformal idea}

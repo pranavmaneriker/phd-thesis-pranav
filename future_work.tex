@@ -1,9 +1,11 @@
-\chapter{Future Work}
+\chapter{Conclusions and Future Work}
 \label{chp:future_work}
 
 In this preceding chapters, we described structures that help models be more adaptive at the three different stages of their lifecycle.
 Specifically, we used implicit and explicit structures along with \textit{adversarial testing}, \textit{online monitoring}, and \textit{domain adaptation} to build more adaptive machine learning systems.
 We now describe some directions for extending these techniques for future work.
+
+\pmcomment{Complete this}
 
 \section{Large Scale Structure-aware Authorship Attribution}
 \label{sec:future_work:scale}
@@ -173,6 +175,145 @@ Additional experiments need to be carried out to test whether the different stag
 Finally, we aim to test the impact of using structure and context to help in better adaptation across different domains.
 Specifically, we aim to test whether structure-aware embedding would adapt to authorship identification datasets from Dread (Darknet version of Reddit) and Twitter.
 We will use datasets of Dread posts~\cite{pastrana2018crimebb} and Twitter posts~\cite{andrews2019learning} for these tasks.
+
+\section{Auditing in Non-iid Settings}
+\label{sec:future_work:monitoring}
+
+In chapter~\ref{chp:avoir},  we described a confidence sequence based approach for monitoring fairness metrics associated with a decision-making function.
+However, there are some assumptions underlying the derivations that allow \AVOIRmethodname{} to be used for monitoring.
+In this extension, we aim to make the \AVOIRmethodname{} system more interactive, and generalize to more scenarios for more effective \textit{online monitoring}.
+
+\subsection{Goals}
+Our first goal is to make \AVOIRmethodname{} more interactive.
+A user may want to change the specification that they monitor as requirements and regulations for specifications continue to evolve over time.
+In the current implementation, an update of the specification requires monitoring from scratch after re-initializing all tracked expressions.
+ We aim to enable more efficient modification of the monitored specification.  
+The second goal is to make \AVOIRmethodname{} generalize to more diverse monitoring scenarios.
+An important assumption for tracking terms in \AVOIRmethodname{} (from using the Adaptive Hoeffding inequality~\cite{zhao2016adaptive}) is that the underlying data generating process is stationary.
+In the real world, this assumption may not hold.
+The second assumption is the independence of decisions $y_i$ given an input $x_i$ , i.e., $y_i = f(x_i)$.
+When the decision making function is based-on a non-parametric or graph-based model, this assumption may not hold.
+
+
+\subsection{Datasets and Methods}
+To accomplish our first goal and enable editing of specifications, we aim to implement a caching mechanism within \AVOIRmethodname{}.
+We will cache the values of each \textit{elementary} subexpression and potentially certain other expressions that may help in deriving guarantees for new specifications.
+In conjunction we will explore datasets and methods for fairness monitoring in non-stationary environments.
+Recent work on monitoring of model performance metrics~\cite{ginart2022mldemon} test monitoring on three streaming datasets.
+These include a non-stationary spam-detection dataset~\cite{katakis2005utility}, weather prediction dataset\footnote{\url{https://www.kaggle.com/datasets/jsphyg/weather-dataset-rattle-package}}, and a face detection dataset~\cite{wang2020masked}.
+Along with a subset of thase and furthering our goals of exploring the non-independent decision setting, we will collect common graph datasets from SNAP~\cite{snapnets} and the Open Graph Benchmark~\cite{hu2020open}.
+In terms of methods, we aim to explore recent work on improving uncertainty estimation in various non-independent and drift scenarios.
+These include: black-box label shift detection~\cite{lipton2018detecting}, covariate shift~\cite{tibshirani2019conformal}, and general distribution free concentration confidence sets~\cite{howard2021time}. 
+We will also contrast our setup against alternative fairness auditing mechanisms~\cite{yan2022active} that measure efficiency in terms of number of queried labels rather than the number of post-deployment observations. 
+
+\section{Robust-er Stylometry}
+
+In chapters~\ref{chp:sysml} and~\ref{chp:stylometry_extensions}, we study the robustness of authorship attribution models across time and domains.
+The methods we propose in chapter~\ref*{sysml} require retraining a model with additional context provided from graph-based representations.
+This is because, as indicated from the results in chapter~\ref*{chp:stylometry_extensions}, the representations learned by models trained on one domain do not always generalize well to other domains.
+Further, even within the same domain, the robustness of these models across time and demographics varies.
+Our empirical results show that recalibration can be used to reduce the impact of these shifts on the performance of these models.
+However, there are no statistically sound guarantees relating the performance of the model after recalibration.
+Our success with conformal prediction in aforementioned work motivates us to use it as a tool to provide such guarantees in the context of authorship attribution.
+In the final direction of proposed future work, we discuss how a conformal prediction-based approach may be used to achieve such guarantees.
+
+\pmcomment{Pasted from earlier here}
+\subsubsection{Calibration}
+
+\DSfixeddelta{}
+Steps to generate validation split for calibration:
+\begin{enumerate}
+    \item Select query/target from one split (We choose LUAR 1-15/12-15).
+    \item Calculate all pairwise cosine similarities and sum of magnitudes.
+    \item Sample a subset of users.
+    \item For each user, create a data point with label 1 and score $ = cos(f(q_{u}), f(t_{u}))$, magnitude $=\norm{f(q_{u})} + \norm{f(t_{u})}$, where $f$ is the LUAR model.
+    \item In addition, sample $n_{neg} = 5$ negative samples, with label 0 and score $ = cos(f(q_{u}), f(t_{u'}))$, magnitude $=\norm{f(q_{u})} + \norm{f(t_{u'})}$.
+    \item Make distributional plots for these (Figure~\ref{fig:calibration:density}.
+    \item Train logistic regression models which takes these (score/mag) as input and predicts the label. Create a reliability diagram for all of these models (Figure~\ref{fig:calibration:relaibility_2015}).
+    \item Plot the ROC curves corresponding to these models (Figure~\ref{fig:calibration:roc_2015})
+    \item Create similar reliability diagrams for other splits - marked degradation in calibration - room to improve (FIgure~\ref{fig:calibration:reliability_2016_2019})
+\end{enumerate}
+\begin{table}[]
+    \centering
+\begin{tabular}{lrrrr}
+\toprule
+verified ece & guo ece & em ece & year \\
+\midrule
+ 0.000000 & 0.003675 & 0.000437 & 2015 \\
+ 0.000000 & 0.003591 & 0.000438 & 2016 \\
+ 0.000000 & 0.003645 & 0.000368 & 2017 \\
+ 0.000000 & 0.005089 & 0.001455 & 2018 \\
+ 0.003243 & 0.007548 & 0.003914 & 2019 \\
+ \bottomrule
+\end{tabular}
+    \caption{Initial calibration results using \cite{kumar2019verified}, and calibrating a LinearSVC from sklearn}
+    \label{tab:calib:init}
+\end{table}
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{stylometryExtensions/figures/calibration_expts/cos_dist_2015.png}
+    \end{subfigure} %
+    \begin{subfigure}{0.48\linewidth}
+    \centering
+    \includegraphics[width=0.5\linewidth]{stylometryExtensions/figures/calibration_expts/mag_dist_2015.png}
+    \end{subfigure} %
+    \caption{Density plots of cosine similarity (left) and magnitude sum (right).}
+    \label{fig:calibration:density}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\linewidth]{stylometryExtensions/figures/calibration_expts/calibrate_2015.png}
+    \caption{Reliability diagrams for LUAR 2015 scores.}
+    \label{fig:calibration:relaibility_2015}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{stylometryExtensions/figures/calibration_expts/roc_2015.png}
+    \caption{ROC curve for LUAR 2015.}
+    \label{fig:calibration:roc_2015}
+\end{figure}
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{stylometryExtensions/figures/calibration_expts/eval_calibration.png}
+    \caption{Evaluating the logistic regression model calibrated on q/t in 2015 across different years.}
+    \label{fig:calibration:reliability_2016_2019}
+\end{figure}
+
+\begin{comment}
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{figures/magnitude_plots/fixeddelta_mag_density.png}
+    \caption{Magnitude density plots for different splits of \DSfixeddelta{} for LUAR}
+    \label{fig:temporal_fixed:magnitude:density}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{figures/magnitude_plots/fixeddelta_mag_vs_n_posts.png}
+    \includegraphics[width=\linewidth]{figures/magnitude_plots/fixeddelta_mag_vs_rrank.png}
+    \caption{Magnitude negatively correlated with number of posts, not correlated with reciprocal rank for \DSfixeddelta{}}
+    \label{fig:temporal_fixed:manitude:density_n_posts}
+\end{figure}
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{figures/magnitude_plots/varydelta_mag_density.png}
+    \caption{Magnitude density plot for \DSvarydelta{}}
+    \label{fig:tempral_vary:magnitude:density}
+\end{figure}
+\end{comment}
+
+\pmComment{TODO: Add a section summarizing conformal idea}
+
+
 %
 %\section{Interpretable Stylometric Modeling}
 %\label{sec:future_work:interpret}
@@ -200,35 +341,6 @@ We will use datasets of Dread posts~\cite{pastrana2018crimebb} and Twitter posts
 %We will use the wikipedia sockpuppet datasets to understand the scope of modifications that can actually help in decision making, in conjunction with an \textit{adversarial testing} setup to study how different perturbations affect the value function for explanations.
 %Training a model to learn the value function associated with an authorship identification model can help provide explanations that may be useful to end-users.
 %
-%\section{Monitoring Metrics in Non-iid Settings}
-%\label{sec:future_work:monitoring}
-%
-%In chapter~\ref{chp:avoir},  we described a confidence sequence based approach for monitoring fairness metrics associated with a decision-making function.
-%However, there are some assumptions underlying the derivations that allow \AVOIRmethodname{} to be used for monitoring.
-%In this extension, we aim to make the \AVOIRmethodname{} system more interactive, and generalize to more scenarios for more effective \textit{online monitoring}.
-%
-%\subsection{Goals}
-%Our first goal is to make \AVOIRmethodname{} more interactive.
-%A user may want to change the specification that they monitor as requirements and regulations for specifications continue to evolve over time.
-%In the current implementation, an update of the specification requires monitoring from scratch after re-initializing all tracked expressions.
-% We aim to enable more efficient modification of the monitored specification.  
-%The second goal is to make \AVOIRmethodname{} generalize to more diverse monitoring scenarios.
-%An important assumption for tracking terms in \AVOIRmethodname{} (from using the Adaptive Hoeffding inequality~\cite{zhao2016adaptive}) is that the underlying data generating process is stationary.
-%In the real world, this assumption may not hold.
-%The second assumption is the independence of decisions $y_i$ given an input $x_i$ , i.e., $y_i = f(x_i)$.
-%When the decision making function is based-on a non-parametric or graph-based model, this assumption may not hold.
-%
-%
-%\subsection{Datasets and Methods}
-%To accomplish our first goal and enable editing of specifications, we aim to implement a caching mechanism within \AVOIRmethodname{}.
-%We will cache the values of each \textit{elementary} subexpression and potentially certain other expressions that may help in deriving guarantees for new specifications.
-%In conjunction we will explore datasets and methods for fairness monitoring in non-stationary environments.
-%Recent work on monitoring of model performance metrics~\cite{ginart2022mldemon} test monitoring on three streaming datasets.
-%These include a non-stationary spam-detection dataset~\cite{katakis2005utility}, weather prediction dataset\footnote{\url{https://www.kaggle.com/datasets/jsphyg/weather-dataset-rattle-package}}, and a face detection dataset~\cite{wang2020masked}.
-%Along with a subset of thase and furthering our goals of exploring the non-independent decision setting, we will collect common graph datasets from SNAP~\cite{snapnets} and the Open Graph Benchmark~\cite{hu2020open}.
-%In terms of methods, we aim to explore recent work on improving uncertainty estimation in various non-independent and drift scenarios.
-%These include: black-box label shift detection~\cite{lipton2018detecting}, covariate shift~\cite{tibshirani2019conformal}, and general distribution free concentration confidence sets~\cite{howard2021time}. 
-%We will also contrast our setup against alternative fairness auditing mechanisms~\cite{yan2022active} that measure efficiency in terms of number of queried labels rather than the number of post-deployment observations. 
 %
 %\section{Project Schedule and Timeline}
 %In Table~\ref{tab:future_work:timeline}, we define a plausible timeline over which we aim to accomplish the future work discussed in this section.

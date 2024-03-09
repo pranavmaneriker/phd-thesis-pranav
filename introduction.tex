@@ -167,7 +167,14 @@ Further, we also construct a novel visualization mechanism that can be used to i
 This visualization makes use of the parse trees for fairness metrics that are generated from the grammar used to define them.
 %We then conduct case studies with fairness metrics on three different datasets and demonstrate how the visualization and improved optimization can detect fairness violations more efficiently and ameliorate the issues with faulty fairness metric design. 
 
-\subsection*{Conformal Prediction and Fairness in Graph Structured Data}
+\subsection{Conformal Prediction and Fairness in Graph Structured Data}
+In \AVOIRmethodname{}, we focused on online auditing of fairness in decision-making systems where data was assumed to be independent and identically distributed (IID) at run time.
+While it provides strong probabilistic guarantees, it is not possible to use \AVOIRmethodname{} for monitoring models that make decisions on graph structured data, as the structure of the graph imposes dependencies between the behavior of nodes.
+The conformal prediction framework~\citep{vovk2005algorithmic} provides a mechanism to provide statistically sound guarantees for the behavior of a model at run time under a weaker assumption of exchangeability.
+In this contribution, we study the tradeoffs associated with different approaches aimed at using conformal prediction for graph structured data.
+We contrast the dataset and data splitting setups used by existing approaches for conformal prediction on graphs.  
+Our findings indicate that careful implementation of randomization procedures can provide significant improvements in the efficiency of existing conformal prediction methods for graph structured data.
+Following this, we propose a novel approach for using the conformal prediction framework to monitor the fairness of decision-making models on graph structured data.
 
 \subsection{Stylometry using Structure and Multitask Learning for Darkweb forums}
 Darknet market forums are frequently used to exchange illegal goods and services between parties who use encryption to conceal their identities.
@@ -181,14 +188,21 @@ We provide a comprehensive evaluation of our methods across four different darkn
 %over the state-of-the-art, with a lift of up to 2.5X on Mean Retrieval Rank and 2X on Recall@10.
 
 \subsection{Towards Robust Author Representations}
+Concurrent with our work with \SYSMLmethodname{}, the literature in the field of authorship attribution using text-based approaches has seen significant performance improvements with the use of large language models~\citep{khan2021deep,riverastao2021learning}.
+However, the robustness of these models across domains, demographics, and time is not well understood.
+In our final contribution, we conduct a comprehensive study of the robustness of these models across time and domains.
+First, we study whether the representations learned by these models can be used to improve author identification on darkweb forums.
+Our findings indicate the limitations on the transferability of these representations to the darkweb domain.
+Following this, we demonstrate an approach that combines data across the domains that can be used to improve the robustness of these models.
+Finally, we study how models trained within a domain generalize across temporal and demographic shifts.
+Our careful experiments indicate that degradation in performance of these models arises from temporal shifts in the underlying author style rather than from model estimation errors.
 
 
 \section{Future Work}
-\pmComment{Update this section}
 
 \subsection{Large Scale Structure-aware Authorship Attribution}
 %\textit{Domain adaptation}, scale, graph + NLP,
-Continuing the theme of \textit{domain adaptation} in our work on stylometry, in this extension, we aim to study how different domains and their associated structure correlate with the stylometric identifiability of authors.
+Continuing the theme of \textit{domain adaptation} in our work on stylometry, in this extension, we propose a mechanism to study how different domains and their associated structure correlate with the stylometric identifiability of authors.
 In recent work, \citet{barlas2020cross,riverastao2021learning} conducted large-scale studies of cross-domain transfer for authorship attribution. 
 Their results show that training on some domains leads to models that transfer better to other domains.
 The thesis of their work was that the diversity of topics discussed and the number of distinct authors in one domain drive better transferability.
@@ -197,8 +211,8 @@ First, the number of users and posts is limited in the darkweb domain.
 For example, the total number of forum posts across multiple years on large darkweb forums only lies in the 100,000-1,000,000 range.
 In comparison, there are over 70 million posts on Reddit over a single month~\citep{andrews2019learning} in an overlapping time period.
 This motivates our first question - can structure-based methods improve authorship attribution models when the availability of text/authors and size of models is scaled up by multiple orders of magnitude?
-The second question that we aim to explore is whether these structures are domain-specific or whether certain meta-structures common across domains can help generalize these to multiple domains.
-We aim for our analysis to supplement the findings around models that only use text~\cite{barlas2020cross,riverastao2021learning}, potentially providing alternative mechanisms for successful transfer.
+The second question that we propose is whether these structures are domain-specific or whether certain meta-structures common across domains can help generalize these to multiple domains.
+We aim for our analysis to supplement the findings around models that only use text, potentially providing alternative mechanisms for successful transfer.
 
 %\textit{Adversarial testing}, bilevel optimization, reinforcement learning.
 %calibration.
@@ -207,30 +221,47 @@ We aim for our analysis to supplement the findings around models that only use t
 %calibration.
 %interpretability of style is different because models are superhuman!
 
-\subsection{Better Fairness Auditing in Non-IID Settings}
+\subsection{Fairness Auditing for Grraph Structured Data in Inductive Settings}
 In Chapter~\ref{chp:avoir}, we address the problem of fairness auditing using the structure of the monitored metrics.
 We utilize the adaptive Hoeffding concentration bound~\cite{zhao2016adaptive} to quantify the uncertainty of tracked fairness metric, which allows monitoring with arbitrary stopping mechanisms.
 However, using this inequality comes with certain assumptions of the data-generating process.
 The most restrictive of these is the assumption of a fixed fairness specification, stationary data distribution, and independent and identically distributed (IID) data.
 A multitude of scenarios in the real world do not conform to these assumptions.
+In Chapter~\ref{chp:graphConformal}, we show that under under the weaker assumption of exchangeability, it is possible to use the framework of conformal risk control to audit fairness for graph structured data in a transductive learning setting.
+However, this does not capture the full range of scenarios that may be encountered in the real world.
 For example, the underlying data is unlikely to be from a stationary distribution.
 Drifts in the distributions are usually categorized based on the causal mechanisms that underlie them:
 those that arise from changes in the distribution of input features (covariate shift), the support distribution of the true labels (label shift), or changing relationships between the input and output (concept drift)~\citep{huyen2022designing}.
 Additionally, the metric that a user may want to monitor may change over time due to evolving regulatory environments.
-Finally, the data may be correlated with each other through network structures.
-We aim to address how recent work frames some of these challenges and motivate extensions to our system \AVOIRmethodname (Chapter \ref{chp:avoir}) to address some of these challenges.
+We propose some potential avenues for extending our work to address these challenges.
+%We aim to address how recent work frames some of these challenges and motivate extensions to our system \AVOIRmethodname (Chapter \ref{chp:avoir}) to address some of these challenges.
 %\todo{What does this mean, exactly, and how to model it? Anything from uncertainity quantification?}
 %non-iid data
+\subsection{Conformal Prediction for Robust Authorship Attribution}
+In chapters~\ref{chp:sysml} and~\ref{chp:stylometry_extensions}, we study the robustness of authorship attribution models across time and domains.
+The methods we propose in chapter~\ref{sysml} require retraining a model with additional context provided from graph-based representations.
+This is because, as indicated from the results in chapter~\ref{chp:stylometry_extensions}, the representations learned by models trained on one domain do not always generalize well to other domains.
+Further, even within the same domain, the robustness of these models across time and demographics varies.
+We find degradation across time that arises from temporal shifts in the underlying author style.
+However, there are no techniques to modify the outputs of these models to provide guarantees relating their performance.
+Our success with conformal prediction in aforementioned work motivates us to use it as a tool to provide such guarantees in the context of authorship attribution.
+In the final direction of proposed future work, we discuss how a conformal prediction-based approach may be used to achieve such guarantees.
+
 
 \section{Organization}
 The remainder of the dissertation is organized as follows. 
 First, we discuss a method to improve the classification of phishing URLs using transformers in chapter \ref{chp:urltran}.
 We describe how, in the \textit{pre-deployment} stage, \textit{adversarial tests} can be constructed and used to evaluate the robustness of machine learning models for this task.
 Following this, we discuss a mechanism for monitoring the \textit{run time} fairness properties associated with \textit{deployed} machine learning models in chapter~\ref{chp:avoir}.
+Next, in chapter~\ref{chp:graphConformal} we analyze the trade offs in the conformal prediction framework and its usability in the graph setting.
+The next part of this dissertation focuses on the \emph{post-deployment} stage.
 In chapter~\ref{chp:sysml}, we describe how an authorship identification model trained on one domain can be \textit{generalized} to work across domains.
-Finally, in chapter~\ref{chp:future_work}, we describe the directions that we aim to focus on in future work. 
-This includes scaling authorship identification models to work across even more domains while utilizing the graphs associated with those domains and improving the interpretability of the associated models.
-Finally, we describe how fairness monitoring can be made more interactive and work across settings beyond those explored in chapter~\ref{chp:avoir}.
+Further, in chapter~\ref*{chp:stylometry_extensions} we study the robustness of authorship identification models across time and domains.
+Finally, in chapter~\ref{chp:future_work}, we first summarize our contributions and their limitations.
+We then describe directions tof future work that may resolve some of these limitations..
+The first of these involves scaling authorship identification models to work across even more domains while utilizing the graphs associated with those domains.
+The seoncd describes how fairness monitoring can be made to work across settings beyond those explored in chapter~\ref{chp:avoir} and chapter~\ref{chp:graphConformal}.
+We conclude with a discussion of how conformal prediction can be used to provide guarantees for the robustness of authorship identification models across time and domains.
 
 
 \endinput
