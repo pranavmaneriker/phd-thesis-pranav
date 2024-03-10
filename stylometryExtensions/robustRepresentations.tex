@@ -111,50 +111,87 @@ The two corresponding demographic datasets are labeled \DSagevary{} and \DSgende
 
 \subsubsection{Baselines}
 
-\noindent \textbf{Onehot-Subreddit (OS):}
-One-hot overlap of subreddits.
+We describe the models used and the rationale for the choice of these models in the following text.
+The first three models correspond to count-based baselines that do not use neural networks for representation learning.
+The final three models correspond to neural network-based models that use different representation learning model for each window, and these representations are merged in a LUAR like setup (Figure~\ref{fig:stylometry_extensions:followingTrail:LUAR}).
+Similar baselines have been used in other work on author identification~\cite{wang2023can,soto2024fewshot}.
+
+\noindent \textbf{Count-Subreddit (CS):}
+The CS model uses a count based representation of each author, where each entry of the of the author representation vector represents the number of times the author posted on the corresponding subreddit.
+In particular, we use the CountVectorizer from \citet{scikit-learn}. %with 10000 features, lower casing, and a minimum document frequency of 0.8.
+Subreddit usually represent a topic of interest, so this vector could be seen as a simple proxy for the topics the author is interested in.
 
 \noindent \textbf{TFIDF-Subreddit (TFS)}:
-TF-IDF over subreddit tokens as words.
+The TFS model uses TFIDFVectorizer from scikit-learn with the subreddits that an author posts in as the `term'.
+This is another compact representation of the topics of interest for an author.
 
 \noindent \textbf{TFIDF-Text (TFT)}:
-TF-IDF over the text posted by each user
+The TFT model uses all the text posted by an author coverts it into a TF-IDF vector (also using the TFIDFVectorizer) over the text posted by each author as input.
+This vector captures both topics, as well as some aspects of style such as word usage frequencies.
 
-\noindent \textbf{SBERT} \cite{reimers2019sentencebert}
+The hyperparameters for the aforementioned models were chosen using a grid search over the hyperparameter space with a separate split of the query/target data.
 
-\noindent \textbf{STEL} \cite{wegmann2021capture}
+\noindent \textbf{SBERT} The popular sentence transformer model SBERT~\cite{reimers2019sentencebert} is used to generate the representation for each window of text for an author.
+The representations from this model may capture the semantics and syntax associated with the text posted by the author.
 
-\noindent \textbf{LUAR} \cite{riverastao2021learning}
 
+\noindent \textbf{STEL} The STEL model from \citet{wegmann2021capture}, which is a modular framework to represent linguistic style while controlling for content, is used to generate the representation for each window of text for an author.
+This model focuses on features that capture writing style only.
 
+\noindent \textbf{LUAR} This is the LUAR model from~\cite{riverastao2021learning}. 
+This model is trained to represent time invariant features of an author's writing style.
+
+\begin{comment}
 \pmComment{Consider whether to include the probing classifier expts - not particularly informative}
 \subsubsection{Probing Classifier}
 In order to test for bias present in the representations themselves, we train a probing classifier on each model's embeddings. A probing classifier is often used as a means of interpreting a deep neural network's ability to encode a particular property (see \citet{belinkov2022} for a thorough overview). If the classifier performs well, the property is presumably encoded in the embeddings and thus is assumed to play a role in the neural network's performance on the main task. Probing classifiers have some limitations, such as uncertainty over how to interpret the classifier's performance, %and the classifier's use of a property not necessarily correlating to the neural network's use of that property 
 but for our exploratory purposes, we include the experiment as an indication of potential explanations for the models' performance.
 
 We train logistic regression classifiers on the LUAR, SBERT, and STEL representations and test the classifiers' performance on 1) distinguishing gender and 2) distinguishing age. If a classifier performs well at distinguishing either demographic feature, it would seem that that feature is encoded in the embeddings to some degree. 
+\end{comment}
 
-\subsection{Results}
-Table~\ref{tab:temporal_fixed} shows the evaluation results of recall@8 for \DSfixeddelta{}. LUAR significantly outperforms all other models across all fixed time periods.
-\begin{table*}[]
+\subsection{Evaluation and Discussion}
+
+\subsubsection{TemporalReddit}
+
+\begin{table*}[th]
     \centering
+%\begin{tabular}{lrrrrrr}
+%#\toprule
+%#method & OS & TFS & TFT & SBERT & STEL & LUAR \\
+%#Q/T &  &  &  &  &  &  \\
+%#\midrule
+%#15-1/15-12 & 0.236660 & 0.260280 & 0.191880 & 0.232300 & 0.135340 & \textbf{0.778740} \\
+%#16-1/16-12 & 0.265440 & 0.283820 & 0.212460 & 0.250740 & 0.148480 & \textbf{0.795860} \\
+%#17-1/17-12 & 0.278040 & 0.297200 & 0.223520 & 0.262440 & 0.137220 & \textbf{0.732580} \\
+%#18-1/18-12 & 0.283220 & 0.302520 & 0.231700 & 0.280600 & 0.171020 & \textbf{0.769940} \\
+%#19-1/19-10 & 0.315960 & 0.343180 & 0.234520 & 0.289820 & 0.143080 & \textbf{0.759620} \\
+%#\bottomrule
+%\end{tabular}
 \begin{tabular}{lrrrrrr}
-\toprule
+    \toprule
 method & OS & TFS & TFT & SBERT & STEL & LUAR \\
 Q/T &  &  &  &  &  &  \\
 \midrule
-15-1/15-12 & 0.236660 & 0.260280 & 0.191880 & 0.232300 & 0.135340 & \textbf{0.778740} \\
-16-1/16-12 & 0.265440 & 0.283820 & 0.212460 & 0.250740 & 0.148480 & \textbf{0.795860} \\
-17-1/17-12 & 0.278040 & 0.297200 & 0.223520 & 0.262440 & 0.137220 & \textbf{0.732580} \\
-18-1/18-12 & 0.283220 & 0.302520 & 0.231700 & 0.280600 & 0.171020 & \textbf{0.769940} \\
-19-1/19-10 & 0.315960 & 0.343180 & 0.234520 & 0.289820 & 0.143080 & \textbf{0.759620} \\
+15-1/15-12 & 0.237 & 0.260 & 0.192 & 0.232 & 0.135 & 0.779 \\
+16-1/16-12 & 0.265 & 0.284 & 0.212 & 0.251 & 0.148 & 0.796 \\
+17-1/17-12 & 0.278 & 0.297 & 0.224 & 0.262 & 0.137 & 0.733 \\
+18-1/18-12 & 0.283 & 0.303 & 0.232 & 0.281 & 0.171 & 0.770 \\
+19-1/19-12 & 0.316 & 0.343 & 0.235 & 0.290 & 0.143 & 0.760 \\
 \bottomrule
 \end{tabular}
-    \caption{Recall@8 results across different models on \DSfixeddelta{}. Only LUAR is controlled for training dataset time. Best performance is bolded.   }
+    %\caption{Recall@8 results across different models on \DSfixeddelta{}. Only LUAR is controlled for training dataset time. Best performance is bolded.   }
+    \caption{Recall@8 results across different models on \DSfixeddelta{}. The leftmost column represents the Query/Target period.}
     \label{tab:temporal_fixed}
 \end{table*}
 
-\pmComment{Need better presentation option for this}
+Table~\ref{tab:temporal_fixed} shows the evaluation results of recall@8 for \DSfixeddelta{}. LUAR significantly outperforms all other models across all fixed time periods.
+As expected, the TFIDF and count based models, which do not require explicit `training' for data in a specific time period, have relatively stable author identification performance over time.
+The results from the SBERT/STEL models, which are not trained without controlling the time periods for the training dataset, also show a similar trend.
+As LUAR is trained on data from 2015-2016, if the author representations were overfit to identify authors in this time period, we would expect a significant drop in performance for the later time periods.
+The last column on the right of Table~\ref{tab:temporal_fixed} shows that this is not the case, and LUAR's performance is relatively stable across time.
+Thus, for a consistent query-target time difference, LUAR is able to maintain a high level of performance across time periods, indicating that model retraining is not necessary to maintain performance over time.
+%\pmComment{Need better presentation option for this}
 
 % TODO: At least make this a faceted plot 
 \begin{figure}[h]
@@ -197,9 +234,11 @@ Q/T &  &  &  &  &  &  \\
     \label{fig:temporal_vary}
 \end{figure}
 
+Next, using \DSvarydelta{} we consider temporal variation across a fixed set of users across time.
+
 \subsubsection{Demographics}
 Figure~\ref{fig:demographic_fixed:age} shows the recall@8 results for age... 
-We note that all models consistenly underperform on (self-identified) teenage users.
+We note that all models consistently underperform on (self-identified) teenage users.
 
 \begin{figure}[h]
     \centering
@@ -234,6 +273,8 @@ We note that all models consistenly underperform on (self-identified) teenage us
 
 \subsubsection{Robustness}
 
+\pmComment{Uncomment below for probing results}
+\begin{comment}
 \subsubsection{Probing Classifier}
 Two possible stories to explain the probing classifier results:
 \begin{itemize}
@@ -242,8 +283,6 @@ Two possible stories to explain the probing classifier results:
 \end{itemize}
 
 Comparing spread of ROC curves across groups: ...
-\pmComment{Uncomment below for probing results}
-\begin{comment}
 \begin{figure*}[h]
 \begin{subfigure}{.5\linewidth}
     \includegraphics[width=\linewidth]{figures/probe/roc_sepgender_luar.png}
