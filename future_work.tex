@@ -2,23 +2,22 @@
 \label{chp:future_work}
 
 In this preceding chapters, we described structures that help models be more adaptive at the three different stages of their lifecycle.
-Specifically, we used implicit and explicit structures along with \textit{adversarial testing}, \textit{online monitoring}, and \textit{domain adaptation} to build more adaptive machine learning systems.
+Specifically, we used implicit and explicit structures along with \textit{adversarial testing}, \textit{runtime monitoring}, and \textit{domain adaptation} to build more adaptive machine learning systems.
 We now describe some directions for extending these techniques for future work.
 
-\pmcomment{Complete this}
 
 \section{Large Scale Structure-aware Authorship Attribution}
 \label{sec:future_work:scale}
-In this extension, our goal is to test the generalizability of our findings related to the improvements offered by utilizing forum graph structures on the darkweb (Chapter~\ref{chp:sysml}).
+In this extension, the goal is to test the generalizability of our findings related to the improvements offered by utilizing forum graph structures on the darkweb (Chapter~\ref{chp:sysml}).
 Recent work on cross-domain authorship attribution using text has determined that certain domains (eg. Reddit) are more useful for training authorship attribution models that generalize to other domains~\cite{barlas2020cross,riverastao2021learning}.
 Specifically, \citet{riverastao2021learning} demonstrate that in the source domain, diversity in the expressed topics and larger number of unique users play a role in explaining better transfer to target domains.
 However, this work does not utilize the additional structure and context present in different domains.
 We posit that these graphs can provide information orthogonal to that which is already present in the text.
- With our future work, we aim to demonstrate that even in scenarios with an abundance of text/users (over 100k users/1M text posts), these graph structures help improve authorship identification within a single domain, and also help better generalize across domains.
- Chapter~\ref{chp:sysml} shows that this is true in the complementary setting with fewer users ($\approx$ 1-10k)
+In this direction of future work, we aim to demonstrate that even in scenarios with an abundance of text/users (over 100k users/1M text posts), these graph structures help improve authorship identification within a single domain, and also help better generalize across domains.
+Chapter~\ref{chp:sysml} shows that this is true in the complementary setting with fewer users ($\approx$ 1-10k)
 In the remainder of this section, we first describe the choices that are involved in constructing graph structures and their similarities across domains. 
-We then describe our preliminary work on utilizing these structures for authorship attribution on Reddit and share our preliminary findings.
-To conclude this section, we describe additional directions that we hope to explore, including the associated datasets and techniques that help with \textit{domain generalization}.
+We then describe some preliminary work on utilizing these structures for authorship attribution on Reddit and share our preliminary findings.
+To conclude this section, we describe additional directions that we hope to explore, including the associated datasets and techniques. % that help with \textit{domain generalization}.
 
 \subsection{Graphs in Authorship Attribution}
 
@@ -122,8 +121,8 @@ This ensures that the embeddings for specific authors are robust to temporal shi
 Ensuring this is particularly challenging in the graph setting as there are multiple mechanisms to construct graphs across different time periods.
 There may be authors who post in both the training, test query, and test target time periods.
 In chapter~\ref{chp:sysml}, we describe one strategy where we only use subforum embeddings.
-While they do provides improvements (Sec~\ref{sec:sysml:eval}), in this work we aim to incorporate further structural information.
-Using the same node to denote the author in disjoint time periods would lead to a trivial embedding solution (unique node embedding for the author).
+While they do provides improvements (Sec~\ref{sec:sysml:eval}), here we propose alternative mechanisms to incorporate further structural information.
+It is not possible to connect the graphs across different time periods as using the same node to denote the author in disjoint time periods would lead to a trivial embedding solution (unique node embedding for the author).
 One strategy to deal with the temporal challenge is to use separate graphs for the training and testing time periods, aligning node embeddings across them.
 This corresponds to the vertex nomination problem across multiple graphs, and strategies include using orthogonal procrustes~\cite{agterberg2020vertex}) for alignment.
 Alternatively, node attributes such as text, time, and label could be used to construct heterogeneous, attributed graphs.
@@ -173,12 +172,12 @@ In particular, successes from scaling GraphSAGE-based~\cite{hamilton2017inductiv
 Additionally, the results in Figure~\ref{fig:future_work:scale:preliminary:results} are evaluated on a specific validation dataset.
 Additional experiments need to be carried out to test whether the different stages (embedding, alignment) are affected by temporal shifts.
 Finally, we aim to test the impact of using structure and context to help in better adaptation across different domains.
-Specifically, we aim to test whether structure-aware embedding would adapt to authorship identification datasets from Dread (Darknet version of Reddit) and Twitter.
-We will use datasets of Dread posts~\cite{pastrana2018crimebb} and Twitter posts~\cite{andrews2019learning} for these tasks.
+Similar to our study of domain adaptation for text embeddings (from Chapter~\ref{chp:stylometry_extensions}), we would aim to test whether structure-aware embedding would adapt to authorship identification datasets from Dread and Twitter.
+%We will use datasets of Dread posts~\cite{pastrana2018crimebb} and Twitter posts~\cite{andrews2019learning} for these tasks.
 
 \section{Auditing in Non-iid Settings}
 \label{sec:future_work:monitoring}
-
+\pmcomment{TODO: this section}
 In chapter~\ref{chp:avoir},  we described a confidence sequence based approach for monitoring fairness metrics associated with a decision-making function.
 However, there are some assumptions underlying the derivations that allow \AVOIRmethodname{} to be used for monitoring.
 In this extension, we aim to make the \AVOIRmethodname{} system more interactive, and generalize to more scenarios for more effective \textit{online monitoring}.
@@ -206,49 +205,34 @@ In terms of methods, we aim to explore recent work on improving uncertainty esti
 These include: black-box label shift detection~\cite{lipton2018detecting}, covariate shift~\cite{tibshirani2019conformal}, and general distribution free concentration confidence sets~\cite{howard2021time}. 
 We will also contrast our setup against alternative fairness auditing mechanisms~\cite{yan2022active} that measure efficiency in terms of number of queried labels rather than the number of post-deployment observations. 
 
-\section{Towards more robust Stylometry}
+\section{Towards More Robust Stylometry}
 
 In chapters~\ref{chp:sysml} and~\ref{chp:stylometry_extensions}, we study the robustness of authorship attribution models across time and domains.
 The methods we propose in chapter~\ref*{sysml} require retraining a model with additional context provided from graph-based representations.
-This is because, as indicated from the results in chapter~\ref*{chp:stylometry_extensions}, the representations learned by models trained on one domain do not always generalize well to other domains.
-Further, even within the same domain, the robustness of these models across time and demographics varies.
-Our empirical results show that recalibration can be used to reduce the impact of these shifts on the performance of these models.
-However, there are no statistically sound guarantees relating the performance of the model after recalibration.
-Our success with conformal prediction in aforementioned work motivates us to use it as a tool to provide such guarantees in the context of authorship attribution.
-In the final direction of proposed future work, we discuss how a conformal prediction-based approach may be used to achieve such guarantees.
+As seen in chapter~\ref*{chp:stylometry_extensions}, the representations learned by models trained on one domain do not always generalize well to other domains, or even within the same domain.
+The robustness of these models across time and demographics varies.
+We propose two potential directions of future work that are aimed at building more robust authorship attribution models viz. \emph{recalibration} and \emph{conformal prediction}.
 
-\pmcomment{Pasted from earlier here}
-\subsubsection{Calibration}
+\subsection{Methods}
 
-\DSfixeddelta{}
-Steps to generate validation split for calibration:
-\begin{enumerate}
-    \item Select query/target from one split (We choose LUAR 1-15/12-15).
-    \item Calculate all pairwise cosine similarities and sum of magnitudes.
-    \item Sample a subset of users.
-    \item For each user, create a data point with label 1 and score $ = cos(f(q_{u}), f(t_{u}))$, magnitude $=\norm{f(q_{u})} + \norm{f(t_{u})}$, where $f$ is the LUAR model.
-    \item In addition, sample $n_{neg} = 5$ negative samples, with label 0 and score $ = cos(f(q_{u}), f(t_{u'}))$, magnitude $=\norm{f(q_{u})} + \norm{f(t_{u'})}$.
-    \item Make distributional plots for these (Figure~\ref{fig:calibration:density}.
-    \item Train logistic regression models which takes these (score/mag) as input and predicts the label. Create a reliability diagram for all of these models (Figure~\ref{fig:calibration:relaibility_2015}).
-    \item Plot the ROC curves corresponding to these models (Figure~\ref{fig:calibration:roc_2015})
-    \item Create similar reliability diagrams for other splits - marked degradation in calibration - room to improve (FIgure~\ref{fig:calibration:reliability_2016_2019})
-\end{enumerate}
-\begin{table}[]
-    \centering
-\begin{tabular}{lrrrr}
-\toprule
-verified ece & guo ece & em ece & year \\
-\midrule
- 0.000000 & 0.003675 & 0.000437 & 2015 \\
- 0.000000 & 0.003591 & 0.000438 & 2016 \\
- 0.000000 & 0.003645 & 0.000368 & 2017 \\
- 0.000000 & 0.005089 & 0.001455 & 2018 \\
- 0.003243 & 0.007548 & 0.003914 & 2019 \\
- \bottomrule
-\end{tabular}
-    \caption{Initial calibration results using \cite{kumar2019verified}, and calibrating a LinearSVC from sklearn}
-    \label{tab:calib:init}
-\end{table}
+\subsubsection{Recalibration}
+A model is said to be well calibrated if the score predicted by the model is a good estimate of the true probability of the event.
+Specifically, consider a binary classification model that predicts a score $s$ for a given input.
+For a well-calibrated model, 
+\[
+    \Pr(Y = 1 | S = s) = s
+\]
+The outputs of neural networks are not guaranteed to be well-calibrated~\citep{guo2017calibration}.
+Exact calibration is difficult to achieve and measure, so binned versions of calibration are often used.
+Reliability diagrams are used to visualize the calibration of a model, while the expected calibration error (ECE) is used to measure the calibration of a model.
+This reliability diagram plots the empirical probability of the event against the predicted score across bins.
+For a well-calibrated model, the empirical probability should match the predicted score, i.e, lie on the line $y = x$.
+The expected calibration error is defined as
+\[
+    \text{ECE} = \sum_{m=1}^{M} \frac{|B_m|}{n} \left| \text{acc}(B_m) - \text{conf}(B_m) \right|
+\]
+where $B_m$ is the set of examples in bin $m$, $n$ is the total number of examples, $\text{acc}(B_m)$ is the accuracy of the model in bin $m$, and $\text{conf}(B_m)$ is the confidence of the model in bin $m$.
+Methods such as temporal scaling, isotonic regression, and Platt scaling have been used to recalibrate the outputs of neural networks~\cite{guo2017calibration} to achieve calibration.
 
 \begin{figure}[h]
     \centering
@@ -256,35 +240,107 @@ verified ece & guo ece & em ece & year \\
     \centering
     \includegraphics[width=\linewidth]{stylometryExtensions/figures/calibration_expts/cos_dist_2015.png}
     \end{subfigure} %
-    \begin{subfigure}{0.48\linewidth}
-    \centering
-    \includegraphics[width=0.5\linewidth]{stylometryExtensions/figures/calibration_expts/mag_dist_2015.png}
-    \end{subfigure} %
-    \caption{Density plots of cosine similarity (left) and magnitude sum (right).}
+    \caption{Density plot for pairwise cosine similarity for authors from the \DSvarydelta{} dataset. 1 corresponds to matching pairs, 0 corresponds to non-matching pairs.}
     \label{fig:calibration:density}
 \end{figure}
+For the authorship attribution task, we would aim to recalibrate the similarity scores for the representations predicted by the model so that the score is a good estimate of the true probability of the event.
+We set up this problem as a binary classification task, sampling a matching pair of episodes (same author) from the query and target, and a fixed number of non-matching pairs (negative samples) for each author.
+For the purpose of this discussion, we set the number of negative samples to 5.
+Figure~\ref{fig:calibration:density} shows the density plot for the pairwise cosine similarity for authors from the \DSvarydelta{} dataset.
+The density plot shows that the scores are separable, but it is not clear if the scores are well-calibrated.
+Thus, the score could be used as a proxy for the confidence of the model in its prediction.
+Other proxies may include the magnitude of the representation~\citep{novoselov2023investigation}, or estimates of error from sampling subsets of windows from an episode.
+In Figure~\ref{fig:calibration:relaibility_2015}, we see that the neither the cosine similarity (cos) nor the magnitude sum (mag) are well-calibrated.
+Using a logistic regression-based recalibration method, we can get a well-calibrated score for the model.
 
-\begin{figure}[h]
+\begin{figure}
     \centering
-    \includegraphics[width=0.5\linewidth]{stylometryExtensions/figures/calibration_expts/calibrate_2015.png}
-    \caption{Reliability diagrams for LUAR 2015 scores.}
+    \includegraphics[width=0.7\linewidth]{stylometryExtensions/figures/calibration_expts/calibrate_2015.png}
+    \caption{Reliability diagram for the LUAR model trained on the \DSvarydelta{} dataset for 2015. The x-axis represents the predicted score, and the y-axis represents the empirical probability of the event. The dashed line represents perfect calibration.}
     \label{fig:calibration:relaibility_2015}
 \end{figure}
 
+\begin{table}[]
+\centering
+\begin{tabular}{lr}
+\toprule
+ ECE  & year \\
+\midrule
+  0.003675 &2015 \\
+  0.003591 &2016 \\
+  0.003645 &2017 \\
+  0.005089 &2018 \\
+  0.007548 &2019 \\
+ \bottomrule
+\end{tabular}
+    \caption{Measuring Temporal degradation of ECE for the recalibrated LUAR model across \DSvarydelta{} splits.}
+    \label{tab:calib:init}
+\end{table}
+
 \begin{figure}
     \centering
-    \includegraphics[width=0.5\linewidth]{stylometryExtensions/figures/calibration_expts/roc_2015.png}
-    \caption{ROC curve for LUAR 2015.}
-    \label{fig:calibration:roc_2015}
-\end{figure}
-
-
-\begin{figure}
-    \centering
-    \includegraphics[width=0.5\linewidth]{stylometryExtensions/figures/calibration_expts/eval_calibration.png}
-    \caption{Evaluating the logistic regression model calibrated on q/t in 2015 across different years.}
+    \includegraphics[width=0.8\linewidth]{stylometryExtensions/figures/calibration_expts/eval_calibration.png}
+    \caption{Plots for the reliability diagrams recalibrated LUAR model across \DSvarydelta{} splits.}
     \label{fig:calibration:reliability_2016_2019}
 \end{figure}
+
+Next, we test whether this calibration displays temporal degradation.
+From Figure~\ref{fig:calibration:reliability_2016_2019} and Table~\ref{tab:calib:init}, we see that the ECE is stable for a longer period but does degrade over a longer time span.
+These initial experiments demonstrate that recalibration can help produce a model with more temporally robust predictions.
+Further future work on recalibration may be able to achieve more robust predictions across different domains and demographics.
+
+\subsubsection{Conformal Prediction}
+In our work on extending runtime monitoring to graph structured data (Chapter~\ref{chp:graphConformal}), we discussed the approach of prediction sets generated through conformal prediction allowing control of the miscoverage rate.
+We speculate that this may be a candidate solution for providing guarantees on the performance of authorship attribution models.
+Notably, unlike the recalibration-based setup that models the task as a binary classification problem, conformal prediction could be a candidate for a more general framework for providing guarantees directly in the retrieval setting.
+
+Specifically, a modified version of Adaptive Prediction Sets~\cite{romano2020classification} could be used to add up the scores associated with the predictions until the coverage is achieved.
+Even if the threshold scores need to be recomputed, using formal guarantees provided by \citep{vovk2005algorithmic}, we can ensure that the coverage achieved is within a certain $\epsilon$ of the desired coverage.
+Further, with the framework of risk control~\cite{angelopoulos2024conformal}, we can provide guarantees on the performance of the model for specific classes of risk functions.
+For the case of retrieval, since we are interested in measures such as recall and MRR.
+In future work, the risk control framework may be a candidate for achieving guaranteed performance for these measures.
+
+%Our empirical results show that recalibration can be used to reduce the impact of these shifts on the performance of these models.
+%However, there are no statistically sound guarantees relating the performance of the model after recalibration.
+%Our success with conformal prediction in aforementioned work motivates us to use it as a tool to provide such guarantees in the context of authorship attribution.
+%In the final direction of proposed future work, we discuss how a conformal prediction-based approach may be used to achieve such guarantees.
+%\DSfixeddelta{}
+%Steps to generate validation split for calibration:
+%\begin{enumerate}
+%    \item Select query/target from one split (We choose LUAR 1-15/12-15).
+%    \item Calculate all pairwise cosine similarities and sum of magnitudes.
+%    \item Sample a subset of users.
+%    \item For each user, create a data point with label 1 and score $ = cos(f(q_{u}), f(t_{u}))$, magnitude $=\norm{f(q_{u})} + \norm{f(t_{u})}$, where $f$ is the LUAR model.
+%    \item In addition, sample $n_{neg} = 5$ negative samples, with label 0 and score $ = cos(f(q_{u}), f(t_{u'}))$, magnitude $=\norm{f(q_{u})} + \norm{f(t_{u'})}$.
+%    \item Make distributional plots for these (Figure~\ref{fig:calibration:density}.
+%    \item Train logistic regression models which takes these (score/mag) as input and predicts the label. Create a reliability diagram for all of these models (Figure~\ref{fig:calibration:relaibility_2015}).
+%    \item Plot the ROC curves corresponding to these models (Figure~\ref{fig:calibration:roc_2015})
+%    \item Create similar reliability diagrams for other splits - marked degradation in calibration - room to improve (FIgure~\ref{fig:calibration:reliability_2016_2019})
+%\end{enumerate}
+
+
+%\begin{figure}[h]
+%    \centering
+%    \begin{subfigure}{0.48\linewidth}
+%    \centering
+%    \includegraphics[width=\linewidth]{stylometryExtensions/figures/calibration_expts/cos_dist_2015.png}
+%    \end{subfigure} %
+%    \begin{subfigure}{0.48\linewidth}
+%    \centering
+%    \includegraphics[width=0.5\linewidth]{stylometryExtensions/figures/calibration_expts/mag_dist_2015.png}
+%    \end{subfigure} %
+%    \caption{Density plots of cosine similarity (left) and magnitude sum (right).}
+%    \label{fig:calibration:density}
+%\end{figure}
+
+%\begin{figure}
+%    \centering
+%    \includegraphics[width=0.5\linewidth]{stylometryExtensions/figures/calibration_expts/roc_2015.png}
+%    \caption{ROC curve for LUAR 2015.}
+%    \label{fig:calibration:roc_2015}
+%\end{figure}
+
+
 
 \begin{comment}
 \begin{figure}
@@ -311,7 +367,7 @@ verified ece & guo ece & em ece & year \\
 \end{figure}
 \end{comment}
 
-\pmComment{TODO: Add a section summarizing conformal idea}
+%\pmComment{TODO: Add a section summarizing conformal idea}
 
 
 %
