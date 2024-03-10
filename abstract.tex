@@ -31,7 +31,6 @@ We construct a novel visualization mechanism that can be used to investigate the
 Our framework requires certain assumptions about the data generating process at run time.
 Following up to this work, we investigate techniques which can help expand probabilistic guarantees under weaker assumptions.
 In particular, the setting of interest to us is one where dependencies between different data points are represented through a (predefined) network structure. We critically analyze the choices made and describe the trade offs associated with existing work in this domain.
-We conclude this direction with a discussion of how these technqiues may be extended to study the fairness of decision-making models trained for graph structured data.
 
 Finally, in our third broad direction, we study the problem of author identification.
 Our work demonstrates that it is possible to appropriately intermingle graph representation learning with textual representations to utilize the orthogonal signals from each and improve Author identification across time-disjoint task settings.
@@ -45,12 +44,12 @@ We conclude this direction with a study of the limitations of the text-based mod
 %For our second direction of work, we study the task of extracting a structured representation of unstructured data in evolving scenarios. 
 
 For the latter two directions, our work has potential extensions, which we discuss in a concluding chapter on future work.
-First, we expand on our work on our theoretical framework on fairness in graph structured data.
-Our theory relies on a specific setting for graph machine learning, but we propose future work towards extending these ideas to study fairness in graph structured data in a more general setting.
 We empirically demonstrate that structure can be used to improve the author identification even with large scale datasets.
 We provide concrete architectural suggestions that may be used to train models that utilize both the structure and content of large datasets.
-Secondly, we propose potential extensions of our ideas proposed in the work on fairness auditing.
-We focus on settings involving data drift inductive prediction on graphs.
+Secondly, we propose potential extensions of our ideas proposed in the work on fairness monitoring.
+We expand on our work on our theoretical framework for conformal prediction on graphs to fairness in graph structured data.
+%Our theory relies on a specific setting for graph machine learning, but we propose future work towards extending these ideas to study fairness in graph structured data in a more general setting.
+%We focus on settings involving data drift inductive prediction on graphs.
 Finally, based on the observed limitations on the robustness of author identification models, we propose extensions of ideas explored in our work on temporal robustness that may be used to provide bounds on the generalization capabilities of these models.
 
 \endinput

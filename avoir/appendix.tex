@@ -181,12 +181,12 @@ From $\rm{INFER}$, we have
 \end{equation}
 \begin{align*}
      \Pr[&\exists t \geq 1, b_k \not\in \hat{b}_k(T)]\\
-        &\leq \Pr\left[\bigcup\limits_{i = 1}^{D} \exists t \geq 1,  \neg \phi_{X_{k_i}}^t \right]  \text{ (From \ref{eqn:conf-seq:compound:inf2})} \\
-      &\leq \sum\limits_{i\in \etB_k}\Pr\left[\exists t \geq 1, \neg \phi^t_{X_{k_i}}\right]  \text{ (union bound)} \\
+        &\leq \Pr\left[\bigcup\limits_{i = 1}^{D} \exists t \geq 1,  \neg \phi_{X_{k_i}}^t \right]  & \text{ (From \ref{eqn:conf-seq:compound:inf2})} \\
+      &\leq \sum\limits_{i\in \etB_k}\Pr\left[\exists t \geq 1, \neg \phi^t_{X_{k_i}}\right]  & \text{ (union bound)} \\
       &= \sum\limits_{i\in \etB_j}\Pr\left[\exists t \geq 1, |\BarE_t[X_{k_i}] - \E_t[X_{k_i}| > \epsilon_{X_{k_i}}(t)\right]  \\
       %& \text{(definition of $\phi^t_{X_{k_i}}$ )} \\
-      &\leq \sum\limits_{i\in \etB_j} \delta_{X_{k_i}} \text{(elementary subexpressions)} \\
-      &\leq \delta_{\psi_k}  \text{ (applying \ref{eqn:conf-seq:compound:inf1} for $t = \gT$)}
+      &\leq \sum\limits_{i\in \etB_j} \delta_{X_{k_i}} & \text{(elementary subexpressions)} \\
+      &\leq \delta_{\psi_k}  & \text{ (applying \ref{eqn:conf-seq:compound:inf1} for $t = \gT$)}
 \end{align*}
 Thus, $b_{\psi_k}(t)$ is a $1-\delta_{\psi_k}$ confidence sequence for $b_{\psi_k}$
 
@@ -259,5 +259,84 @@ Note that in their python implementation, $=$ would be replaced by \lstinline{==
     \item[$c$:] A threshold to test the specification. For ratios based approximations, this would be a number $1 \pm \eps$ for some small $\eps > 0$. For difference based approxiamtions, this number would be some small $\eps > 0$. When multiple terms are present, we use $c_i$ to denote the $i^{\text{th}}$ threshold.
 \end{itemize}
 \end{comment}
+
+\section{Implementation Details}
+We built a python library to create specifications that can be implemented as a decorator over decision functions. 
+The front end interactive application was implemented using streamlit\footnote{https://streamlit.io/} and the visualizations were built in Vega~\cite{satyanarayan2015reactive}.
+Each term in the DSL is implemented through a corresponding python class.
+New input/output observations are monitored to update all the terms in a specification.
+Inference for evaluating the value and bounds is carried out via operator overloading in these classes. 
+%This is fairly straightforward.
+In line with previous work~\citep{albarghouthi2017fairsquare,bastani2019probabilistic,albarghouthi2019fairness} on distributional verification, we use rejection sampling for conditional probability estimation.
+%In the remainder of this section, we describe how how each of these components are implemented. Further, we describe the process for computing point estimates and probabilistic confidence intervals for the values computed for different terms within the spec.
+
+
+
+% Typical fairness constraints require 
+%Figure~\ref{fig:grammar} describes the final grammar of our specification DSL.
+
+\subsection{Visual Analysis}
+\label{sec:implementation:vis}
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth, angle=90]{avoir/images/adult-spec-tree-initial.png}
+    \caption{Tree corresponding to the initial specification for the Adult Income dataset.}
+    \label{fig:impl:adult:initial-spec}
+\end{figure}
+
+Using our specification framework as a backend, we built an interactive application for analysis and refinement of specifications provided in our grammar.
+Given a user provided machine learning model, dataset, and specification the application simulates a stream of observations to the provided model.
+Following the simulation, a visualization is provided that represents the specification as a syntax tree where each node of the tree corresponds to an element of our grammar.
+Figure \ref{fig:impl:adult:initial-spec} shows the visualization.
+
+Note that for each observation made by our machine learning model, the specification is evaluated to check for violations.
+Each grammar element that makes up the specification is evaluated as well, and thus each grammar element is associated with the value it evaluates to for a given observation.
+For specifications \texttt{<spec>}, there is a boolean value associated with each observation, whereas an expectation term, \texttt{<ETerm>}, is associated with a real value.
+By selecting one of the nodes in the syntax tree, a user can see a plot of the evaluation values associated with the selected grammar element.
+We call these plots evaluation plots and two can be observed at a time 
+%(see the plots on the right of figure \ref{fig:casestudy:boston}),
+each with shared scales along the horizontal axis which denotes observations over time.
+This allows for comparison of multiple grammar elements.
+The ability to analyze and compare these evaluation values provides context surrounding specification violations, and assists the user in deciding how to refine a specification.
+The case studies in section \ref{sec:casestudy} demonstrate the usefulness of the context provided by these visualizations.
+
+The app for interaction with the backend is built using streamlit. It proceeds in multiple stages,
+\begin{enumerate}
+    \item First, a user selects a dataset of interest. We built support for four datasets, but our framework is generic enough for any arbitrary csv dataset.
+    \item Following this choice, the input variables and output variable for a machine learning model must be specified.
+    \item A machine learing model is then selected from a dropdown. We provide support for three models. However, this is for demonstration purposes only - the specification is agnostic to the choice of a machine learning model.
+    \item Finally, a specification is input by the user of the app. On the press of a button, the model is trained and then evaluated on the selected dataset. The output monitored by the spec is passed off to the Vega module for further analysis.
+\end{enumerate}
+
+\section{AVOIR in Database Setting}
+
+\begin{comment}
+\begin{table}
+    \centering
+    \caption{A summary of the results from the case studies.}
+    \label{tab:casestudy:summary}
+    \begin{tabular}{ccc}
+    \toprule
+         Dataset & Setting & Improvement over~\cite{bastani2019probabilistic}  \\
+         \midrule
+         Adult Income & Database & $10.35\%$ \\
+         COMPAS & Materialized View & Interaction\\
+         Rate my Profs & ML - BERT & $2.5\%$ \\
+         \bottomrule
+    \end{tabular}
+
+\end{table}
+\end{comment}
+
+In the database literature researchers~\cite{nargesian21tailoring}, have explored an approach to tailoring data integration strategies to ensure that the data set used for analysis has an appropriate representation of relevant (demographic) groups and it meets desired distribution requirements. The authors describe how to acquire such data in an approximate cost-optimal manner for several realistic settings. This work is orthogonal to our work and yet AVOIR can potentially integrate with the authors approach to examine if fairness criteria are being met during the integration process. In other studies on fairness researchers~\cite{yang2018nutritional,asudeh19a,asudeh19b}, have considered the problem of personalized fair ranking functions and discuss approaches to determine if a proposed ranking function satisfies a set of  desired fairness criteria and, if it does not, to suggest modifications that do. AVOIR attempts to solve a  more general purpose problem (not limited to any particular fairness criteria) and is agnostic to the specific model (treats it as a blackbox).  While we have not examined the performance of AVOIR for fair ranking problems, it is something we plan to examine in the future.
+
+To demonstrate how \AVOIRmethodname{} can be integrated within a database system
+we use pandas\footnote{https://pandas.pydata.org/} dataframes to simulate the application of \AVOIRmethodname{} in the database setting. 
+Specifically, we wrap pandas dataframes with a python `Database' class, and provide a query mechanism to create materialized views.
+Queries are provided in the form of python functions that take a dataframe as input and output a corresponding dataframe.
+The corresponding view thus generated can be updated with insertion/update/deletion of data.
+The specification is added as a decorator inside the refresh function, allowing \AVOIRmethodname{} to track specifications in a database setting.
+Note that this tie-in with pandas is only for ease of implementation; the inference engine and optimization can be extended to any database engine.
+
 
 \end{subappendices}

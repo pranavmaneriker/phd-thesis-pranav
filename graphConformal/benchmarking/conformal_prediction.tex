@@ -6,7 +6,6 @@ Given a calibration dataset $\gD_{\text{calib}} = \{(\vx_i, y_i)\}_{i=1}^n$, whe
 \end{align*}
 where $1 - \alpha \in [0, 1]$ is a user-specified coverage level.
 The only assumption required for the coverage guarantee is that $\gD_{\text{calib}} \cup \{(\vx_{n+1}, y_{n+1})\}$ is exchangeable.
-
 The following theorem provides a general recipe for constructing a prediction set with coverage guarantee.
 \begin{theorem}[\citet{vovk2005algorithmic}]
     Suppose $\{(\vx_i, y_i)\}_{i=1}^{n+1}$ are exchangeable, $s: \gX \times \gY \rightarrow \R$ is a score function, and $\alpha \in [0, 1]$ is a target significance level.

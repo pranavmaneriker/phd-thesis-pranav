@@ -9,11 +9,10 @@ Graph Neural Networks (GNNs) have been developed to model vector representations
 Uncertainty quantification approaches built for independent and identically distributed (iid) data cannot directly be applied to graph data, as the network structure introduces dependencies between the data points.
 However, recent work~\citep{clarkson2023distribution,zargarbashi23conformal,huang2024uncertainty} has demonstrated that in certain settings, CP can be applied to graph data to generate statistically sound prediction sets for the node classification task.
 
-Variations of CP include full CP~\citep{vovk2005algorithmic} which has significant computational cost as the score function requires recomputation with replacement for each data point within the calibration set.
- Additionally, cross-conformal prediction~\citep{vovk2015cross}, CV+/Jackknife+~\citep{barber2021predictive} are other variations of CP which are computationally more efficient than full CP, but less efficient than split CP.
- Prior work in CP on graphs has mainly focused on the split CP setting due to its computational efficiency, ease of implementation, and distribution-free guarantees with black-box models. 
- Thus, we focus on split CP in this work.
-
-Owing to the recent nature of this work, there is a lack of consensus for the choice and setup of baselines, splitting of common datasets, and evaluation metrics for methods.
+Variations of CP include full CP~\citep{vovk2005algorithmic} which has significant computational cost as the score function must be recomputed with replacement for each data point within the calibration set.
+Additionally, cross-conformal prediction~\citep{vovk2015cross}, CV+/Jackknife+~\citep{barber2021predictive} are other variations of CP which are computationally more efficient than full CP, but less efficient than split CP.
+Prior work in CP on graphs has mainly focused on the split CP setting due to its computational efficiency, ease of implementation, and distribution-free guarantees with black-box models. 
+We focus on split CP in this work.
+There is a lack of consensus for the choice and setup of baselines, splitting of common datasets, and evaluation metrics for methods.
 In this work, we aim to analyze the choices made by existing work and understand the trade offs associated with these choices.
-In addition, we create a python library which implements different variations of these approaches which would help standardize practices in the evaluation of CP for graph data.
+%In addition, we create a python library which implements different variations of these approaches which would help standardize practices in the evaluation of CP for graph data.

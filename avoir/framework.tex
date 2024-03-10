@@ -296,13 +296,12 @@ the values inferred at $t$, using the inference rules $\rm{INFER}$.
 \pmComment{fix alignment for proof}
 Now,
 \begin{align*}
-    \Pr[&\exists t \geq 1, |\E[C_j] - \BarE[C_j]| > \eps_{C_j}(t)]\\
-        &\leq \Pr\left[\bigcup\limits_{i = 1}^{M} \exists t \geq 1,  \neg \phi_{X_{j_i}}^t \right]  \text{ (\cref{eqn:conf-seq:compound:inf1})} \\
-      &\leq \sum\limits_{i\in \rmC_j}\Pr\left[\exists t \geq 1, \neg \phi^t_{X_{j_i}}\right]  \text{ (union bound)} \\
-      &= \sum\limits_{i\in \rmC_j}\Pr\left[\exists t \geq 1, |\BarE_t[X_{j_i}] - \E_t[X_{j_i}| > \epsilon_{X_{j_i}}(t)\right] \\
-      &\text{(definition of $\phi^t_{X_{j_i}}$ )} \\
-      &\leq \sum\limits_{i\in \rmC_j} \delta_{X_{j_i}}  \text{ (elementary subexpressions)} \\
-      &\leq \delta_{C_j} \text{ (\cref{eqn:conf-seq:compound:inf1} at $t = \gT$)}
+    \Pr[&\exists t \geq 1, |\E[C_j] - \BarE[C_j]| > \eps_{C_j}(t)] & \\
+        &\leq \Pr\left[\bigcup\limits_{i = 1}^{M} \exists t \geq 1,  \neg \phi_{X_{j_i}}^t \right] & \text{ (\cref{eqn:conf-seq:compound:inf1})} \\
+      &\leq \sum\limits_{i\in \rmC_j}\Pr\left[\exists t \geq 1, \neg \phi^t_{X_{j_i}}\right]  & \text{ (union bound)} \\
+      &= \sum\limits_{i\in \rmC_j}\Pr\left[\exists t \geq 1, |\BarE_t[X_{j_i}] - \E_t[X_{j_i}| > \epsilon_{X_{j_i}}(t)\right] &\text{(definition of $\phi^t_{X_{j_i}}$ )} \\
+      &\leq \sum\limits_{i\in \rmC_j} \delta_{X_{j_i}} &  \text{ (elementary subexpressions)} \\
+      &\leq \delta_{C_j} & \text{ (\cref{eqn:conf-seq:compound:inf1} at $t = \gT$)}
 \end{align*}
 Therefore $\eps_{C_j}(t)$ defines a $1 - \delta_{C_j}$ confidence sequence for $\E[C_j]$
 A similar proof can be constructed for any \texttt{<spec>} (\cref{sec:thm:conf-seq:proof:contd}).
