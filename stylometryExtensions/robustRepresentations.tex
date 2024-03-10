@@ -42,7 +42,7 @@ Specifically, we selected query/target temporal pairs with a fixed time differen
 Suppose the queries span time period $(Q_{\rm{start}}, Q_{\rm{end}}) = (q_1, q_2)$ and the targets span $(T_{\rm{start}}, T_{\rm{end}}) = (t_1, t_2)$.
 We ensured that $\Delta_\tau = q_2 - t_2$ was similar across all datasets. 
 However, we varied $q_1$ to obtain multiple, non-overlapping datasets.
-We chose queries from January 2015 to January 2019 (5 query sets, each one month long) and targets from December 2015 to December 2018 and October 2019 with$p_{\rm{min}} = 16, p_{\rm{max}} = 2000$ with a set of 50k users sampled for each query-target pair.
+We chose queries from January 2015 to January 2019 (5 query sets, each one month long) and targets from December 2015 to December 2018 and October 2019 with $p_{\rm{min}} = 16, p_{\rm{max}} = 2000$ with a set of 50k users sampled for each query-target pair.
 In the following texts, we refer to these datasets as \DSfixeddelta{}.
 A degradation in performance of author identification models over \DSfixeddelta{} would suggest that model estimation is not stable to temporal data shifts, and that the model would need to be retrained to maintain performance over time.
 For the second dataset, we selected a single, fixed query split and multiple target splits. 
@@ -105,7 +105,7 @@ Note that the age in the data was adjusted to reflect the age of the user in Jan
 In addition to constructing query/target pairs with a fixed $T_{start} - Q_{start} = 1~\rm{month}$, we can additionally consider all possible pairs of query/target from the splits collected for creating the DemographicReddit datasets.
 These pairs correspond to $\Perm{5}{2} = 20$ query/target pairs.
 The two corresponding demographic datasets are labeled \DSagevary{} and \DSgendervary{} for age and gender, respectively.
-\pmcomment{TODO}
+%\pmcomment{TODO}
 
 \subsection{Experiments}\
 
@@ -170,7 +170,7 @@ We train logistic regression classifiers on the LUAR, SBERT, and STEL representa
 %\end{tabular}
 \begin{tabular}{lrrrrrr}
     \toprule
-method & OS & TFS & TFT & SBERT & STEL & LUAR \\
+method & CS & TFS & TFT & SBERT & STEL & LUAR \\
 Q/T &  &  &  &  &  &  \\
 \midrule
 15-1/15-12 & 0.237 & 0.260 & 0.192 & 0.232 & 0.135 & 0.779 \\
@@ -194,11 +194,11 @@ Thus, for a consistent query-target time difference, LUAR is able to maintain a 
 %\pmComment{Need better presentation option for this}
 
 % TODO: At least make this a faceted plot 
-\begin{figure}[h]
+\begin{figure}[ht]
     \centering
     \begin{subfigure}{0.48\linewidth}
     \includegraphics[width=\linewidth]{stylometryExtensions/figures/heat/os.png}
-    \caption{OS}
+    \caption{CS}
     \label{fig:tempral_vary:os}
     \end{subfigure}
     \begin{subfigure}{0.48\linewidth}
@@ -234,46 +234,78 @@ Thus, for a consistent query-target time difference, LUAR is able to maintain a 
     \label{fig:temporal_vary}
 \end{figure}
 
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6\textwidth]{stylometryExtensions/figures/luar_degradation.png}
+    \caption{Target results for the earliest query split (15-1). We compare normalized recall@8 across all methods for \DSvarydelta{}.}
+    \label{fig:temporal_vary:line}
+\end{figure}
 Next, using \DSvarydelta{} we consider temporal variation across a fixed set of users across time.
+Figure~\ref{fig:temporal_vary} shows heatmaps for the recall@8 results for each model across different query/target time periods for a fixed set of authors.
+We see that across all the methods, there is a temporal degradation in performance, which could potentially be caused by temporally evolving styles (STEL), topics of interest (Count/TFIDF) based results or semantics (SBERT).
+However, from Figure~\ref{fig:temporal_vary:line}, we see that when normalized for diagnal, degradation in performance is the least for LUAR.
+This indicates that the author representation features captured by LUAR are more stable across time compared to the other models.
 
-\subsubsection{Demographics}
-Figure~\ref{fig:demographic_fixed:age} shows the recall@8 results for age... 
-We note that all models consistently underperform on (self-identified) teenage users.
-
+\subsubsection{DemographicReddit}
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.48\linewidth]{stylometryExtensions/figures/demo/fixeddelta_demographics_age.png}
-    \includegraphics[width=0.48\linewidth]{stylometryExtensions/figures/demo/fixeddelta_demographics_age_groupwise.png}
-    \caption{Overall results on \DSagefixed{} (top), and split by age group (bottom). }
+    %\includegraphics[width=0.48\linewidth]{stylometryExtensions/figures/demo/fixeddelta_demographics_age.png}
+    \includegraphics[width=0.6\textwidth]{stylometryExtensions/figures/demo/fixeddelta_demographics_age_groupwise.png}
+    \caption{Overall results on \DSagefixed{} split by age group. }
     \label{fig:demographic_fixed:age}
 \end{figure}
-
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.48\linewidth]{stylometryExtensions/figures/demo/fixeddelta_demographics_gender.png}
-    \includegraphics[width=0.48\linewidth]{stylometryExtensions/figures/demo/fixeddelta_demographics_gender_groupwise.png}
-    \caption{Overall results on \DSgenderfixed{} (top), and split by each group (bottom). We note that all models consistenly underperform on (self-identified) female users.}
+    %\includegraphics[width=0.48\linewidth]{stylometryExtensions/figures/demo/fixeddelta_demographics_gender.png}
+    \includegraphics[width=0.6\textwidth]{stylometryExtensions/figures/demo/fixeddelta_demographics_gender_groupwise.png}
+    \caption{Overall results on \DSgenderfixed{} split by each group (bottom).}
     \label{fig:demographic_fixed:gender}
 \end{figure}
+First, we consider the results for the demographic splits controlled for temporal variation.
+Figure~\ref{fig:demographic_fixed:age} shows the recall@8 results for age groups across different models on \DSagefixed{}.
+We note that all models consistently underperform on (self-identified) teenage users.
+Further, from Figure~\ref{fig:demographic_fixed:gender}, we note that all models consistently underperform on (self-identified) female users.
 
-\pmComment{separate these plots}
 \begin{figure}[h]
     \centering
-    \includegraphics[height=0.8\textheight]{stylometryExtensions/figures/demo/varydelta_demographic_groupwise_age.png}
-    \caption{Overall results on \DSagevary{}. We note that across all $|T_{\rm{start}} - Q_{\rm{start}}|$ and all models, teenage users are consistenly the least identifiable.}
+    \includegraphics[width=0.6\textwidth]{stylometryExtensions/figures/demo/varydelta_demographic_groupwise_age.png}
+    \caption{Overall results on \DSagevary{}. The x-axis denotes the absolute difference in the query and target start time, i.e., $|T_{\rm{start}} - Q_{\rm{start}}|$ .}
     \label{fig:demographic_vary:age}
 \end{figure}
 
 \begin{figure}[h]
     \centering
-    \includegraphics[height=0.8\textheight]{stylometryExtensions/figures/demo/varydelta_demographic_groupwise_gender.png}
-    \caption{Overall results on \DSgendervary{}. We note that across all $|T_{\rm{start}} - Q_{\rm{start}}|$ and all models, female users are consistenly the least identifiable.}
+    \includegraphics[height=0.6\textwidth]{stylometryExtensions/figures/demo/varydelta_demographic_groupwise_gender.png}
+    \caption{Overall results on \DSgendervary{}. The x-axis denotes the absolute difference in the query and target start time, i.e., $|T_{\rm{start}} - Q_{\rm{start}}|$. }
     \label{fig:demographic_vary:gender}
 \end{figure}
 
-\subsubsection{Robustness}
+Next, we consider \DSagevary{} and \DSgendervary{}.
+We focus on LUAR, as it is the best performing model across all the datasets.
+The results from Figure~\ref{fig:demographic_vary:age} that across all $|T_{\rm{start}} - Q_{\rm{start}}|$, (self-identified) teenage authors are consistently the least identifiable.
+Further, from Figure~\ref{fig:demographic_vary:gender}, We note that across all $|T_{\rm{start}} - Q_{\rm{start}}|$ and all models, authors self identifying as female are consistently the least identifiable.
 
-\pmComment{Uncomment below for probing results}
+
+\subsubsection{Analysis}
+From the results with TemporalReddit, we can conclude that model estimation is unlikely to be a cause for the degradation in performance over time.
+However, changing author interests and writing styles do contribute to the degradation in performance.
+Drilling down into the specifics, we find that the degradation in performance is more significant for certain groups, notably younger authors and female authors.
+Our results support our hypothesis that author representations encode systematic biases with respect to demographics. 
+These biases get further exacerbated across time.
+Care must be taken when deploying authorship attribution models in forensic applications, as the models may suffer from higher error rates and potential negative outcomes, such as false attributions, for certain the aforementioned groups.
+
+
+\subsection{Limitations}
+\citet{tigunova2020reddust} carefully extracted self-identified demographic traits while excluding posts made by users on subreddits involving gamin/roleplaying as authors tend to adopt different personas in such subreddits.
+However, our analysis presupposes the correctness of their demographic extraction process.
+The demographic traits are self-identified, and there is no way to verify the accuracy of these traits.
+This limitation must be noted when interpreting the results from the TemporalReddit and DemographicReddit datasets.
+
+
+
+%\subsubsection{Robustness}
+
+%\pmComment{Uncomment below for probing results}
 \begin{comment}
 \subsubsection{Probing Classifier}
 Two possible stories to explain the probing classifier results:
