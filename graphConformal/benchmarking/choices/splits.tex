@@ -1,0 +1,12 @@
+
+ A base model $\pi: \gX \to \Delta_{\gY}$, where $\Delta_{\gY}$ is the probability simplex over the elements of $\gY$, is learned using the training and validation sets $\parens{\gD_{\text{train}}}$ and $\parens{\gD_{\text{valid}}}$. The calibration set $\parens{\gD_{\text{calib}}}$ is used to determine the $\hat{q}(\alpha)$ from Theorem \ref{thm:CP:coverage} and the test set $\parens{\gD_{\text{test}}}$ is the set for which we want to compute our prediction sets.
+There are several different methods of partitioning the data to get these different sets. Two methods which are used in other works on graph conformal prediction for classification are (1) full-split paritioning~\cite{huang2024uncertainty} and (2) label-based sample partitioning~\cite{zargarbashi23conformal}.
+%\avcomment{Add citations for methods that use each one} %These methods originate from works that consider the classification task in either a supervised or semi-supervised setting, respectively.
+ 
+\noindent \textbf{Full-Split Paritioning}
+In such a case, the choice of data split can be done such that each subset of the parition adheres to a size constraint. For example, in CF-GNN \cite{huang2024uncertainty} the authors split the datasets in their experiments randomly, but adhering to a $20/10/70$ split of $\gD_{\text{train}}, \gD_{\text{valid}},$ and $\gD_{\text{calib}}\cup \gD_{\text{test}}$....
+
+\noindent \textbf{Label-Based Sample Paritioning}
+In the case of 
+
+Suppose all of the labeling information is not given. This can be the case if the GNN is trained through semi-supervised learning or if an inductive learning setting is simulated....
