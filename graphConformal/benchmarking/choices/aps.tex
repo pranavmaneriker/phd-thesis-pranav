@@ -13,9 +13,10 @@ Then the corresponding prediction set, $C_\alpha^{\text{or}}(\vx)$ can be constr
 \]
 where $\text{or}$ indicates the usage of the oracle probability.
 It is possible to construct tighter prediction sets in a randomized fashion using an additional uniform random variable $u \sim \text{Uniform}(0, 1)$ as a parameter to construct a generalized inverse. 
-This idea draws upon the idea of uniformly most powerful tests in the Neyman-Pearson lemma for level-$\alpha$ sets.\pmcomment{cite, potentially link to Karlin-Rubin}. 
+This idea draws upon the idea of uniformly most powerful tests in the Neyman-Pearson lemma for level-$\alpha$ sets.
+%\pmcomment{cite, potentially link to Karlin-Rubin}. 
 Define
-\pmcomment{$\leq$ vs $<$ and its effect on proof}
+%\pmcomment{$\leq$ vs $<$ and its effect on proof}
 \begin{align}
     S(\vx, u; \pi, \tau) = \begin{cases}
         \{y \in \gY: \pi_y(\vx) > \pi_{(L(\vx; \pi, \tau))}(\vx)\} & u < V(\vx; \pi, \tau) \\
@@ -91,7 +92,7 @@ From the definition of $C_A^i$
 %\[
 %    \alpha_c = \min\left\{\alpha \in [0, 1] : \hat{q}_A \leq \text{Quantile}\left( \frac{\ceil{(n+1)(1 - \alpha)}}{n}; \{A(\vx_i, y'_i, u_i; \hat{\pi})\}_{i=1}^n \right)\right\}
 %\]    
-\pmcomment{Such an $\alpha$ may not exist.}
+%\pmcomment{Such an $\alpha$ may not exist.}
 We have
 \begin{align*}
     \E\left[|C_{A}^{n+1}|\right] &= \E\left[\sum\limits_{i=1, 2}\1[i \in C_{A}^{n+1})]\right] \\

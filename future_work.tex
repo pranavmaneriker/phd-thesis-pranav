@@ -180,9 +180,11 @@ The standard formulation for conformal prediction (Theorem~\ref{thm:CP:coverage}
 However, when dealing with fairness, we may want to reason over guarantees over other expressions that involve the inputs, labels, and predictions.
 Such guarantees can be considered as a form of thresholded risk Control.
 In the conformal setting, the Learn Then Test~\citep{angelopoulos2021learn} and conformal risk control~\citep{angelopoulos2024conformal} frameworks provide a way to control for model risks for specific classes of risk functions.
-In the following sections, we first describe each of these frameworks and their limitations, and then provide a mechanism to construct fairness guarantees using risk control over different population subgroups.
+However, the Learn Then Test framework requires an IID assumption over the calibration data.
+Therefore, in the following section, we will describe how conformal risk control can be used for providing fairness guarantees.
+%first describe each of these frameworks and their limitations, and then provide a mechanism to construct fairness guarantees using risk control over different population subgroups.
 Note that we will describe the split CP version of each of these frameworks.
-
+\begin{comment}
 \subsection{Learn Then Test for Risk Control}
 The exposition in this section follows the definitions from~\citet{angelopoulos2021learn}.
 Given an i.i.d calibration set $\gD_{\text{calib}} = \braces{(\vx_i, y_i)}_{i=1}^n$,
@@ -237,8 +239,63 @@ A LTT-based approach would produce statistical guarantees for a fixed calibratio
 
 \subsection{Conformal Risk Control}
 %\input{graphConformal/fairness/conformal_risk_control}
+\end{comment}
 
-\subsection{Risk Control for Fairness}
+\subsection{Conformal Risk Control}
+
+First, we define the framework of conformal risk control~\citep{angelopoulos2024conformal}.
+We start from a calibration set $\gD_{\text{calib}} = \braces{(\vx_i, y_i)}_{i=1}^n$,
+with exchangeability assumed for $\gD_{\text{calib}} \cup \braces{(X_{n+1}, Y_{n+1})}$.
+We have feature vectors $X_i \in \gX$ and labels/outcomes $Y_i \in \gY$. % and a 
+The guarantee provided by conformal prediction sets $C$ relates to miscoverage
+\[
+        \Pr\left[Y_{n+1} \not\in C(X_{n+1})\right] \leq \alpha
+\]
+Instead, consider any bounded loss function $L$ that is monotonically non-increasing with the increasing size of $C(X_{n+1})$.
+Examples of such functions include accuracy, F1-score, and false negative rate.
+Conformal Risk Control provides a mechanism to construct prediction sets $C$ that provide guarantees over a bounded loss function $L \in (-\infty, B]$:
+\[
+    \E\left[L(C(X_{n+1}), Y_{n+1})\right] \leq \alpha
+\]
+Suppose we have a trained model $\hat{f}: \gX \rightarrow \gZ$, where $\gZ$ is the space of raw model outputs which is used to create a function $C_\lambda(.)$ that constructs prediction sets for a given $\lambda$.
+Where larger $\lambda$ correspond to more conservative prediction sets.
+For example, for the TPS method discussed in Chapter~\ref{chp:graphConformal}, this would be $C_\lambda(X) = \braces{y: 1 - \hat{f}(X)_y \leq \lambda}$.
+Conformal risk control provides a threshold $\hat{\lambda}$ such that $E[C_{\hat{\lambda}}] \leq \alpha$ for a given $\alpha < B$
+
+\subsection{Fairness through Conformal Risk Control}
+We can use conformal risk control to modify the outputs of a model to provide guarantees on any monotone loss function.
+We provide one example below, constructing a guarantee for an expression capturing predictive parity. 
+
+We will build a risk control guarantee for a predictive parity like term.
+Consider a binary classification task where the label $y_1$ corresponds to acceptance and $y_0$ corresponds to rejection.
+Consider two groups $g_0$ and $g_1$.
+Define 
+\[
+    L_i(C_{\lambda_i}(X), Y) = \1[y_1 \not\in C_{\lambda_i}(X) \cap X \in g_i], i = 0, 1
+\]
+This loss function captures the points where the prediction set excludes acceptance for each group.
+With increasing $\lambda$, $C_\lambda$ will include additional classes.
+The possible values of $C_\lambda(X)$ as $\lambda$ increases, if the acceptance class $y_1$ has higher score would be $\braces{\emptyset}, \braces{y_0}, \braces{y_0, y_1}$, which corresponds to loss values of $1, 1, 0$ respectively.
+If the rejection class $y_0$ has a higher score, the possible values would be $\braces{\emptyset}, \braces{y_1}, \braces{y_0, y_1}$, which corresponds to loss values of $1, 0, 0$ respectively.
+In both cases, the loss function is monotonically non-increasing with the size of the prediction set.
+Thus we can use conformal risk control over this set.
+From risk control, we would get 
+\[
+    \hat{\lambda_0} : E[L_0(C_{\hat{\lambda_0}}(X), Y)] \leq \alpha_0
+\]
+and 
+\[
+    \hat{\lambda_1} : E[L_1(C_{\hat{\lambda_1}}(X), Y)] \leq \alpha_1
+\]
+Since $L$ is an indicator function, these guarantees corresponds to $\Pr[y_1 \not\in C_{\hat{\lambda}_i}(X) \cap X \in g_i] \leq \alpha_i$.
+From this risk control and monotonicity of $L$, we can set $\hat{\lambda} = \max\{\hat{\lambda}_1, \hat{\lambda}_2\}$, and can provide a predictive parity-like guarantee for the model:
+\[
+    -\alpha_1 \leq \Pr[y_1 \not\in C_{\hat{\lambda}}(X) \cap X \in g_0] - \Pr[y_1 \not\in C_{\hat{\lambda}}(X) \cap X \in g_1] \leq \alpha_0
+\]
+Thus, given a calibration set and required thresholds $\alpha_0, \alpha_1$, we can use conformal risk control prediction sets to provide a fairness guarantee for the outputs produced by any black-box model.
+
+This example shows the utility of conformal risk control to provide fair predictions.
+We leave the exploration of the full gamut of fairness definitions and possible loss functions as future work
 
 \begin{comment}
 
@@ -277,7 +334,7 @@ We will also contrast our setup against alternative fairness auditing mechanisms
 \section{Towards More Robust Stylometry}
 
 In chapters~\ref{chp:sysml} and~\ref{chp:stylometry_extensions}, we study the robustness of authorship attribution models across time and domains.
-The methods we propose in chapter~\ref*{sysml} require retraining a model with additional context provided from graph-based representations.
+The methods we propose in chapter~\ref*{chp:sysml} require retraining a model with additional context provided from graph-based representations.
 As seen in chapter~\ref*{chp:stylometry_extensions}, the representations learned by models trained on one domain do not always generalize well to other domains, or even within the same domain.
 The robustness of these models across time and demographics varies.
 We propose two potential directions of future work that are aimed at building more robust authorship attribution models viz. \emph{recalibration} and \emph{conformal prediction}.
