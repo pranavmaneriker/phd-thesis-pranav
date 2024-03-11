@@ -1,12 +1,48 @@
 The usual tasks of interest in graph data are node classification, link prediction, and graph classification. 
-In this work, we focus on the usage of node classification and its extensions to conformal prediction.
-\subsection{Node Classification in Graphs}
+In this work, we focus on node classification and its extensions to conformal prediction.
 Consider an attributed homogeneous graph $\gG = (\gV, \gE, \mX)$, where $\gV$ is the set of nodes, $\gE$ is the set of edges and $\mX$ is the set of node attributes.
-Let $\gY = \{1, \dots, K\}$ denote set of class labels associated.
+Let $\mA$ denote the adjacency matrix for the graph.
+Further, let $\gY = \{1, \dots, K\}$ denote set of class labels associated with the nodes.
 For $v \in \gV$, $\vx_v \in \R^d$ denotes the features and $y_v \in \{1, \dots, K\}$ denotes the corresponding class label.
-\pmcomment{Exchangeability for transductive, and potential for inductive}
+The task of node classification is to learn a model $F: \gX \to Y$ which predicts the label for each node given node features as input.
+Corresponding to the CP partitions, we denote the nodes in the training set as $\gV_{\text{train}}$, validation set as $\gV_{\text{valid}}$, calibration set as $\gV_{\text{calib}}$, and test set as $\gV_{\text{test}}$.
+We denote $\gV_d = \gV_{\text{train}} \cup \gV_{\text{valid}}$ 
+as the development set of the base model (non-conformalized). 
+Note that labels are available only for nodes in the train, validation and calibration sets, and must be predicted for the test set.
+Next, we discuss the different settings for node classificaiton in graphs and the applicability of conformal prediction.
 
-\subsection{Conformal Prediction for Node Classification}
-Let $f: \gX \to \R_K$ denote the class wise scores associated with a  model trained on a separate split of the data ($\gD_{\text{train}}$).
-For example, these could be the pre-final output layer of a neural network (either before or after softmax normalization).
-and a trained model with classwise prediction the goal is to learn a model $\pi: \gX \to \Delta_K$, where $\Delta_K$ is the $K$-dimensional probability simplex.
+\noindent \textbf{Transductive setting}
+In this setting, the model has access to the fixed graph $\gG$ during training, validation, calibration, and testing.
+However, the labels associated with the test nodes $\gD_{\text{test}}$ are unknown. 
+%We assume that $\gV_{\text{test}} \cap \gV_{\text{calib}}$ are exchangeable.
+We designate a fixed set of nodes disjoint from the training and validation set as  $\gV_{\text{test}} \cap gV_{\text{calib}}$ and then randomly sample nodes from this set to form $\gV_{\text{calib}}$ and $\gV_{\text{test}}$.
+This is the setting considered in~\citet{zargarbashi23conformal} and~\citet{huang2024uncertainty}.
+Note that the labels for the calibration nodes are not available during training/validation, though the neighborhood information $(\gV, \gE)$ and the features $\vx_v$ and labels $y_v$, $v \in \gV_d$ are available.
+During the calibration phase, the features and labels for the calibration nodes, along with the neighborhood information, are used to compute the non-conformity scores.
+This split ensures that the base model cannot distinguish between the calibration and test nodes, and hence exchangeability holds for $v \in \gV_{\text{calib}}$ and $\gV_{\text{test}}$.
+
+\noindent \textbf{Inductive setting}
+We briefly describe the inductive setting and note that the exchangeability assumption will be violated in this setting.
+The base model is provided with the graph induced by the development nodes only $(\gV_d, \gE_d, \mX_d)$.
+In the calibration/test phases, the nodes arrive either one at a time or in batches.
+Thus, nodes arriving later in the sequence will have access to neighbors that arrived earlier, breaking the exchangeability assumption.
+
+Thus, following in line with previous work, we focus on the transductive setting.
+
+The following theorem shows that in the inductive setting, a score model trained on the combination of the calibration set will generate scores exchangeable with the test set, thus allowing the use of conformal prediction in the transductive setting.
+
+\begin{theorem}[\citet{zargarbashi23conformal,huang2024uncertainty}]
+    Let $\gG = (\gV, \gE, \mX)$ be an attributed graph, and $\gV_{\text{calib}} \cup \gV_{\text{test}}$ be exchangeable.
+    %Let $F: \gX \to \Delta_{\gY}$ be a model trained on $\gV_{\text{train}} \cup \gV_{\text{valid}}$.
+    %Let $\hat{F}: \gX \to \Delta_{\gY}$ be a model trained on $\gV_{\text{calib}}$.
+    %Then, the scores $\hat{F}(\vx)$ are exchangeable with $F(\vx)$ for $\vx \in \gV_{\text{test}}$.
+    \label{thm:exchangeability}
+\end{theorem}
+
+%\pmcomment{Exchangeability for transductive, and potential for inductive}
+
+%\subsubsection{Node Classification}
+%Let $f: \gX \to \R_K$ denote the class wise scores associated with a node classification model trained on a separate split of the data ($\gD_{\text{train}}$).
+%For example, these could be the pre-final output layer of a graph neural network (either before or after softmax normalization).
+%and a trained model with classwise prediction the goal is to learn a model $\pi: \gX \to \Delta_K$, where $\Delta_K$ is the $K$-dimensional probability simplex.
+%

@@ -19,8 +19,10 @@ The following theorem provides a general recipe for constructing a prediction se
     \label{thm:CP:coverage}
 \end{theorem}
 
-While Theorem~\ref{thm:CP:coverage} does not place any restrictions on the choice of the score function, the choice of the score function can have a significant impact on the size of the prediction set.
-$s$ is usually called the non-conformity score function which measures the degree of non-agreement between the input $\vx$ and the label $y$ i.e., larger scores indicate worse agreement between $\vx$ and $y$.
-Note that the setup of theorem~\ref{thm:CP:coverage} is called split CP, which is a special case of CP.
-Further, it only provides a marginal coverage guarantee.
-\pmcomment{discuss the difference between marginal and conditional coverage and requirements for conditional coverage. Additionally, discuss beta distribution?}
+While Theorem~\ref{thm:CP:coverage} does not place any restrictions on the choice of the score function, this choice can have a significant impact on the size of the prediction set.
+$s$ is usually called the non-conformity score function and it measures the degree of non-agreement between the input $\vx$ and the label $y$ i.e., larger scores indicate worse agreement between $\vx$ and $y$.
+Note that the setup of theorem~\ref{thm:CP:coverage} is called split CP, as the score function remains fixed for the calibration split.
+In split CP, the dataset is partitioned as $\mathcal{D} = \gD_{\text{train}}\cup \gD_{\text{valid}}\cup \gD_{\text{calib}}\cup  \gD_{\text{test}}$.
+
+%Further, it only provides a marginal coverage guarantee.
+%\pmcomment{discuss the difference between marginal and conditional coverage and requirements for conditional coverage. Additionally, discuss beta distribution?}
