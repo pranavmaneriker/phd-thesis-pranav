@@ -1,13 +1,23 @@
-The Neighborhood Adaptive Prediction Sets (NAPS) can construct predictive sets via Conformal Prediction under relaxed exchangeability (or non-exchangeability) assumptions \cite{barber2023NAPS}. In the context of graphs, NAPS was initially implemented in the inductive setting \cite{clarkson2023distribution}. However, it can be used in the transductive setting as well \cite{zargarbashi23conformal}. 
+Neighborhood Adaptive Prediction Sets (NAPS) can construct predictive sets via Conformal Prediction under relaxed exchangeability (or non-exchangeability) assumptions~\cite{barber2023conformal}.
+In the context of graphs, NAPS was initially implemented in the inductive setting \cite{clarkson2023distribution}.
+However, it can be used in the transductive setting as well~\cite{zargarbashi23conformal}. 
 
 
-Transductive NAPS is based on APS where $s_i = A(\vx_i, y_i, u_i;\hat{\pi}_i)$, or $A(\vx_i, y_i;\hat{\pi}_i)$ if $\epsilon$ is not used, is computed for each node in $\gD_{\text{calib}}$. Using these scores, a weighted quantile is computed to produce a threshold for a class to be included in the prediction set as seen in Equation \ref{eq:NAPS:quantile} below by creating weighted point masses ($\delta$) at each score. The point mass at $+\infty$ indicates that the score for test node n+1 is unknown (and unbounded due to non-exchangeability), and thus, a point mass at the maximum value ($+\infty$) is required.\ascomment{I want to state the intuitive reason for the infinite point mass since it was not clearly stated in the NAPS paper.} 
+NAPS in the transductive setting is based on APS where $s_i = A(\vx_i, y_i, u_i;\hat{\pi}_i)$, or $A(\vx_i, y_i;\hat{\pi}_i)$ (depending on whether the randomized version is used), is computed for each node in $\gD_{\text{calib}}$. 
+Using these scores, a weighted quantile is computed to produce the score threshold for prediction sets (Equation~\ref{eq:NAPS:quantile})
+Unlike APS, the quantile is defined by placing weighted point masses ($\delta$) at each score from the calibration set under consideration for quantile computation.
+The point mass at $+\infty$ indicates that the score for test node $n+1$ is unknown (and unbounded due to non-exchangeability), and thus, a point mass at the maximum value ($+\infty$) is required.%\ascomment{I want to state the intuitive reason for the infinite point mass since it was not clearly stated in the NAPS paper.} 
 \begin{align}
     \hat{q}^{\text{NAPS}}_{n+1} = \text{Quantile}\bigg(1-\alpha, \bigg[\sum_{i\in\gD_{\text{calib}}}\Tilde{w}_{i}\cdot \delta_{s_{i}}\bigg] + \Tilde{w}_{n+1}\cdot \delta_{+\infty}\bigg)
     \label{eq:NAPS:quantile}
 \end{align}
 
-Since exchangeability is not assumed, a weight function leveraging graph homophily can be used to produce weights, $w_i\in [0,1]$, for nodes in the calibration set \cite{barber2023NAPS}. The three implemented weight functions are uniform, $w_u(d_i) = 1$, hyperbolic $w_h(d_i) = \frac{1}{d_i}$, and exponential, $w_e(d_i) = 2^{-d_i}$ for nodes in the $k$ hop neighborhood of test node n+1, $\mathcal{N}_{n+1}^k$, where $d_i$ is the distance from the test node to node $i$ in the calibration set. Formally, the weight function - in the transductive setting - for each node, $i\in\gD_{\text{calib}}$ can be seen in Equation \ref{eq:NAPS:weight} below, where $w^x(d_i)$ is the selected weight function. These weights are then linearly normalized to compute $\Tilde{w}_i$ such that $1 = \sum_{i\in\gD_{\text{calib}}} \Tilde{w}_i + \Tilde{w}_{n+1}$ \cite{barber2023NAPS}.
+For NAPS to produce viable prediction sets, the weights, $w_i\in [0,1]$, for nodes under consideration in the calibration set must be chosen in a data independent fashion, i.e., they cannot leverage the feature vectors associated with the calibration nodes~\citep{barber2023conformal}.
+NAPS leverages the graph structure to assign these weights, assigning non-zero weights to nodes within a k-hop neighborhood $\gN_{n+1}^k$ of the test node $v_{n+1}$.
+%Since exchangeability is not assumed, a weight function leveraging graph homophily can be used to produce weights, $w_i\in [0,1]$, for nodes in the calibration set \cite{barber2023conformal}. 
+The three implemented weight functions are uniform, $w_u(d_i) = 1$, hyperbolic $w_h(d_i) = \frac{1}{d_i}$, and exponential, $w_e(d_i) = 2^{-d_i}$ for nodes in the k-hop neighborhood, where $d_i$ is the distance from $v_{n+1}$ to $v_i \in \gV_{\text{calib}}$.
+Formally, the weight function for each node, $v_i \in \gV_{\text{calib}}$ can be seen in Equation \ref{eq:NAPS:weight} below, where $w_x(d_i)$ is the selected weight function.
+These weights are then normalized to compute $\Tilde{w}_i$ such that $\sum_{i\in\gD_{\text{calib}}} \Tilde{w}_i + \Tilde{w}_{n+1} = 1$ \cite{barber2023conformal}.
 \begin{align}
     w_i = \begin{cases}
 w_x(d_i), & i\in \gD_{\text{calib}}\cap\mathcal{N}_{n+1}^k\\
@@ -16,10 +26,17 @@ w_x(d_i), & i\in \gD_{\text{calib}}\cap\mathcal{N}_{n+1}^k\\
     \label{eq:NAPS:weight}
 \end{align}
 
-Using the NAPS quantile, $\hat{q}^{\text{NAPS}}_{n+1}$, the prediction sets can be constructed similarly to other Conformal Prediction algorithms. Lastly, it should be noted that transductive and inductive NAPS differ from each other since transductive NAPS applies non-zero weights only to a subset of calibration nodes, while inductive NAPS uses the entire k-hop neighborhood of a test node.\ascomment{Verify this claim (i.e. reread the paper)}  
+Using the NAPS quantile, $\hat{q}^{\text{NAPS}}_{n+1}$, the prediction sets can be constructed similarly to other Conformal Prediction algorithms.
+Note that NAPS was originally designed for the inductive setting; transductive differs as non-zero weights are assigned to fewer nodes as only a subset of the graph nodes are assigned to be calibration nodes.
+In the inductive setting, no exchangeability cannot be assumed and the entire graph prior to the test phase is considered as a calibration set leading to a larger number of non-zero weights.
 
-\subsubsection{A Word on Implementation}
-NAPS is computationally expensive with regard to time and memory. To redress, we took a batched approach that worked with sparse tensors as detailed in Algorithm \ref{alg:NAPS:Quantile}. The test nodes are first split up into batches. Then, for each batch, the distance to each node in the k-hop neighborhood is computed and returned. Then, the corresponding weights are computed before computing each test node's quantile. The batched approach ensures that enough memory is available for the necessary computations - especially for computing the distance to each node in the k-hop neighborhood.  
+\noindent \textbf{NAPS Implementation}
+NAPS is computationally more expensive with regard to time and memory as a k-hop intersection must be computed for each test node.
+We optimized this implementation using a batched approach that works with sparse tensors (Algorithm \ref{alg:NAPS:Quantile}).
+Informally, the test nodes are first split up into batches. 
+Then, for each batch, the distance to each node in the k-hop neighborhood is computed.
+Following this, the weights function for the corresponding nodes are computed before computing the quantile for each node.
+The batched approach ensures that sufficient memory is available for the necessary computations - especially for computing the distance to each node in the k-hop neighborhood without needing to densify a sparse graph.
 
 \begin{algorithm}
 \caption{NAPS Quantile Implementation}\label{alg:NAPS:Quantile}
@@ -37,7 +54,10 @@ NAPS is computationally expensive with regard to time and memory. To redress, we
 \end{algorithmic}
 \end{algorithm}
 
-To ensure scalability for large graphs, all of the computations up until computing the quantile were done via sparse tensors. Algorithm \ref{alg:NAPS:SparseKHop} illustrates how the distance to each calibration node in the k-hop neighborhood can be computed via supported sparse tensor operations in PyTorch. To ensure that the minimum distance to nodes in the k-hop neighborhood is reported, the sign function is applied to the matrix containing paths exactly n hops away. This is subtracted from the matrix containing distances up to n-1 hops. A value can only be less than 0 after this subtraction if the corresponding index in the matrix containing distances up to n-1 hops was 0. Using this, the nodes that are at a minimum n hops away can be identified and added to the matrix containing distances to calibration nodes in the k-hop neighborhood. The described calculations can be done using sgn, and signbit (to check if an element is negative) in PyTorch.\ascomment{Shorted this paragraph}  
+To ensure scalability for large graphs, all the computations until the quantile computation setep were done via sparse tensors. 
+Algorithm \ref{alg:NAPS:SparseKHop} illustrates how the distance to each calibration node in the k-hop neighborhood can be computed via  sparse tensorr primitives.
+The sign function based formulation uses the fact that subtracting $n+1$-hop paths from a matrix containing up to $n$ hops to ensure negative values at paths of length exactly $n+1$, with the rest being 0.
+%To ensure that the minimum distance to nodes in the k-hop neighborhood is reported, the sign function is applied to the matrix containing paths exactly n hops away. This is subtracted from the matrix containing distances up to n-1 hops. A value can only be less than 0 after this subtraction if the corresponding index in the matrix containing distances up to n-1 hops was 0. Using this, the nodes that are at a minimum n hops away can be identified and added to the matrix containing distances to calibration nodes in the k-hop neighborhood. The described calculations can be done using sgn, and signbit (to check if an element is negative) in PyTorch.\ascomment{Shorted this paragraph}  
 
 \begin{algorithm}
 \caption{Sparse K Hop Neighborhood Implementation}\label{alg:NAPS:SparseKHop}

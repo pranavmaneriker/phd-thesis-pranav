@@ -1,0 +1,22 @@
+Threshold Prediction Sets (TPS)~\citep{sadinle2019least} is a simple technique for generating conformal prediction sets.
+The score function $s(\vx, y) = 1 - \hat{\pi}(\vx)_t$ directly maps the probability from the base model for the correct class into a score.
+The score is higher if the model has lower probability assigned to the correct class.
+A $1-\alpha$ (approximate) quantile creates a probability inclusion trehsold for this score over the calibration set ensures coverage and can be shown to generate prediction sets with the smallest expected size~\cite{sadinle2019least}.
+However, the TPS score has been known to undercover hard examples and overcover easy ones~\citep{angelopoulos2021uncertainty,zargarbashi23conformal} to achieve this efficiency.
+Here, hard/easy refers to the coverage achieved by the prediction set in relation to the prediction set size.
+By overcovering easy examples, TPS can still maintain the overall coverage guarantee without having to correctly account for coverage over each example.
+
+We note that this discrepancy occurs since the TPS scores are not `adaptive', and consider only one dimension of the score for each calibration sample.
+However, \citet{sadinle2019least} also proposed a labelwise control version of TPS.
+Instead of defining a single threshold for all classes, they separately compute the threshold for each class.
+Thus, we define classwise quantiles thresholds as
+\[
+    \hat{q}(\alpha, y_j) = \text{Quantile}\left(\frac{\ceil{(n+1)(1-\alpha)}}{n}; \braces{s(\vx_i, y_i)\, {i=1, \dots, n, y_i = y_j}}\right)
+\]
+and the corresponding prediction sets as
+\[
+    C_{\text{TPS}}(\vx) = \{y \in \gY: s(\vx, y) \leq \hat{q}(\alpha, y)\}
+\]
+Note that this version would provide coverage for each class label, making it more `adaptive'.
+The tradeoff here is that we have fewer calibration samples used for each quantile threshold dimension, which may lead to higher variance in the distribution of coverage~\cite{vovk2012conditional}.
+We call this variation of TPS as TPS-Classwise, and consider it in our baselines for comparison.

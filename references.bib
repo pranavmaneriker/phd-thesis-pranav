@@ -2342,7 +2342,7 @@ UK, September 9-12, 2019},
 
 @InProceedings{zargarbashi23conformal,
   title = 	 {Conformal Prediction Sets for Graph Neural Networks},
-  author =       {H. Zargarbashi, Soroush and Antonelli, Simone and Bojchevski, Aleksandar},
+  author =       {Zargarbashi, Soroush and Antonelli, Simone and Bojchevski, Aleksandar},
   booktitle = 	 {Proceedings of the 40th International Conference on Machine Learning},
   pages = 	 {12292--12318},
   year = 	 {2023},
@@ -2463,4 +2463,47 @@ UK, September 9-12, 2019},
   author={Singh, Harvineet and Xia, Fan and Kim, Mi-Ok and Pirracchio, Romain and Chunara, Rumi and Feng, Jean},
   booktitle={NeurIPS 2023 Workshop on Regulatable ML},
   year={2023}
+}
+
+@article{sadinle2019least,
+  title={Least ambiguous set-valued classifiers with bounded error levels},
+  author={Sadinle, Mauricio and Lei, Jing and Wasserman, Larry},
+  journal={Journal of the American Statistical Association},
+  volume={114},
+  number={525},
+  pages={223--234},
+  year={2019},
+  publisher={Taylor \& Francis}
+}
+
+@inproceedings{angelopoulos2021uncertainty,
+  title={Uncertainty Sets for Image Classifiers using Conformal Prediction},
+  author={Angelopoulos, Anastasios Nikolas and Bates, Stephen and Jordan, Michael and Malik, Jitendra},
+  booktitle={International Conference on Learning Representations},
+  year={2021}
+}
+
+@inproceedings{vovk2012conditional,
+  title={Conditional validity of inductive conformal predictors},
+  author={Vovk, Vladimir},
+  booktitle={Asian conference on machine learning},
+  pages={475--490},
+  year={2012},
+  organization={PMLR}
+}
+
+@article{barber2023conformal,
+  abstract   = {Conformal prediction is a popular, modern technique for providing valid predictive inference for arbitrary machine learning models. Its validity relies on the assumptions of exchangeability of the data, and symmetry of the given model fitting algorithm as a function of the data. However, exchangeability is often violated when predictive models are deployed in practice. For example, if the data distribution drifts over time, then the data points are no longer exchangeable; moreover, in such settings, we might want to use a nonsymmetric algorithm that treats recent observations as more relevant. This paper generalizes conformal prediction to deal with both aspects: we employ weighted quantiles to introduce robustness against distribution drift, and design a new randomization technique to allow for algorithms that do not treat data points symmetrically. Our new methods are provably robust, with substantially less loss of coverage when exchangeability is violated due to distribution drift or other challenging features of real data, while also achieving the same coverage guarantees as existing conformal prediction methods if the data points are in fact exchangeable. We demonstrate the practical utility of these new tools with simulations and real-data experiments on electricity and election forecasting.},
+  author     = {Rina Foygel Barber and Emmanuel J. Cand{\`e}s and Aaditya Ramdas and Ryan J. Tibshirani},
+  doi        = {10.1214/23-AOS2276},
+  journal    = {The Annals of Statistics},
+  keywords   = {conformal prediction, distribution-free inference, exchangeability, jackknife, robust statistics},
+  number     = {2},
+  pages      = {816 -- 845},
+  publisher  = {Institute of Mathematical Statistics},
+  title      = {{Conformal prediction beyond exchangeability}},
+  url        = {https://doi.org/10.1214/23-AOS2276},
+  volume     = {51},
+  year       = {2023},
+  bdsk-url-1 = {https://doi.org/10.1214/23-AOS2276}
 }

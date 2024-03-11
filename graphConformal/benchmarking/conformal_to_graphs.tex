@@ -47,5 +47,9 @@ The following theorem shows that in the inductive setting, a score model trained
 %For example, these could be the pre-final output layer of a graph neural network (either before or after softmax normalization).
 %and a trained model with classwise prediction the goal is to learn a model $\pi: \gX \to \Delta_K$, where $\Delta_K$ is the $K$-dimensional probability simplex.
 %
-\pmcomment{below text optionol}
-A base model $\pi: \gX \to \Delta_{\gY}$, where $\Delta_{\gY}$ is the probability simplex over the elements of $\gY$, is learned using the training and validation sets $\parens{\gD_{\text{train}}}$ and $\parens{\gD_{\text{valid}}}$. The calibration set $\parens{\gD_{\text{calib}}}$ is used to determine the $\hat{q}(\alpha)$ from Theorem \ref{thm:CP:coverage} and the test set $\parens{\gD_{\text{test}}}$ is the set for which we want to compute our prediction sets.
+%\pmcomment{below text optionol}
+For the following sections, we will assume that the base model $\hat{\pi}: \gX \to \Delta_{\gY}$, where $\Delta_{\gY}$ is the probability simplex over the elements of $\gY$, is learned using the training and validation sets $\parens{\gD_{\text{train}}}$ and $\parens{\gD_{\text{valid}}}$. 
+The calibration set $\parens{\gD_{\text{calib}}}$ is used to determine the $\hat{q}(\alpha)$ from Theorem \ref{thm:CP:coverage} and the test set $\parens{\gD_{\text{test}}}$ is the set for which we want to compute our prediction sets.
+In general, we don't need the scores to lie over a simplex; they can be in $\R^K$.
+However, this greatly simplifies the exposition for the following sections and is the standard practice in prior work.
+
