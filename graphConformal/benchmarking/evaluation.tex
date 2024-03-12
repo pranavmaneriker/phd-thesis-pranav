@@ -46,6 +46,14 @@ We evaluate the following metrics for the graph conformal prediction methods:
 \end{itemize}
 
 \subsection{Methods}
+We discussed the theoretical and empirical tradeoffs of different methods in Section~\ref{chp:graphConformal:sec:conformal_scores_tradeoffs}.
+For completeness, we list all the methods that we compare here.
+\textbf{Threshold Prediction Sets}~\cite{sadinle2019least}, with two variants, TPS and TPS-Classwise (using class wise thresholds for adapting to class imbalance).
+\textbf{Adaptive Prediction Sets}~\cite{romano2020classification} with two variants, APS and APS-Randomized (using the uniform random quantile adjustments).
+\textbf{Regularized Adaptive Prediction Sets}~\cite{angelopoulos2021uncertainty}, a variation of APS with a regularization term to ensure that the prediction sets are not too large.
+\textbf{Diffused Adaptive Prediction Sets}~\cite{zargarbashi23conformal}, with two variations DAPS and DTPS, which uses a diffusion process over TPS-Classwise.
+\textbf{Normalized Adaptive Prediction Sets}~\cite{clarkson2023distribution} with three variations corresponding to the weighing function used.
+\textbf{CF-GNN}~\cite{huang2024uncertainty}, a GNN based approach for conformal prediction. We label the original implementation of CFGNN as CFGNN-Original and our improved implementations as CFGNN-APS (using randomized APS as the loss function for training/evaluation) and CFGNN-TPS (using TPS as the loss function for training/evaluation).
 
 \subsection{Notes on Parameter Tuning}
 
