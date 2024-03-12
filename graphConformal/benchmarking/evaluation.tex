@@ -55,6 +55,18 @@ For completeness, we list all the methods that we compare here.
 \textbf{Normalized Adaptive Prediction Sets}~\cite{clarkson2023distribution} with three variations corresponding to the weighing function used.
 \textbf{CF-GNN}~\cite{huang2024uncertainty}, a GNN based approach for conformal prediction. We label the original implementation of CFGNN as CFGNN-Original and our improved implementations as CFGNN-APS (using randomized APS as the loss function for training/evaluation) and CFGNN-TPS (using TPS as the loss function for training/evaluation).
 
-\subsection{Notes on Parameter Tuning and Evaluation}
+%\subsection{Notes on Parameter Tuning and Evaluation}
+%\pmcomment{TODO for final version}
 
 \subsection{Results}
+
+\subsubsection{Full-Split (FS) Partitioning}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{graphConformal/figures/split/small_datasets_efficiency.pdf}
+    \includegraphics[width=\linewidth]{graphConformal/figures/split/med_1_datasets_efficiency.pdf}
+    \includegraphics[width=\linewidth]{graphConformal/figures/split/med_2_datasets_efficiency.pdf}
+    \caption{Plots for efficiency vs $\alpha$ for the major methods across the all the datasets. TPS consistently has the best efficiency }
+\end{figure}
+
