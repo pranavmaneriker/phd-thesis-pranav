@@ -86,9 +86,13 @@ Define $C_{A}^{i} = C_{A}(\vx_{i})$.
 Let $y'_i = \{1, 2\} \setminus \{y_i\}$ be the incorrect class label for each $\vx_i$.
 Define 
 \[
-    \alpha_c = \alpha \in [0, 1], \hat{q}_A \leq \text{Quantile}\left( \frac{\ceil{(n+1)(1 - \alpha)}}{n}; \{A(\vx_i, y'_i, u_i; \hat{\pi})\}_{i=1}^n \right)
+    \alpha_c^A \in [0, 1], \hat{q}_A = \text{Quantile}\left( \frac{\ceil{(n+1)(1 - \alpha_c^A)}}{n}; \{A(\vx_i, y'_i, u_i; \hat{\pi})\}_{i=1}^n \right)
 \]    
-From the definition of $C_A^i$
+Then from the exachangability of $A(\vx_i, y'_i, u_i; \hat{\pi})$
+\[
+    1 - \alpha_c \leq \Pr[y'_{n+1} \in C_{A}^{n+1}] \leq 1 - \alpha_c + \frac{1}{n+1}
+\]
+%From the definition of $C_A^i$
 %\[
 %    \alpha_c = \min\left\{\alpha \in [0, 1] : \hat{q}_A \leq \text{Quantile}\left( \frac{\ceil{(n+1)(1 - \alpha)}}{n}; \{A(\vx_i, y'_i, u_i; \hat{\pi})\}_{i=1}^n \right)\right\}
 %\]    
@@ -96,20 +100,25 @@ From the definition of $C_A^i$
 We have
 \begin{align*}
     \E\left[|C_{A}^{n+1}|\right] &= \E\left[\sum\limits_{i=1, 2}\1[i \in C_{A}^{n+1})]\right] \\
-                                 &= \E\left[\1[1 \in C_{A}^{n+1})]\right] + \E\left[\1[2 \in C_{A}^{n+1})]\right]  & \text(linearity)\\
-                                 &= \Pr[1 \in C_{A}^{n+1}] + \Pr[2 \in C_{A}^{n+1}] & \text{$\E[\1[A]] = \Pr[A]$}\\
-                                 &= \Pr[y_{n+1} = 1 \cap 1 \in C_{A}^{n+1}] + \Pr[y_{n+1} = 2 \cap 1 \in C_{A}^{n+1}] \\
-                                 &+ \Pr[y_{n+1} = 2 \cap 2 \in C_{A}^{n+1}] + \Pr[y_{n+1} = 1 \cap 2 \in C_{A}^{n+1}] & \text{total probability}\\
+                                 &= \E\left[\1[y_{n+1} \in C_{A}^{n+1})]\right] + \E\left[\1[y'_{n+1} \in C_{A}^{n+1})]\right]  & \text(linearity)\\
+                                 &= \Pr[y_{n+1} \in C_{A}^{n+1}] + \Pr[y'_{n+1} \in C_{A}^{n+1}] & \text{$\E[\1[A]] = \Pr[A]$}\\
+                                 &\leq 1 - \alpha + 1 - \alpha_c^A + \frac{2}{n+1} & \text{(Exchangeability)} 
 \end{align*}
-From the exchangeability of 
-such that 
-$\Pr[y_{n+1}=i \cap j \in C_{A}^{n+1}] = \Pr[y_{n+1}=i]P[j \in C_{A}^{n+1} | y_{n+1} = i]$
+From a similar argument, we can show that 
+\[
+    \E\left[|C_{\Tilde{A}}^{n+1}|\right] \geq 1 - \alpha + 1 - \alpha_c^A
+\]
+
+Thus, 
+\begin{align}
+    \E\left[|C_{\Tilde{A}}^{n+1}| - |C_{A}^{n+1}|\right] &\geq 1 - \alpha + 1 - \alpha_c^{\Tilde{A}} - \left(1 - \alpha + 1 - \alpha_c^A + \frac{2}{n+1} \right)\\
+    &= \alpha_c^A - \alpha_c^{\Tilde{A}} - \frac{2}{n+1}
+\end{align}
+
+\begin{lemma}
+\end{lemma}
 
 \end{proof}
-
-\begin{theorem}
-    Difference in quantile
-\end{theorem}
 
 \pmcomment{empirical quantiles with epsilon}
 

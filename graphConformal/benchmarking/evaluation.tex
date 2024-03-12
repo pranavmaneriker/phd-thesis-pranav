@@ -41,7 +41,7 @@ We evaluate the following metrics for the graph conformal prediction methods:
     \item \textbf{Efficiency:} The average size of the prediction set.
     \item \textbf{Label Stratified Coverage:} The mean of coverage for each class. This metric is useful for understanding whether a method is adaptive and has balanced coverage for different classes.
     \item \textbf{Size Stratified Coverage:} The mean of coverage across different sizes of prediction sets. This metric is useful for understanding whether a method is adaptive and does not under/over cover hard/easy samples.
-    \item \textbf{Size Stratified Coverage Violation:} Measures the maximum deviation from the coverage goal across different prediction set sizes. 
+    %\item \textbf{Size Stratified Coverage Violation:} Measures the maximum deviation from the coverage goal across different prediction set sizes. 
     \item \textbf{Singleton Hit Ratio:} The proportion of test instances for which the true label is the only label in the prediction set. This metric measures the frequency with which a method does not require generation of a prediction set having multiple labels.
 \end{itemize}
 
@@ -55,6 +55,6 @@ For completeness, we list all the methods that we compare here.
 \textbf{Normalized Adaptive Prediction Sets}~\cite{clarkson2023distribution} with three variations corresponding to the weighing function used.
 \textbf{CF-GNN}~\cite{huang2024uncertainty}, a GNN based approach for conformal prediction. We label the original implementation of CFGNN as CFGNN-Original and our improved implementations as CFGNN-APS (using randomized APS as the loss function for training/evaluation) and CFGNN-TPS (using TPS as the loss function for training/evaluation).
 
-\subsection{Notes on Parameter Tuning}
+\subsection{Notes on Parameter Tuning and Evaluation}
 
 \subsection{Results}
