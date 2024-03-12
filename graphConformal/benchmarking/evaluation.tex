@@ -6,7 +6,7 @@
         \toprule
         Dataset & Nodes & Edges & Classes & Features \\
         \midrule
-        CiteSeer & 3327 & 9228 & 6 & 3703 \\ 
+        CiteSeer & 3,327 & 9,228 & 6 & 3,703 \\ 
         Amazon\_Photos & 7,650 & 238,163 & 8 & 745 \\
         Cora & 19,793 & 126,842 & 70 & 8,710 \\
         PubMed & 19,717 & 88,651 & 3 & 500 \\
@@ -34,10 +34,16 @@ For all chosen datasets, we used the version provided by the Deep Graph Library~
 
 To help characterize the behavior of different approaches, we categorize these into sizes based on the number of nodes, with \textbf{Cora} and \textbf{Amazon\_Photos} designated as small (S), \textbf{CiteSeer}, \textbf{PubMed}, and \textbf{Coauthor\_CS} as medium (M), and \textbf{Coauthor\_Physics} as large (L).
 
-\subsubsection{Small Datasets}
-We 
-
 \subsection{Metrics}
+We evaluate the following metrics for the graph conformal prediction methods:
+\begin{itemize}
+    \item \textbf{Coverage:} The proportion of test instances for which the true label is contained in the prediction set.
+    \item \textbf{Efficiency:} The average size of the prediction set.
+    \item \textbf{Label Stratified Coverage:} The mean of coverage for each class. This metric is useful for understanding whether a method is adaptive and has balanced coverage for different classes.
+    \item \textbf{Size Stratified Coverage:} The mean of coverage across different sizes of prediction sets. This metric is useful for understanding whether a method is adaptive and does not under/over cover hard/easy samples.
+    \item \textbf{Size Stratified Coverage Violation:} Measures the maximum deviation from the coverage goal across different prediction set sizes. 
+    \item \textbf{Singleton Hit Ratio:} The proportion of test instances for which the true label is the only label in the prediction set. This metric measures the frequency with which a method does not require generation of a prediction set having multiple labels.
+\end{itemize}
 
 \subsection{Methods}
 
