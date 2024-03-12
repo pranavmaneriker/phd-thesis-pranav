@@ -71,9 +71,28 @@ From the definition of the prediction sets and non-conformity scores, we have
     C_{\Tilde{A}}(\vx_{n+1}) = \{y \in \gY: \Tilde{A}_{n+1}(y) \leq \hat{q}_{\Tilde{A}}\}
 \] 
 denote the prediction sets corresponding to the two score functions (with and without randomization).
+Define $C_{A}^{i} = C_{A}(\vx_{i})$. 
+Let $y'_i = \{1, 2, \dots, K\} \setminus \{y_i\}$ be the incorrect class label for each $\vx_i$.
+Define 
+\[
+    \alpha_c^A \in [0, 1], \hat{q}_A = \text{Quantile}\left( \frac{\ceil{(n+1)(1 - \alpha_c^A)}}{n}; \{A(\vx_i, y'_i, u_i; \hat{\pi})\}_{i=1}^n \right)
+\]
+\[
+    \alpha_c^{\Tilde{A}} \in [0, 1], \hat{q}_{\Tilde{A}} = \text{Quantile}\left( \frac{\ceil{(n+1)(1 - \alpha_c^{\Tilde{A}})}}{n}; \{A(\vx_i, y'_i, u_i; \hat{\pi})\}_{i=1}^n \right)
+\]    
+Be the thresholds for which the corresponding quantile of the correct scores achieves $1-\alpha$ coverage.
+Then from the exchangeability of $A(\vx_i, y'_i, u_i; \hat{\pi})$
+\[
+    1 - \alpha_c^A \leq \Pr[y'_{n+1} \in C_{A}^{n+1}] \leq 1 - \alpha_c^A + \frac{1}{n+1}
+\]
+similarly,
+\[
+    1 - \alpha_c^{\Tilde{A}} \leq \Pr[y'_{n+1} \in C_{A}^{n+1}] \leq 1 - \alpha_c^{\Tilde{A}} + \frac{1}{n+1}
+\]
+We will show that as long as these thresholds are sufficiently separated, the randomized prediction set will be more efficient than the non-randomized one. 
 
 \begin{theorem}
-The prediction set constructed using randomization is more efficient than without. Formally, 
+Assuming that $\alpha_c^A - \alpha_c^{\Tilde{A}} \geq \frac{2}{n}$. Then prediction set constructed using randomization is more efficient than without. Formally, 
 \[
     \E\left[|C_{\Tilde{A}}(\vx_{n+1})| - |C_A(\vx_{n+1})|\right]  \geq 0
 \]   
@@ -82,16 +101,7 @@ The prediction set constructed using randomization is more efficient than withou
 \begin{proof}
 Consider the case with only two potential class labels $K = \{1, 2\}$. 
 %Let $\Pr[y_{n+1} = 1] = \eta = 1 - \Pr[y_{n+1} = 2]$.
-Define $C_{A}^{i} = C_{A}(\vx_{i})$. 
-Let $y'_i = \{1, 2\} \setminus \{y_i\}$ be the incorrect class label for each $\vx_i$.
-Define 
-\[
-    \alpha_c^A \in [0, 1], \hat{q}_A = \text{Quantile}\left( \frac{\ceil{(n+1)(1 - \alpha_c^A)}}{n}; \{A(\vx_i, y'_i, u_i; \hat{\pi})\}_{i=1}^n \right)
-\]    
-Then from the exachangability of $A(\vx_i, y'_i, u_i; \hat{\pi})$
-\[
-    1 - \alpha_c \leq \Pr[y'_{n+1} \in C_{A}^{n+1}] \leq 1 - \alpha_c + \frac{1}{n+1}
-\]
+
 %From the definition of $C_A^i$
 %\[
 %    \alpha_c = \min\left\{\alpha \in [0, 1] : \hat{q}_A \leq \text{Quantile}\left( \frac{\ceil{(n+1)(1 - \alpha)}}{n}; \{A(\vx_i, y'_i, u_i; \hat{\pi})\}_{i=1}^n \right)\right\}
@@ -114,13 +124,26 @@ Thus,
     \E\left[|C_{\Tilde{A}}^{n+1}| - |C_{A}^{n+1}|\right] &\geq 1 - \alpha + 1 - \alpha_c^{\Tilde{A}} - \left(1 - \alpha + 1 - \alpha_c^A + \frac{2}{n+1} \right)\\
     &= \alpha_c^A - \alpha_c^{\Tilde{A}} - \frac{2}{n+1}
 \end{align}
-
-\begin{lemma}
-\end{lemma}
+which is equivalent to our assumption, and this completes the proof.
+For $K$ classes, the corresponding term would be 
+\begin{align*}
+    (K-1)\left(\alpha_c^A - \alpha_c^{\Tilde{A}}\right) - \frac{K}{n+1} &= (K-1) \left(\alpha_c^A - \alpha_c^{\Tilde{A}} - \frac{K}{K-1} \frac{1}{n+1}\right)\\
+    & >  (K-1)\left(\alpha_c^A - \alpha_c^{\Tilde{A}} - \frac{2}{n+1}\right) \geq 0
+\end{align*}
+Which completes the proof in the general case.
 
 \end{proof}
+Intuitively, each as each score in $A$ gets shifted by a small $u\pi$ term to the left, $q_A$ would be lower than $q_{\Tilde{A}}$.
+For the assumption to hold, the shifts $u\pi'$ in the complementary scores $A'$ of the incorrect classes should be smaller to ensure that the $\alpha_c^A$ is larger than $\alpha_c^{\Tilde{A}}$.
+For a good classifier, $\pi > \pi'$ which would validate the assumption. 
+In Figure~\ref{fig:APS:efficiency}, we show this looks for a practical example dataset and classifier.
 
-\pmcomment{empirical quantiles with epsilon}
+\begin{figure}
+    \caption{Figure showing the scores for an example}
+    \label{fig:APS:efficiency}
+\end{figure}
+
+%\pmcomment{empirical quantiles with epsilon}
 
 %\begin{align*}
 %   |S(\vx_{n+1}, u; \hat{\pi}, \tau_A)| - |\Tilda{S}(\vx_{n+1}; \hat{\pi}, \tau_{})|
