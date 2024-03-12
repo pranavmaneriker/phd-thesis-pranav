@@ -1,5 +1,41 @@
 \subsection{Datasets}
 
+\begin{table}
+    \centering
+    \begin{tabular}{ccccc}
+        \toprule
+        Dataset & Nodes & Edges & Classes & Features \\
+        \midrule
+        CiteSeer & 3327 & 9228 & 6 & 3703 \\ 
+        Amazon\_Photos & 7,650 & 238,163 & 8 & 745 \\
+        Cora & 19,793 & 126,842 & 70 & 8,710 \\
+        PubMed & 19,717 & 88,651 & 3 & 500 \\
+        Coauthor\_CS &  18,333 & 163,788 & 15 & 6,805 \\
+        Coauthor\_Physics & 34,493 & 495,924 & 5 & 8,415 \\
+        \bottomrule
+    \end{tabular}
+    \caption{Summary statistics for Datasets chosen for evaluation.}
+    \label{tab:conformal:datasets}
+\end{table}
+
+
+We selected datasets of varying sizes to evaluate the performance of the graph conformal prediction methods.
+For the citation datasets, the nodes are publications, and the edges denote citation relationships.
+Features are bag-of-words representations of the documents.
+The task is to predict the category of each publication.
+\textbf{CiteSeer} is a citation network dataset designed for the node classification task, with nodes as publications and edges denoting citation relationships.
+\textbf{Amazon\_Photos} is a segment of the Amazon co-purchase graph~\cite{mcauley2015image} where nodes represent goods, edges represent goods frequently bought together, features are bag-of-words representations of product reviews, and the task is to predict the category of each good.
+\textbf{Cora} We use CoraFull~\cite{shchur2018pitfalls}, an extended version of the common Cora citation network dataset.
+Summary statistics for the datasets are provided in Table~\ref{tab:conformal:datasets}.
+The objective is to predict the category of each node (publication).
+\textbf{PubMed} is a citation network dataset designed for the node classification task, with nodes as publications and edges denoting citation relationships. The goal is to predict the category of each node (publication).
+For all chosen datasets, we used the version provided by the Deep Graph Library~\cite{wang2019dgl}.
+\textbf{Coauthor\_CS} and \textbf{Coauthor\_Physics} are co-authorship graphs extracted from the Microsoft Academic Graph and used for KDD Cup 2016. In this dataset, nodes are authors and edges denoting co-authorship relationships. The task is to predict the most active field of study for each author.
+
+To help characterize the behavior of different approaches, we categorize these into sizes based on the number of nodes, with \textbf{Cora} and \textbf{Amazon\_Photos} designated as small (S), \textbf{CiteSeer}, \textbf{PubMed}, and \textbf{Coauthor\_CS} as medium (M), and \textbf{Coauthor\_Physics} as large (L).
+
+\subsubsection{Small Datasets}
+We 
 
 \subsection{Metrics}
 
