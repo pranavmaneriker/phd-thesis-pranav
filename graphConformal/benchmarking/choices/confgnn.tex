@@ -12,12 +12,15 @@ For classification-based losses, CF-GNN utilizes the fact that all steps in the 
 Thus, a GNN can be trained directly using efficiency as a loss function.
 Figure~\ref{fig:conformalized_gnn} provides a high-level overview of the CF-GNN approach.
 
-\noindent \textbf{CF-GNN Implementation}
+\noindent \textbf{CF-GNN Implementation Improvements}
 The choice of the conformal loss during calibration and test plays an important role in determining the overall performance of the CF-GNN.
 \citet{huang2024uncertainty} use a TPS loss for the calibration phase and the non-randomized APS loss for constructing the final prediction sets.
 Our preliminary experiments (Figure~\ref{fig:CFGNN:preliminary}) with replacing the APS loss with a randomized version demonstrated that these losses must be tuned carefully to ensure that the CF-GNN is able to improve upon the base models non-conformity scores.
+Some improvements shown in CF-GNN (Figure~\ref{fig:CFGNN:preliminary}, right) get nullified when the randomized APS loss is used (left).
 Additionally, CF-GNN uses full batch training which makes it unable to scale for larger graphs.
 We implemented a batched version of CF-GNN to ensure that it can be used for larger graphs.
+Finally, to speed up computation, we allow the use of cached outputs from the base model rather than having to sample neighbors for both the base model and the CF-GNN. 
+This significantly speeds up the computation in both training and evaluation for CF-GNN.
 
 \begin{figure}
     \centering
