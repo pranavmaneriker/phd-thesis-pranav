@@ -67,6 +67,33 @@ For completeness, we list all the methods that we compare here.
     \includegraphics[width=\linewidth]{graphConformal/figures/split/small_datasets_efficiency.pdf}
     \includegraphics[width=\linewidth]{graphConformal/figures/split/med_1_datasets_efficiency.pdf}
     \includegraphics[width=\linewidth]{graphConformal/figures/split/med_2_datasets_efficiency.pdf}
-    \caption{Plots for efficiency vs $\alpha$ for the major methods across the all the datasets. TPS consistently has the best efficiency }
+    \caption{Plots for efficiency vs $\alpha$ for the major methods across the all the datasets. Among the baseline methods, TPS consistently has the best efficiency.}
+    \label{fig:fs:conformal:efficiency_vs_alpha}
 \end{figure}
 
+First, we analyze the efficiency of the methods across different datasets.
+Figure~\ref{fig:fs:conformal:efficiency_vs_alpha} shows the efficiency of the methods across different datasets.
+We find that for each dataset, irrespective of the train/validation/calib split, TPS is consistently the most efficient method.
+However, this often comes at a cost to adaptability.
+In the next set of results, we show how using classwise thresholds can provide some degree of adaptability for TPS.
+Next, we focus on the adaptability provided by using classwise TPS.
+
+\subsubsection{Adaptability through Classwise TPS}
+\begin{figure}
+    \centering
+    \begin{subfigure}{0.48\linewidth}
+    \includegraphics[width=\linewidth]{graphConformal/figures/split/citeseer_label_stratified_coverage}
+    \end{subfigure}
+    \begin{subfigure}{0.48\linewidth}
+        \includegraphics[width=\linewidth]{graphConformal/figures/split/citeseer_size_stratified_coverage} 
+     \end{subfigure}
+
+    \begin{subfigure}{0.48\linewidth}
+    \includegraphics[width=\linewidth]{graphConformal/figures/split/cora_label_stratified_coverage}
+    \end{subfigure}
+    \begin{subfigure}{0.48\linewidth}
+        \includegraphics[width=\linewidth]{graphConformal/figures/split/cora_size_stratified_coverage} 
+     \end{subfigure}
+     \caption{At a target $\alpha = 0.1$. (Left) Label Stratified Coverage for CiteSeer. (Right) Size Stratified Coverage for CiteSeer (top) and Cora(bottom). Classwise TPS provides adaptability when stratified by labels without sacrificing size stratified coverage.}
+     \label{fig:fs:conformal:citeseer_adaptability}
+\end{figure}
