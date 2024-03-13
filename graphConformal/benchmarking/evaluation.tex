@@ -109,3 +109,29 @@ Thus, at least for the datasets we studied, TTPS-Classwise is a good candidate f
     \caption{At a target $\alpha = 0.1$, boxplots for size stratified coverage with calibration sets having (left) 10 samples per class and (right) 20 samples per class for CiteSeer.}
     \label{fig:nspc:citeseer:ssc}
 \end{figure}
+
+\subsection{APS Randomized Sets}
+\begin{figure}
+    \centering
+    \begin{subfigure}{0.8\linewidth}
+    \includegraphics[width=\linewidth]{graphConformal/figures/split/aps_randomized_efficiency}
+    \end{subfigure}
+    \begin{subfigure}{0.6\linewidth}
+        \includegraphics[width=\linewidth]{graphConformal/figures/split/aps_randomized_efficiency_cora}
+    \end{subfigure}
+    \caption{Violin plots denoting efficiencies of APS and Randomized APS across different datasets and multiple runs in FS split. Randomization consistently improves over the non-randomized version.}
+    \label{fig:fs:conformal:aps_vs_randomized}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \begin{subfigure}{0.8\linewidth}
+    \includegraphics[width=\linewidth]{graphConformal/figures/nspc/aps_randomized_efficiency}
+    \end{subfigure}
+    \begin{subfigure}{0.6\linewidth}
+        \includegraphics[width=\linewidth]{graphConformal/figures/nspc/aps_randomized_efficiency_cora}
+    \end{subfigure}
+    \caption{Violin plots denoting efficiencies of APS and Randomized APS across different datasets and multiple runs in LC split. Randomization consistently improves over the non-randomized version.}
+    \label{fig:nspc:conformal:aps_vs_randomized}
+\end{figure}
+% \pmcomment{Show that TPS-classwise does not sacrifice much on efficiency either}
