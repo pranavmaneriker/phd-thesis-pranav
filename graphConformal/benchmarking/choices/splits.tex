@@ -14,6 +14,6 @@ We explore the following splitting schemes under FS partitioning:
 In this splitting scheme, the data is split to ensure an equal number of samples for each class/label are present in the train, validation, and calibration set.
 The remaining nodes are then used for the test set.
 Such settings are common in  settings where only a small proportion of training/labeled nodes are available, such as in semi-supervised learning.
-This setting is ideal for methods that do have a large number of parameters to train.
+This setting is ideal for methods that do not have a large number of parameters to train.
 We explore setting the number of samples per class to 10, 20, 40, and 80.
 Note that we assign nodes for each class into train, validation, calibration, and test sets sequentially, so it is feasible in this setup to have some classes having no representative samples in some partitions. 
