@@ -167,8 +167,42 @@ Overall, the empirical results show that the effect of randomized APS is more ap
     \label{fig:nspc:conformal:daps_vs_dtps}
 \end{figure}
 
-WE compare our proposed Diffusion method--of using TPS-Classwise as the base method--DTPS against DAPS, which was proposed in~\cite{zargarbashi23conformal}.
-From Figure~\ref{fig:fs:conformal:daps_vs_dtps}, we see that when the calibration set is large (TS), DTPS can improve efficiency without sacrificing adaptiveness for PubMed but not for Coras.
+We compare our proposed Diffusion method--of using TPS-Classwise as the base method--DTPS against DAPS, which was proposed in~\cite{zargarbashi23conformal}.
+From Figure~\ref{fig:fs:conformal:daps_vs_dtps}, we see that when the calibration set is large (TS), DTPS can improve efficiency without sacrificing adaptiveness for PubMed but not for Cora.
 However, when we control the number of samples per class with LC splits (Figure~\ref{fig:nspc:conformal:daps_vs_dtps}), we see that DTPS deteriorates significantly as compared to DAPS at higher $\alpha$.
 Based on these results, we can conclude that DTPS is not a universally better method than DAPS, and its performance is sensitive to the calibration set size and the number of classes.
 It may be a viable candidate over DAPS when there is a sufficiently large calibration set.
+
+\subsection{CFGNN}
+\begin{figure}
+    \centering
+    \begin{subfigure}{0.7\linewidth}
+        \includegraphics[width=\linewidth]{graphConformal/figures/split/cfgnn_aps_vs_orig_efficiency}
+    \end{subfigure}
+    \caption{Bar charts denoting efficiency for CFGNN-APS and CFGNN-Original across the TS split at $\alpha=0.1$. We see that CFGNN-APS improves or matches efficiency in most cases.}
+    \label{fig:fs:conformal:cfgnn_aps_vs_orig}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \begin{subfigure}{0.48\linewidth}
+        \includegraphics[width=\linewidth]{graphConformal/figures/nspc/cfgnn_aps_vs_orig_efficiency_10}
+    \end{subfigure}
+    \begin{subfigure}{0.48\linewidth}
+        \includegraphics[width=\linewidth]{graphConformal/figures/nspc/cfgnn_aps_vs_orig_efficiency_20}
+    \end{subfigure}
+    \caption{Bar charts denoting efficiency for CFGNN-APS and CFGNN-Original across the LC split at $\alpha=0.1$ with 10 samples per  class (left) and 20 samples per class (right). We see that CFGNN is unstable for the LC setting.}
+\end{figure}
+
+We implement an improved version of CFGNN-APS which uses the randomized APS loss in both training and evaluation.
+In contrast, CFGNN-Original uses TPS during training and non-randomized APS during evaluation.
+We compare the efficiency of CFGNN-APS and CFGNN-Original in Figure~\ref{fig:fs:conformal:cfgnn_aps_vs_orig}.
+We see that CFGNN-APS improves or matches efficiency in 5/6 cases.
+For these results, we only trained the parameters of the CFGNN, keeping the architecture fixed.
+Further tuning of the architecture may improve the performance of CFGNN-APS.
+
+Finally, originally, CFGNN was evaluated on FC splits.
+We benchmark its perormance on LC splits in Figure~\ref{fig:nspc:conformal:cfgnn_aps_vs_orig}.
+We see that CFGNN is unstable for the LC setting.
+One potential reason for this is that the CFGNN is not designed to handle the LC setting as the data may be insufficient to train a conformal model.
+This is a potential area for future work.
