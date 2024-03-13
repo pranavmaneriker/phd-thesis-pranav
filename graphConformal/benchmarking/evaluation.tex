@@ -42,7 +42,7 @@ We evaluate the following metrics for the graph conformal prediction methods:
     \item \textbf{Label Stratified Coverage:} The mean of coverage for each class. This metric is useful for understanding whether a method is adaptive and has balanced coverage for different classes.
     \item \textbf{Size Stratified Coverage:} The mean of coverage across different sizes of prediction sets. This metric is useful for understanding whether a method is adaptive and does not under/over cover hard/easy samples.
     %\item \textbf{Size Stratified Coverage Violation:} Measures the maximum deviation from the coverage goal across different prediction set sizes. 
-    \item \textbf{Singleton Hit Ratio:} The proportion of test instances for which the true label is the only label in the prediction set. This metric measures the frequency with which a method does not require generation of a prediction set having multiple labels.
+    %\item \textbf{Singleton Hit Ratio:} The proportion of test instances for which the true label is the only label in the prediction set. This metric measures the frequency with which a method does not require generation of a prediction set having multiple labels.
 \end{itemize}
 
 \subsection{Methods}
@@ -58,7 +58,7 @@ For completeness, we list all the methods that we compare here.
 %\subsection{Notes on Parameter Tuning and Evaluation}
 %\pmcomment{TODO for final version}
 
-\subsection{Results}
+\section{Results}
 
 
 \begin{figure}
@@ -134,4 +134,41 @@ Thus, at least for the datasets we studied, TTPS-Classwise is a good candidate f
     \caption{Violin plots denoting efficiencies of APS and Randomized APS across different datasets and multiple runs in LC split. Randomization consistently improves over the non-randomized version.}
     \label{fig:nspc:conformal:aps_vs_randomized}
 \end{figure}
+Figure~\ref{fig:fs:conformal:aps_vs_randomized} and Figure~\ref{fig:nspc:conformal:aps_vs_randomized} provide violin plots that compare tehe efficiency of randomized and non-randomized version of APS across different datasets and $\alpha$.
+We observe that in each case, the peaks associated with the randomized version lie to the left of those associated with the non-randomized version.
+This indicates that the randomized version consistently provides a more efficient prediction set.
+This effect is most pronounced for a dataset having a large number of potential classes (Cora), which matches with the intuition from Theorem~\ref{them:APS:efficiency} - with a $(K-1)\left(\alpha_c^{A} - \alpha_C^{\Tilde{A}}\right)$ term contributing to the improved efficiency and least pronounced for PubMed, which has the smallest $K=3$.
+Overall, the empirical results show that the effect of randomized APS is more apparent for larger number of classes $K$.
 % \pmcomment{Show that TPS-classwise does not sacrifice much on efficiency either}
+
+\subsection{Diffusion Thresholded Adaptatiive Sets}
+\begin{figure}
+    \centering
+    \begin{subfigure}{0.7\linewidth}
+        \includegraphics[width=\linewidth]{graphConformal/figures/split/daps_dtps_pubmed}
+    \end{subfigure}
+    \begin{subfigure}{0.7\linewidth}
+        \includegraphics[width=\linewidth]{graphConformal/figures/split/daps_dtps_cora}
+    \end{subfigure}
+    \caption{Bar charts denoting different metrics associated with DAPS and DTPS across PubMed (top) and Cora (bottom) for the TS split at $\alpha=0.1$. We see that DTPS improves efficiency for PubMed but not for Cora, with minimal impact to other adaptiive metrics.}
+    \label{fig:fs:conformal:daps_vs_dtps}
+\end{figure}
+
+
+\begin{figure}
+    \centering
+    \begin{subfigure}{0.7\linewidth}
+        \includegraphics[width=\linewidth]{graphConformal/figures/nspc/daps_dtps_0.1}
+    \end{subfigure}
+    \begin{subfigure}{0.7\linewidth}
+        \includegraphics[width=\linewidth]{graphConformal/figures/nspc/daps_dtps_0.2}
+    \end{subfigure}
+    \caption{Bar charts denoting different metrics associated with DAPS and DTPS across the LC splits at $\alpha=0.1$ (top) and $\alpha=0.2$ (bottom). We see that DTPS deteriorates significantly as compared to DAPS at higher $\alpha$.}
+    \label{fig:nspc:conformal:daps_vs_dtps}
+\end{figure}
+
+WE compare our proposed Diffusion method--of using TPS-Classwise as the base method--DTPS against DAPS, which was proposed in~\cite{zargarbashi23conformal}.
+From Figure~\ref{fig:fs:conformal:daps_vs_dtps}, we see that when the calibration set is large (TS), DTPS can improve efficiency without sacrificing adaptiveness for PubMed but not for Coras.
+However, when we control the number of samples per class with LC splits (Figure~\ref{fig:nspc:conformal:daps_vs_dtps}), we see that DTPS deteriorates significantly as compared to DAPS at higher $\alpha$.
+Based on these results, we can conclude that DTPS is not a universally better method than DAPS, and its performance is sensitive to the calibration set size and the number of classes.
+It may be a viable candidate over DAPS when there is a sufficiently large calibration set.
