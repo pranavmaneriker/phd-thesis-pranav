@@ -60,14 +60,13 @@ For completeness, we list all the methods that we compare here.
 
 \subsection{Results}
 
-\subsubsection{Full-Split (FS) Partitioning}
 
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{graphConformal/figures/split/small_datasets_efficiency.pdf}
     \includegraphics[width=\linewidth]{graphConformal/figures/split/med_1_datasets_efficiency.pdf}
     \includegraphics[width=\linewidth]{graphConformal/figures/split/med_2_datasets_efficiency.pdf}
-    \caption{Plots for efficiency vs $\alpha$ for the major methods across the all the datasets. Among the baseline methods, TPS consistently has the best efficiency.}
+    \caption{Plots for efficiency vs $\alpha$ for the major methods across the all the datasets. Among the baseline methods, TPS consistently has the best efficiency. Result for FS paritttion}
     \label{fig:fs:conformal:efficiency_vs_alpha}
 \end{figure}
 
@@ -78,7 +77,7 @@ However, this often comes at a cost to adaptability.
 In the next set of results, we show how using classwise thresholds can provide some degree of adaptability for TPS.
 Next, we focus on the adaptability provided by using classwise TPS.
 
-\subsubsection{Adaptability through Classwise TPS}
+\subsection{Adaptability through Classwise TPS}
 \begin{figure}
     \centering
     \begin{subfigure}{0.48\linewidth}
@@ -94,6 +93,19 @@ Next, we focus on the adaptability provided by using classwise TPS.
     \begin{subfigure}{0.48\linewidth}
         \includegraphics[width=\linewidth]{graphConformal/figures/split/cora_size_stratified_coverage} 
      \end{subfigure}
-     \caption{At a target $\alpha = 0.1$. (Left) Label Stratified Coverage for CiteSeer. (Right) Size Stratified Coverage for CiteSeer (top) and Cora(bottom). Classwise TPS provides adaptability when stratified by labels without sacrificing size stratified coverage.}
+     \caption{At a target $\alpha = 0.1$. Boxplots indicating (left) Label Stratified Coverage. (right) Size Stratified Coverage for CiteSeer (top) and Cora(bottom). Classwise TPS provides adaptability when stratified by labels without sacrificing size stratified coverage. Results for FS splits.}
      \label{fig:fs:conformal:citeseer_adaptability}
+\end{figure}
+From Figure~\ref*{fig:fs:conformal:citeseer_adaptability}, we see that using classwise TPS successfully provides stratified coverage over different labels without sacrificing size stratified coverage vs a baseline TPS.
+At the limit, even when reducing the number of samples per class from Figure~\ref{fig:nspc:citeseer:ssc}, we can see that the loss in size stratified coverage is minimal.
+Thus, at least for the datasets we studied, TTPS-Classwise is a good candidate for an adaptive version of TPS.
+\begin{figure}
+    \begin{subfigure}{0.48\linewidth}
+        \includegraphics[width=\linewidth]{graphConformal/figures/nspc/citeseer_nspc_10_size_stratified_coverage}
+    \end{subfigure}
+    \begin{subfigure}{0.48\linewidth}
+        \includegraphics[width=\linewidth]{graphConformal/figures/nspc/citeseer_nspc_20_size_stratified_coverage}
+    \end{subfigure}
+    \caption{At a target $\alpha = 0.1$, boxplots for size stratified coverage with calibration sets having (left) 10 samples per class and (right) 20 samples per class for CiteSeer.}
+    \label{fig:nspc:citeseer:ssc}
 \end{figure}
