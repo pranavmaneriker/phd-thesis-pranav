@@ -92,7 +92,7 @@ similarly,
 We will show that as long as these thresholds are sufficiently separated, the randomized prediction set will be more efficient than the non-randomized one. 
 
 \begin{theorem}
-Assuming that $\alpha_c^A - \alpha_c^{\Tilde{A}} \geq \frac{2}{n}$. Then prediction set constructed using randomization is more efficient than without. Formally, 
+Assume that $\alpha_c^A - \alpha_c^{\Tilde{A}} \geq \frac{2}{n+1}$ then prediction set constructed using randomization is more efficient than without. Formally, 
 \[
     \E\left[|C_{\Tilde{A}}(\vx_{n+1})| - |C_A(\vx_{n+1})|\right]  \geq 0
 \]   
@@ -118,7 +118,7 @@ From a similar argument, we can show that
 \[
     \E\left[|C_{\Tilde{A}}^{n+1}|\right] \geq 1 - \alpha + 1 - \alpha_c^A
 \]
-
+\pmcomment{Complete the cases here}
 Thus, 
 \begin{align}
     \E\left[|C_{\Tilde{A}}^{n+1}| - |C_{A}^{n+1}|\right] &\geq 1 - \alpha + 1 - \alpha_c^{\Tilde{A}} - \left(1 - \alpha + 1 - \alpha_c^A + \frac{2}{n+1} \right)\\
@@ -127,7 +127,9 @@ Thus,
 which is equivalent to our assumption, and this completes the proof.
 For $K$ classes, the corresponding term would be 
 \begin{align*}
-    (K-1)\left(\alpha_c^A - \alpha_c^{\Tilde{A}}\right) - \frac{K}{n+1} &= (K-1) \left(\alpha_c^A - \alpha_c^{\Tilde{A}} - \frac{K}{K-1} \frac{1}{n+1}\right)\\
+    \E\left[|C_{\Tilde{A}}^{n+1}| - |C_{A}^{n+1}|\right] &= \sum\limits_{k-1} \\
+    &=(K-1)\left(\alpha_c^A - \alpha_c^{\Tilde{A}}\right) - \frac{K}{n+1} \\
+    &= (K-1) \left(\alpha_c^A - \alpha_c^{\Tilde{A}} - \frac{K}{K-1} \frac{1}{n+1}\right)\\
     & >  (K-1)\left(\alpha_c^A - \alpha_c^{\Tilde{A}} - \frac{2}{n+1}\right) \geq 0
 \end{align*}
 Which completes the proof in the general case.

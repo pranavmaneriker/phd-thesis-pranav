@@ -275,17 +275,17 @@ Define
 \]
 This loss function captures the points where the prediction set excludes acceptance for each group.
 With increasing $\lambda$, $C_\lambda$ will include additional classes.
-The possible values of $C_\lambda(X)$ as $\lambda$ increases, if the acceptance class $y_1$ has higher score would be $\braces{\emptyset}, \braces{y_0}, \braces{y_0, y_1}$, which corresponds to loss values of $1, 1, 0$ respectively.
-If the rejection class $y_0$ has a higher score, the possible values would be $\braces{\emptyset}, \braces{y_1}, \braces{y_0, y_1}$, which corresponds to loss values of $1, 0, 0$ respectively.
+The possible values of $C_\lambda(X)$ as $\lambda$ increases, if the acceptance class $y_1$ has higher score would be $\emptyset, \braces{y_0}, \braces{y_0, y_1}$, which corresponds to loss values of $1, 1, 0$ respectively.
+If the rejection class $y_0$ has a higher score, the possible values would be $\emptyset, \braces{y_1}, \braces{y_0, y_1}$, which corresponds to loss values of $1, 0, 0$ respectively.
 In both cases, the loss function is monotonically non-increasing with the size of the prediction set.
 Thus we can use conformal risk control over this set.
 From risk control, we would get 
 \[
-    \hat{\lambda_0} : E[L_0(C_{\hat{\lambda_0}}(X), Y)] \leq \alpha_0
+    \hat{\lambda}_0 : E[L_0(C_{\hat{\lambda}_0}(X), Y)] \leq \alpha_0
 \]
 and 
 \[
-    \hat{\lambda_1} : E[L_1(C_{\hat{\lambda_1}}(X), Y)] \leq \alpha_1
+    \hat{\lambda}_1 : E[L_1(C_{\hat{\lambda}_1}(X), Y)] \leq \alpha_1
 \]
 Since $L$ is an indicator function, these guarantees corresponds to $\Pr[y_1 \not\in C_{\hat{\lambda}_i}(X) \cap X \in g_i] \leq \alpha_i$.
 From this risk control and monotonicity of $L$, we can set $\hat{\lambda} = \max\{\hat{\lambda}_1, \hat{\lambda}_2\}$, and can provide a predictive parity-like guarantee for the model:
