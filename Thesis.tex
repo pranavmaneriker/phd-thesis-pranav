@@ -1,22 +1,10 @@
-%\RequirePackage{pdfmanagement-testphase}
-%\DeclareDocumentMetadata{uncompress,pdfversion=2.0}
-%\DocumentMetadata{testphase=phase-III,testphase=math}
-%\documentclass[osudraft]{osudissert96}
-\documentclass{osudissert96}
+\documentclass[osudraft]{osudissert96}
+%\documentclass{osudissert96}
 
-% https://marketplace.visualstudio.com/items?itemName=James-Yu.latex-workshop
-
-
-
-\input{premable}
-
-%\newtoggle{compact-space}
-%\toggletrue{compact-space}
-%\togglefalse{compact-space}
+\input{preamble}
 
 \newcommand{\customcommentson}{true} % set to false if not
 
-% BibTeX from the BiBTeX Documentation
 
 \begin{document}
 
@@ -36,20 +24,22 @@
 \member{TBD}
 %\date{November, 2022}
 
+%%%%%%% Setup accessiblity and metadata using hyperref package and defined title/author
+\makeatletter % to use @title and @author
+\hypersetup{
+  pdftitle={\@title}, %accessibility requirements for title
+  pdfauthor={\@author}, 
+}
+\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 \maketitle
 
 
 
-%
-% Abstract goes here.
-%
-
-
-%\begin{normalsize}
-
-
-% add copyright symbol
+% add copyright
 \disscopyright
 
 
@@ -77,10 +67,6 @@
 %\listoftodos
 %\end{normalsize}
 
-
-
-
-%\begin{normalsize}
 \include{introduction}
 
 \include{urltran}
@@ -95,19 +81,9 @@
 
 \include{future_work}
 
-%\include{conclusion}
-
-%\end{normalsize}
-
-
-%\begin{footnotesize}
-%\begin{spacing}{0.6}
-
 \bibliographystyle{acl_natbib}
 \bibliography{references}
 
-%\end{spacing}
-%\end{footnotesize}
 
 
 \end{document}

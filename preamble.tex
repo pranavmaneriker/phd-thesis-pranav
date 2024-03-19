@@ -5,7 +5,7 @@
 \usepackage{natbib} % bibliography styling
 \usepackage{graphicx} % enhanced support for graphics
 \usepackage{comment} % enables the use of multi-line comments
-\usepackage{amsthm,bbm,amsmath,amssymb,bm} % math packages
+\usepackage{amsthm,bbm,amsmath,amssymb,bm,mathtools} % math packages
 \usepackage{enumitem} % control over enumeration and itemization
 \usepackage[bottom]{footmisc} % typeset footnotes to bottom
 \usepackage{multirow} % allow multirow cells in tables
@@ -17,40 +17,40 @@
 \usepackage{tabularx,ragged2e,booktabs} % table setup
 %% BNF grammar
 \usepackage[nounderscore]{syntax} % BNF grammar support
-\usepackage{listings} % code listings
-\usepackage{pgfplots}
-\usepackage{ifthen}
+\usepackage{ifthen} %\ for conditional statements eg comments on/off
+% code listings TODO: Make consistent
+\usepackage{listings}
 \usepackage{algorithm}% http://ctan.org/pkg/algorithms
 \usepackage{algpseudocode}% http://ctan.org/pkg/algorithmicx
-\usepackage{adjustbox}
-\usepackage{times}
-\usepackage{mathtools}
-\usepackage{xspace} % for spacing in URLTran papers
-\usepackage{xcolor}
-\usepackage[figuresleft]{rotating}
+\usepackage{adjustbox} % for adjusting table width to fit in page 
+\usepackage{xspace} % for spacing in URLTran papge name automatically
+\usepackage{xcolor} % color support
+\usepackage[figuresleft]{rotating} % allow for rotating figures to fit in page
 \usepackage[hyperpageref]{backref} % back references https://texdoc.org/serve/backref.pdf/0
 \usepackage[textsize=tiny]{todonotes} % comments
-
-\usepackage{pifont}% http://ctan.org/pkg/pifont
 \usepackage{tikz}
+\usetikzlibrary{positioning,matrix,fit,shapes}
+\usepackage{pgfplots} % for plots in latex directly
 \pgfplotsset{compat=newest}
 \usepgfplotslibrary{fillbetween}
-\usetikzlibrary{positioning,matrix,fit,shapes}
+%%% usage
+% \includegraphics{img}
+% \alt{img}{alternate text}
+
 % import hyperref last for correct accessilibty setup
 \usepackage{hyperref}
-\hypersetup{
-    pdfusetitle,
-    pdflang=en-US,
-    colorlinks=true, %set true if you want colored links
-    linkcolor=black,
-    urlcolor=darkblue,
-    citecolor=darkblue,
-    linktoc=all,     %set to all if you want both sections and subsections linked
-}
-\usepackage{cleveref} % clevelr refs in AVOIR, must be loaded after hyperref
+\usepackage{cleveref} % clever refs in AVOIR, must be loaded after hyperref
 % section numbers up to 4 decimal points
 \setcounter{secnumdepth}{4}
-
+\hypersetup{
+  colorlinks=true, %set true if you want colored links
+  linkcolor=black,
+  urlcolor=darkblue,
+  citecolor=darkblue,
+  linktoc=all,     %set to all if you want both sections and subsections linked
+  pdflang=en-US, % accessiblity requirement for document langauge
+  pdfdisplaydoctitle=true % required for accessiblity check to pass
+}
 %%% subappendices
 \AtBeginEnvironment{subappendices}{%
   \chapter*{Appendix}
@@ -58,7 +58,6 @@
   \counterwithin{figure}{section}
   \counterwithin{table}{section}
 }
-
 % ------------------------------------------------------- [ Colour Definitions ]
 
 \definecolor{darkblue}{rgb}{0, 0, 0.5}
@@ -81,7 +80,7 @@
 \definecolor{darkspringgreen}{rgb}{0.09, 0.45, 0.27}
 
 
-% COMMENTS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ------------------------------------------------------- [ Commenting Macros]
 \newcommand{\sidenote}[4]{
     \ifthenelse{\equal{true}{\customcommentson}} {
     \todo[author=#1,color=#2,#3]{#4} 
@@ -97,39 +96,8 @@
 \newcommand{\pmComment}[1]{
     \sidenote{Pranav}{blue!40}{inline}{#1}
 }
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Custom packages and definitions
-\graphicspath{{images/}} % images dir
 
-
-%%%%%%% Temp defns from OOPSLA 
-\newcommand{\true}{\textsf{true}\xspace}
-\newcommand{\false}{\textsf{false}\xspace}
-
-\newcommand{\blue}[1]{\textcolor{blue}{#1}}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\newcommand{\cmark}{\ding{51}}%
-\newcommand{\xmark}{\ding{55}}%
-
-%%% Labels may have changed error
-%\def\@testdef #1#2#3{%
-%  \def\reserved@a{#3}\expandafter \ifx \csname #1@#2\endcsname
-% \reserved@a  \else
-%\typeout{^^Jlabel #2 changed:^^J%
-%\meaning\reserved@a^^J%
-%\expandafter\meaning\csname #1@#2\endcsname^^J}%
-%\@tempswatrue \fi}
-%%%%%%%%%
-\DeclareMathOperator{\eqdef}{\vcentcolon=}
-
-%%%%%%%%%
-\newtheorem{theorem}{Theorem}
-\newtheorem{definition}{Definition}
-\newtheorem{corollary}{Corollary}[theorem] % Use theorem counter as `parent`
-\newtheorem{lemma}[theorem]{Lemma}
-
+% ------------------------------------------------------- [ Figure and Table Captions and References]
 % Mark sections of captions for referring to divisions of figures
 \newcommand{\figleft}{{\em (Left)}}
 \newcommand{\figcenter}{{\em (Center)}}
@@ -140,11 +108,6 @@
 \newcommand{\captionb}{{\em (b)}}
 \newcommand{\captionc}{{\em (c)}}
 \newcommand{\captiond}{{\em (d)}}
-
-% Highlight a newly defined term
-\newcommand{\newterm}[1]{{\bf #1}}
-
-
 % Figure reference, lower-case.
 \def\figref#1{figure~\ref{#1}}
 % Figure reference, capital. For start of sentence
@@ -183,12 +146,19 @@
 \def\Partref#1{Part~\ref{#1}}
 \def\twopartref#1#2{parts \ref{#1} and \ref{#2}}
 
-\def\1{\bm{1}}
+% ------------------------------------------------------- [ Math]
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+\newtheorem{corollary}{Corollary}[theorem] % Use theorem counter as `parent`
+\newtheorem{lemma}[theorem]{Lemma}
+\DeclareMathOperator{\eqdef}{\vcentcolon=}
+% Highlight a newly defined term
+\newcommand{\newterm}[1]{{\bf #1}}
+\def\1{\bm{1}} % indicator
 \newcommand{\train}{\mathcal{D}}
 \newcommand{\valid}{\mathcal{D_{\mathrm{valid}}}}
 \newcommand{\test}{\mathcal{D_{\mathrm{test}}}}
 \newcommand{\calib}{\mathcal{D_{\mathrm{calib}}}}
-
 % Math symbols
 % probability and Expectation
 \newcommand{\p}{\mathbb{P}}
@@ -196,6 +166,7 @@
 \newcommand{\HatMu}{\hat{\mu}}
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\B}{\mathbb{B}}
+% epsilon
 \def\eps{\varepsilon}
 % Random variables
 \def\reta{{\textnormal{$\eta$}}}
@@ -472,7 +443,6 @@
 \def\tY{{\tens{Y}}}
 \def\tZ{{\tens{Z}}}
 
-
 % Graph
 \def\gA{{\mathcal{A}}}
 \def\gB{{\mathcal{B}}}
@@ -639,16 +609,6 @@
 \DeclareMathOperator{\Tr}{Tr}
 \let\ab\allowbreak
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Extra math
-\newcommand\swapifbranches[3]{#1{#3}{#2}}
-\makeatletter
-\MHInternalSyntaxOn
-\patchcmd{\DeclarePairedDelimiter}{\@ifstar}{\swapifbranches\@ifstar}{}{}
-\MHInternalSyntaxOff
-\makeatother
-
 \DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
 \DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
 \DeclarePairedDelimiter{\parens}{(}{)}
@@ -659,6 +619,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% ------------------------------------------------------- [ Paper/Chapter Specific Definitions]
 %%%%%%%%%%%%%%%%%%%%%%%
 %% URLTran definitions%
 %%%%%%%%%%%%%%%%%%%%%%%
@@ -698,22 +659,6 @@
 \newcommand*{\Perm}[2]{{}^{#1}\!P_{#2}}%
 \newcommand*{\Comb}[2]{{}^{#1}C_{#2}}%
 
-%\newcommand*{\norm}[1]{{\left\Vert#1\right\Vert}}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Graph conformal definitions%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\newcommand{\avcomment}[1]{
-    \sidenote{PM}{red!40}{}{#1}
-}
-\newcommand{\avComment}[1]{
-    \sidenote{PM}{red!40}{inline}{#1}
-}
-
-\newcommand{\ascomment}[1]{
-    \sidenote{PM}{orange!40}{}{#1}
-}
-\newcommand{\asComment}[1]{
-    \sidenote{PM}{orange!40}{inline}{#1}
-}
