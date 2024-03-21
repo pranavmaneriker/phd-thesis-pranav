@@ -1,8 +1,6 @@
 Neighborhood Adaptive Prediction Sets (NAPS) can construct predictive sets via Conformal Prediction under relaxed exchangeability (or non-exchangeability) assumptions~\cite{barber2023conformal}.
-In the context of graphs, NAPS was initially implemented in the inductive setting \cite{clarkson2023distribution}.
+In the context of graphs, NAPS was initially implemented in the inductive setting~\cite{clarkson2023distribution}.
 However, it can be used in the transductive setting as well~\cite{zargarbashi23conformal}. 
-
-
 NAPS in the transductive setting is based on APS where $s_i = A(\vx_i, y_i, u_i;\hat{\pi}_i)$, or $A(\vx_i, y_i;\hat{\pi}_i)$ (depending on whether the randomized version is used), is computed for each node in $\gD_{\text{calib}}$. 
 Using these scores, a weighted quantile is computed to produce the score threshold for prediction sets (Equation~\ref{eq:NAPS:quantile})
 Unlike APS, the quantile is defined by placing weighted point masses ($\delta$) at each score from the calibration set under consideration for quantile computation.
