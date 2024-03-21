@@ -42,15 +42,6 @@
 \usepackage{hyperref}
 % section numbers up to 4 decimal points
 \setcounter{secnumdepth}{4}
-\hypersetup{
-  colorlinks=true, %set true if you want colored links
-  linkcolor=black,
-  urlcolor=darkblue,
-  citecolor=darkblue,
-  linktoc=all,     %set to all if you want both sections and subsections linked
-  pdflang=en-US, % accessiblity requirement for document langauge
-  pdfdisplaydoctitle=true % required for accessiblity check to pass
-}
 %%% subappendices
 \AtBeginEnvironment{subappendices}{%
   \chapter*{Appendix}
@@ -80,6 +71,16 @@
 \definecolor{darkspringgreen}{rgb}{0.09, 0.45, 0.27}
 
 
+% ------------------------------------------------------- [ Setup for hyperref accessibility ]
+\hypersetup{
+  colorlinks=true, %set true if you want colored links
+  linkcolor=black,
+  urlcolor=darkblue,
+  citecolor=darkblue,
+  linktoc=all,     %set to all if you want both sections and subsections linked
+  pdflang=en-US, % accessiblity requirement for document langauge
+  pdfdisplaydoctitle=true % required for accessiblity check to pass
+}
 % ------------------------------------------------------- [ Commenting Macros]
 \newcommand{\sidenote}[4]{
     \ifthenelse{\equal{true}{\customcommentson}} {
