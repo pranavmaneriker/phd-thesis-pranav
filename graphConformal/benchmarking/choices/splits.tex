@@ -3,14 +3,14 @@ Two methods which are used in other works on graph conformal prediction for clas
 %\avcomment{Add citations for methods that use each one} %These methods originate from works that consider the classification task in either a supervised or semi-supervised setting, respectively.
  
 \noindent \textbf{Full-Split (FS) Paritioning}
-In this case, the choice of data split can be done such that each subset of the partition adheres to a size constraint defined in terms of a percentage/fraction of the full node set $\gV$.
-For example, in CF-GNN \cite{huang2024uncertainty} the authors split the datasets in their experiments randomly, but adhering to a $20/10/35/35$ split of $\gD_{\text{train}}, \gD_{\text{valid}},$, $\gD_{\text{calib}}$ and  $\gD_{\text{test}}$.
-Note that the overall percentage of data for which we do provide labels (in either the development or calibration set) is large ($65\%$).
-For non-conformal scores models with a large number of trainable parameters, this splitting scheme is ideal as it allows for a large amount of data to be used for training the calibration score  model.
+In this case, the data is split such that each subset of the partition adheres to a size constraint defined in terms of a percentage/fraction of the full node set $\gV$.
+For example, in CF-GNN \cite{huang2024uncertainty} the authors split the datasets in their experiments randomly, but adhering to a $20\%/10\%/35\%/35\%$ split of $\train/\valid/\calib/\test$, respectively.
+Note that the overall percentage of data for which we do provide labels (in either the development or calibration set) is a large proportion ($65\%$) of the full dataset.
+For non-conformal score models with numerous trainable parameters, this splitting scheme is ideal as it allows for a large amount of data to be used for training the calibration score  model.
 We explore the following splitting schemes under FS partitioning:
-($\gD_{\text{train}}, \gD_{\text{valid}},$, $\gD_{\text{calib}}$, $\gD_{\text{test}}$) = ($20/10/35/35$), ($20/20/30/30$), ($30/10/30/30$), and ($30/20/25/25$).
+($\train,\valid,\calib,\test$) = ($0.2, 0.1,0.35, 0.35$), ($0.2,0.2,0.3,0.3$), ($0.3,0.1,0.3,0.3$), and ($0.3,0.2,0.25,0.25$).
 
-\noindent \textbf{Label-Count (LC) Sample Paritioning}
+\noindent \textbf{Label-Count (LC) Sample Partioning}
 In this splitting scheme, the data is split to ensure an equal number of samples for each class/label are present in the train, validation, and calibration set.
 The remaining nodes are then used for the test set.
 Such settings are common in  settings where only a small proportion of training/labeled nodes are available, such as in semi-supervised learning.

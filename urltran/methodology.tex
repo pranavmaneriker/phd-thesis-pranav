@@ -9,12 +9,15 @@ Second, domain-specific vocabularies are built using different tokenization appr
  The general architecture of all the explored models takes a three stage approach for inference shown in Figure~\ref{fig:urltran:transformer}. It first uses a subword tokenizer to extract tokens from a URL.
 Next, a  transformer model generates an embedding vector for the unknown URL.
 Finally, a classifier predicts a score indicating whether or not the unknown URL corresponds to a phishing web page.
+%\tagstructbegin{tag=Figure,alt=This is a description}\tagmcbegin{tag=Figure}
 \begin{figure}
 	\centering
-	\includegraphics[width=0.4\linewidth]{urltran/figures/TransformerModel}
+	%\includegraphics[width=0.4\linewidth]{urltran/figures/TransformerModel}
+	\includegraphics[width=0.4\linewidth,alt={test}]{urltran/figures/TransformerModel}
 	\caption{\URLTranSys phishing URL detection model.}
 	\label{fig:urltran:transformer}
 \end{figure}
+%\tagmcend\tagstructend
 In the following sections, we first provide briefly summarize the transformer model architecture, followed by the training tasks used to train the model, and end with a description of the adversarial settings under which the best \URLTranSys model is evaluated and then trained with adversarial examples to improve its robustness.
 
 \subsection{Architecture}

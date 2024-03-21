@@ -1,12 +1,9 @@
-\RequirePackage{pdfmanagement-testphase}
-\DocumentMetadata{testphase=phase-III}
-\documentclass[osudraft]{osudissert96}
-%\documentclass{osudissert96}
-
+%\DocumentMetadata{uncompress,testphase=phase-III}
+%\DocumentMetadata{uncompress,pdfversion=2.0}
+%\DocumentMetadata{pdfversion=2.0}
+\documentclass{osudissert96}
 \input{preamble}
-
 \newcommand{\customcommentson}{true} % set to false if not
-
 
 \begin{document}
 
@@ -17,9 +14,9 @@
 \author{Pranav Maneriker}
 \title{The Role of Structure in Building Adaptive Machine Learning}
 \unit{Department of Computer Science and Engineering}
-
-
-% \coadvisorname{Advisor 1, Advisor 2}
+%
+%
+%% \coadvisorname{Advisor 1, Advisor 2}
 \advisorname{Dr. Srinivasan Parthasarathy}
 \member{Dr. Andrew Perrault}
 \member{Dr. Micha Elsner}
@@ -42,7 +39,10 @@
 
 
 % add copyright
-\disscopyright
+%\tagstructbegin{tag=division}
+\disscopyright{}
+\pagebreak
+%\tagstructend
 
 
 \begin{abstract}
@@ -85,7 +85,6 @@
 
 \bibliographystyle{acl_natbib}
 \bibliography{references}
-
 
 
 \end{document}

@@ -230,7 +230,7 @@
 %% MM. 1994/08/09. Preserving Ram's choices.
   \ifapp
     \ifnum\value{chapter}=1
-% ted - (2010) change how ``Appendices'' shows up in TOC
+      % ted - (2010) change how ``Appendices'' shows up in TOC
       \addcontentsline{toc}{part}{\appendicesname}%
       %\addtocontents{toc}{\vskip 1.0em plus 1pt 
       %   \hskip -\parindent \appendicesname\hfill%
@@ -239,16 +239,16 @@
       {}
     \fi
   \else
-% ted - (2010) remove ``Chapters:'' from TOC
-% ted - (2010) (also removed def of \chaptersname above)
+    % ted - (2010) remove ``Chapters:'' from TOC
+    % ted - (2010) (also removed def of \chaptersname above)
     \ifnum\value{chapter}=1
       \ifnum\value{part}=0
         \pagenumbering{arabic}
       \fi
-%      \pagenumbering{arabic}
-%      \addtocontents{toc}{\vskip 1.0em plus 1pt
-%         \hskip -\parindent \chaptersname:%
-%    \vskip 0.25em\rm}
+    %      \pagenumbering{arabic}
+    %      \addtocontents{toc}{\vskip 1.0em plus 1pt
+    %         \hskip -\parindent \chaptersname:%
+    %    \vskip 0.25em\rm}
     \fi
   \fi
   \pagestyle{headings}
@@ -266,8 +266,8 @@
      \@topnewpage[\@makechapterhead{#2}]%
   \else
      \@makechapterhead{#2}%
-% MDH - 1996/08/01 - GS indents the first paragraph of a chapter.
-%     \@afterheading
+    % MDH - 1996/08/01 - GS indents the first paragraph of a chapter.
+    %     \@afterheading
   \fi
 }
 
@@ -297,8 +297,8 @@
      \@topnewpage[\@makeschapterhead{#1}]%
   \else
      \@makeschapterhead{#1}%
-% MDH - 1996/08/01 - GS indents the first paragraph of a chapter.
-%     \@afterheading
+    % MDH - 1996/08/01 - GS indents the first paragraph of a chapter.
+    %     \@afterheading
   \fi%
 }
 
@@ -907,7 +907,8 @@
   \chapter*{\typesetHeading{\abstractname}}
   \addcontentsline{toc}{front}{{\abstractnameLC}}
   \thispagestyle{plain}
-  \pagestyle{plain}}
+  \pagestyle{plain}
+}
 {\par\startdoublespace}
 
 

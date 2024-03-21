@@ -1,10 +1,8 @@
-
 The success of neural networks and the advent of specialized hardware such as GPUs has led to larger models with increasingly large unstructured datasets in machine learning.
 Curating and assembling a high-quality large dataset is a time-consuming and expensive process.
 Further, training models on these datasets requires expensive computing resources.
 Some of these issues are alleviated with the advent of paradigms such as self-supervised and transfer learning.
 However, when the data continue to drift and change over time,
-%, these paradigms are unable to adapt; 
 models need to be periodically retrained to keep up.
 
 Graph structures, both implicit and explicit, are ubiquitous in Natural Language Processing.
@@ -14,7 +12,6 @@ Additionally, textual data may have associated metadata in external graphs, such
 In this dissertation, we posit that an abundance of associated structural information is underutilized for scaling and adaptation.
 The prevalence of these structures behooves us to utilize them to improvise, adapt, and overcome the challenges posed by scaling and drifts in data.
 
-%I the role of graph structures in augmenting natural language processing and machine learning in order to make them adapt to changes in the underlying data over time. 
 In our work, we focus on three broad directions in which to use these structures, viz. augmenting existing text models with structure, exploring the role of structure in creating adversarial testing samples, and structured-enhanced monitoring of the performance of models over time.
 The first direction that we explore is the impact of incorporating structure into text representation learning pipelines.
 In our first contribution, we study how the implicit structure of text data (here, URLs) can be used to design domain-specific losses and adversarial attacks to build a state-of-the-art system for phishing URL detection.
@@ -23,7 +20,6 @@ We consider the standard masked language model and additional domain-specific pr
 Our model improves over the best baseline over a range of low false positive rates.
 We then demonstrate how these models can be more robust by using adversaries constructed from benign URLs using a domain-informed attack scenario. 
 In both fine-tuning and adversarial attacks, the underlying syntax of URLs serves as the structure that enables us to build a robust model.
-
 
 The second direction of work we study is the role of intrinsic structure in the visualization and analysis of the fairness of machine learning models.
 Specifically, we study the syntax of commonly used fairness metrics 
@@ -53,4 +49,4 @@ We expand on our work on our theoretical framework for conformal prediction on g
 %We focus on settings involving data drift inductive prediction on graphs.
 Finally, based on the observed limitations on the robustness of author identification models, we propose extensions of ideas explored in our work on temporal robustness that may be used to provide bounds on the generalization capabilities of these models.
 
-\endinput
+%\endinput
