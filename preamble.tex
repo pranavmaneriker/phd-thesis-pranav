@@ -684,7 +684,24 @@
   \pdfliteral page {EMC}%
   \let\alttext\undefined
 }
+
+
+%\newenvironment{noimgtabular}[1]{%
+%  \pdfliteral page {/Artifact <</Type /Table >> BDC}%
+%  \if\relax\detokenize{#1}\relax
+%    \begin{tabular}
+%  \else
+%    \begin{tabular}{#1}
+%  \fi
+%}{
+%  \end{\tabular}
+%  \pdfliteral page {EMC}%
+%}
+
+
 \makeatother
+
+
 
 % fix tabular
 %\makeatletter
