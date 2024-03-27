@@ -5,7 +5,7 @@ In light of this observation, in this section, we are concerned with evaluating 
 We find that both the time elapsed between writing samples and latent demographic attributes can have a significant impact on performance, which we attribute to temporal data shifts.
 Further, we find that these shifts are more significant for certain groups, notably younger authors whose style evolves over time.
 This is problematic since these groups may suffer from higher error rates and suffer potential negative outcomes, such as false attributions in forensic applications.
-Our experiments suggest this degradation in performance is due to fundamental data shifts, rather than model estimation error, which motivates us to propose a recalibration-based mechanism to improve the robustness of authorship attribution models.
+Our experiments suggest this degradation in performance is due to fundamental data shifts, rather than model estimation error, which motivates us to propose a recalibration-based mechanism to improve the robustness of authorship attribution models as future work in Chapter~\ref{chp:future_work}.
 
 \subsection{Motivation}
 
@@ -177,7 +177,7 @@ Q/T &  &  &  &  &  &  \\
 16-1/16-12 & 0.265 & 0.284 & 0.212 & 0.251 & 0.148 & 0.796 \\
 17-1/17-12 & 0.278 & 0.297 & 0.224 & 0.262 & 0.137 & 0.733 \\
 18-1/18-12 & 0.283 & 0.303 & 0.232 & 0.281 & 0.171 & 0.770 \\
-19-1/19-12 & 0.316 & 0.343 & 0.235 & 0.290 & 0.143 & 0.760 \\
+19-1/19-10 & 0.316 & 0.343 & 0.235 & 0.290 & 0.143 & 0.760 \\
 \bottomrule
 \end{tabular}
     %\caption{Recall@8 results across different models on \DSfixeddelta{}. Only LUAR is controlled for training dataset time. Best performance is bolded.   }

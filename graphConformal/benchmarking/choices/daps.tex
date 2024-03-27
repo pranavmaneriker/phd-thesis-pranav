@@ -1,5 +1,5 @@
 The Diffusion Adpative Prediction Sets (DAPS) approach for conformal node classification on graphs was introduced by \citet{zargarbashi23conformal}.
-The intuition behind DAPS due to the prevalence of homophily in graphs, the non-conformity scores for two connected scores should be related.
+The intuition behind DAPS is that the prevalence of homophily in graphs implies that the non-conformity scores for two connected scores should be related.
 DAPS uses a diffusion step to capture this relationship and uses the non-conformity scores modified by diffusion to generate the prediction sets.
 Formally, suppose $s(v, y)$ is a point wise non-conformity score for a node $v$ and label $y$ (e.g., TPS or APS)
 \[
@@ -10,4 +10,4 @@ where $\gN_v$ is the 1-hop neighborhood of $v$ and $\lambda \in [0, 1]$ is a hyp
 
 \citet{zargarbashi23conformal} use the APS score as the point wise score in diffusion process as it is adaptive and uniformly distribution in $[0, 1]$ under oracle probability.
 However, as we noted earlier, using class wise thresholds provides a mechanism to produce adaptive scores from TPS as well.
-Thus, we create DTPS, a variation of DAPS using TPS scores as the point wise scores in the diffusion process.
+Thus, we create DTPS, a variation of DAPS using TPS-Classwise scores as the point wise scores in the diffusion process.

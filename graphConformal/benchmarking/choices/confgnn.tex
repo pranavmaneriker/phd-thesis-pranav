@@ -5,9 +5,9 @@
     \label{fig:conformalized_gnn}
 \end{figure}
 
-Conformalized GNN (CFGNN)~\citep{huang2024uncertainty} is a GNN based approach for conformal prediction.
-The authors observe that inefficiencies are correlated between nodes having similar neighborhood topology in a graph setting.
-They use a GNN during the calibration phase which is trained to correct the scores output from the base model to maximize the efficiency of the conformal prediction.
+Conformalized GNN (CFGNN)~\citep{huang2024uncertainty} is a GNN-based approach for conformal prediction.
+The authors observed that inefficiencies are correlated between nodes having similar neighborhood topology in a graph setting.
+They use a GNN during the calibration phase, which is trained to correct the scores output from the base model such that the corrected scores maximize the efficiency of the conformal prediction.
 For classification-based losses, CFGNN utilizes the fact that all steps in the conformal prediction stage for computing the prediction sets (non-conformity score computation, quantile computation, thresholding) can be expressed as differentiable operations.
 Thus, a GNN can be trained directly using efficiency as a loss function.
 Figure~\ref{fig:conformalized_gnn} provides a high-level overview of the CFGNN approach.

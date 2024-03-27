@@ -16,6 +16,6 @@ These windows are labeled $A_1, \dots, A_w$.
 Each individual window is then encoded using a sentence transformer model~\citep{reimers2019sentencebert}.
 A mean pooling operation is applied to the embeddings output by the final layer of the transformer model to generate a single vector representation for each window.
 An additional mean-pooling operation is used to combine the representations of all windows to generate a single representation for the episode.
-This representation is then transformed using a linear transformation and the final representation generated from this operation is used as the representation for one \textit{episode} for each author.
+This representation is then transformed using a linear transformation and the final representation generated from this operation is used as the representation for one \emph{episode} for each author.
 A supervised contrastive training loss~\cite{khosla2020supervised} is used a metric learning loss to ensure alignment between the embeddings of multiple episodes of the same author.
 Further details about the training process and the loss function can be found in the LUAR paper~\citep{riverastao2021learning}.

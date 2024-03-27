@@ -23,7 +23,7 @@ During the calibration phase, the features and labels for the calibration nodes,
 This split ensures that the base model cannot distinguish between the calibration and test nodes, and hence exchangeability holds for $v \in \gV_{\text{calib}} \cup \gV_{\text{test}}$.
 
 \noindent \textbf{Inductive setting}
-We briefly describe the inductive setting and note that the exchangeability assumption will be violated in this setting in general.
+We briefly describe the inductive setting and note that the exchangeability assumption will be violated in this setting (in general).
 The base model is provided with the graph induced by the development nodes only $(\gV_d, \gE_d, \mX_d)$.
 In the calibration/test phases, the nodes arrive either one at a time or in batches.
 Thus, nodes arriving later in the sequence will have access to neighbors that arrived earlier, breaking the exchangeability assumption.
@@ -54,8 +54,8 @@ This theorem paves the way for using conformal prediction for transductive node 
 %and a trained model with classwise prediction the goal is to learn a model $\pi: \gX \to \Delta_K$, where $\Delta_K$ is the $K$-dimensional probability simplex.
 %
 %\pmcomment{below text optionol}
-For the following sections, we will assume that the base model $\hat{\pi}: \gX \to \Delta_{\gY}$, where $\Delta_{\gY}$ is the probability simplex over the elements of $\gY$, is learned using the training and validation sets $\train \cup \valid$. 
+For the following sections, we will assume that the base model $\hat{\pi}: \gX \to \Delta_{\gY}$, where $\Delta_{\gY}$ is the probability simplex over the elements of $\gY$ and is learned using the training and validation sets $\train \cup \valid$. 
 The calibration set $\calib$ is used to determine the $\hat{q}(\alpha)$ from Theorem \ref{thm:CP:coverage} and the test set $\test$ is the set for which we want to compute our prediction sets.
-In general, the scores need not lie over a simplex; they can be in $\R^K$.
+In general, the outputs $\hat{\pi}$ need not lie over a simplex; they can be in $\R^K$.
 However, this greatly simplifies the exposition for the following sections and is the standard practice in prior work.
 

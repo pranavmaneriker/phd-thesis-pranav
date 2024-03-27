@@ -13,7 +13,7 @@ The point mass at $+\infty$ indicates that the score for test node $n+1$ is unkn
 For NAPS to produce viable prediction sets, the weights, $w_i\in [0,1]$, for nodes under consideration in the calibration set must be chosen in a data independent fashion, i.e., they cannot leverage the feature vectors associated with the calibration nodes~\citep{barber2023conformal}.
 NAPS leverages the graph structure to assign these weights, assigning non-zero weights to nodes within a k-hop neighborhood $\gN_{n+1}^k$ of the test node $v_{n+1}$.
 %Since exchangeability is not assumed, a weight function leveraging graph homophily can be used to produce weights, $w_i\in [0,1]$, for nodes in the calibration set \cite{barber2023conformal}. 
-The three implemented weight functions are uniform, $w_u(d_i) = 1$, hyperbolic $w_h(d_i) = \frac{1}{d_i}$, and exponential, $w_e(d_i) = 2^{-d_i}$ for nodes in the k-hop neighborhood, where $d_i$ is the distance from $v_{n+1}$ to $v_i \in \gV_{\text{calib}}$.
+The three implemented weight functions are uniform $w_u(d_i) = 1$, hyperbolic $w_h(d_i) = \frac{1}{d_i}$, and exponential, $w_e(d_i) = 2^{-d_i}$ for nodes in the k-hop neighborhood, where $d_i$ is the distance from $v_{n+1}$ to $v_i \in \gV_{\text{calib}}$.
 Formally, the weight function for each node, $v_i \in \gV_{\text{calib}}$ can be seen in Equation \ref{eq:NAPS:weight} below, where $w_x(d_i)$ is the selected weight function.
 These weights are then normalized to compute $\Tilde{w}_i$ such that $\sum_{i\in\gD_{\text{calib}}} \Tilde{w}_i + \Tilde{w}_{n+1} = 1$ \cite{barber2023conformal}.
 \begin{align}
@@ -25,7 +25,7 @@ w_x(d_i), & i\in \gD_{\text{calib}}\cap\mathcal{N}_{n+1}^k\\
 \end{align}
 
 Using the NAPS quantile, $\hat{q}^{\text{NAPS}}_{n+1}$, the prediction sets can be constructed similarly to other Conformal Prediction algorithms.
-Note that NAPS was originally designed for the inductive setting; transductive differs as non-zero weights are assigned to fewer nodes as only a subset of the graph nodes are assigned to be calibration nodes.
+Note that NAPS was originally designed for the inductive setting; in transductive settings, fewer nodes have non-zero weights as only a subset of the graph nodes are assigned to the set of k-hop neighbors intersecting with the calibration nodes.
 In the inductive setting, no exchangeability cannot be assumed and the entire graph prior to the test phase is considered as a calibration set leading to a larger number of non-zero weights.
 
 \noindent \textbf{NAPS Implementation}

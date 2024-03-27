@@ -9,10 +9,10 @@ In~\chapref{chp:sysml}, we described an architecture utilizing text CNNs~\citep{
 Recent work on generalizing authorship representations has focused on a variation of the popular sentence transformer architecture~\citep{reimers2019sentencebert}.
 Specifically, \citet{riverastao2021learning} compared the transferability of author representation learning models between Amazon reviews, fanfiction short stores, and Reddit comments.
 They found that in a zero-shot setting, i.e., without any addition in domain data, the models trained on Reddit data had the highest degree of generalization to new domains.
-This work motivates us to explore the generalization capabilities of models trained on clear web data to dark web forums.
+This work motivates us to explore the generalization capabilities of models trained on clear web data to darkweb forums.
 We explore two research questions.
 First, can we apply author representation models trained on Reddit forum data directly to Darkweb forums?
-Second, can we combine data from the dark web and clear web to build better models?
+Second, can we combine data from the darkweb and clear web to build better models?
 
 \subsection{Datasets}
 \label{chp:stylometry_extensions:followingTrail:datasets}
@@ -47,12 +47,12 @@ Second, can we combine data from the dark web and clear web to build better mode
 
 To answer the research questions, we collect datasets from both clear and dark web forums.
 For the clear web, we sample data from the Pushshift Reddit corpus~\citep{baumgartner2020pushshift}.
-The LUAR model is trained on Reddit data sampled from the same corpus, but collected between 2015 and 2019.
+The LUAR model is trained on Reddit data sampled from the same corpus, but collected between 2015 and 2016.
 To avoid any overlap with the training data, we sample data from 2018 and 2019.
 We created two datasets, one for posts sampled from January 2018 and the second for posts sampled from December 2019.
 Reddit is an `omni-forum'~\citep{munksgaard2016mixing}, where users can participate in a number of subcommunities (subreddit).
 The similarity between Dread and Reddit is illustrated in Figure~\ref{fig:stylometry_extensions:followingTrail:forums}.
-Keeping this in mind, we collect `omni-forums' from dark web data.
+Keeping this in mind, we focus on `omni-forums' from darkweb data.
 We collected datasets provided in the CrimeBB collection~\citep{pastrana2018crimebb} and sample data from `Dread' (the dark web version of Reddit) and `TheHub'.
 The data from `Dread' is collected between February 2018 and January 2020, and `TheHub' is collected between January 2014 and August 2019.
 Summary statistics for the unprocessed datasets are provided in Table~\ref{tab:stylometry_extensions:followingTrail:datasets}. 
@@ -81,11 +81,11 @@ As with prior analyses from~\chapref{chp:sysml}, we assume that each username co
 As a first step to understanding the differences in the datasets, we aim to characterize the authors.
 Figure~\ref{fig:stylometry_extensions:followingTrail:datasets:behaviors} provides two figures that capture distributions that characterize the user behaviors.
 Figure~\ref{fig:stylometry_extensions:followingTrail:datasets:behaviors:posts} shows the cumulative distribution function of the number of posts per author.
-We observe that Reddit has a much smaller proportion of authors with only one post.
+We observe that Reddit has a significantly smaller proportion of authors with only one post.
 This indicates that there are a larger proportion of authors posting on Darkweb forums with only a single post.
 This may indicate that users create \textit{throwaway accounts}~\cite{leavitt2015throwaway} more frequently on the dark web as they desire greater anonymity.
 Figure~\ref{fig:stylometry_extensions:followingTrail:datasets:behaviors:subforums} shows the histogram of the number of subforums a user has posted in.
-This indicates that authors on Reddit may have interests in diverse topics, or the granularity of subforums is higher on Reddit.
+This indicates that either the authors on Reddit may have interests in diverse topics, or that the granularity of subforums is higher on Reddit.
 Thus, even from a summary statistics perspective, there are fundamental differences in author behaviors across the clear and dark web forums.
 However, it is unclear how these differences at the macro level will affect the generalization capabilities of LUAR.
 

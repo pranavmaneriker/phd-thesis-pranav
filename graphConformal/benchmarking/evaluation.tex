@@ -26,13 +26,12 @@ The task is to predict the category of each publication.
 \textbf{CiteSeer} is a citation network dataset designed for the node classification task, with nodes as publications and edges denoting citation relationships.
 \textbf{Amazon\_Photos} is a segment of the Amazon co-purchase graph~\cite{mcauley2015image} where nodes represent goods, edges represent goods frequently bought together, features are bag-of-words representations of product reviews, and the task is to predict the category of each good.
 \textbf{Cora} We use CoraFull~\cite{shchur2018pitfalls}, an extended version of the common Cora citation network dataset.
-Summary statistics for the datasets are provided in Table~\ref{tab:conformal:datasets}.
 The objective is to predict the category of each node (publication).
 \textbf{PubMed} is a citation network dataset designed for the node classification task, with nodes as publications and edges denoting citation relationships. The goal is to predict the category of each node (publication).
-For all chosen datasets, we used the version provided by the Deep Graph Library~\cite{wang2019dgl}.
 \textbf{Coauthor\_CS} and \textbf{Coauthor\_Physics} are co-authorship graphs extracted from the Microsoft Academic Graph and used for KDD Cup 2016. In this dataset, nodes are authors and edges denoting co-authorship relationships. The task is to predict the most active field of study for each author.
-
-To help characterize the behavior of different approaches, we categorize these into sizes based on the number of nodes, with \textbf{Cora} and \textbf{Amazon\_Photos} designated as small (S), \textbf{CiteSeer}, \textbf{PubMed}, and \textbf{Coauthor\_CS} as medium (M), and \textbf{Coauthor\_Physics} as large (L).
+Summary statistics for the datasets are provided in Table~\ref{tab:conformal:datasets}.
+For all chosen datasets, we used the version provided by the Deep Graph Library~\cite{wang2019dgl}.
+To help characterize the behavior of different approaches, we categorize these into sizes based on the number of nodes, with \textbf{CireSeer} and \textbf{Amazon\_Photos} designated as small (S), \textbf{Cora}, \textbf{PubMed}, and \textbf{Coauthor\_CS} as medium (M), and \textbf{Coauthor\_Physics} as large (L).
 
 \subsection{Metrics}
 We evaluate the following metrics for the graph conformal prediction methods:
@@ -96,9 +95,9 @@ Next, we focus on the adaptability provided by using classwise TPS.
      \caption{At a target $\alpha = 0.1$. Boxplots indicating (left) Label Stratified Coverage. (right) Size Stratified Coverage for CiteSeer (top) and Cora(bottom). Classwise TPS provides adaptability when stratified by labels without sacrificing size stratified coverage. Results for FS splits.}
      \label{fig:fs:conformal:citeseer_adaptability}
 \end{figure}
-From Figure~\ref*{fig:fs:conformal:citeseer_adaptability}, we see that using classwise TPS successfully provides stratified coverage over different labels without sacrificing size stratified coverage vs a baseline TPS.
+From Figure~\ref{fig:fs:conformal:citeseer_adaptability}, we see that using classwise TPS successfully provides stratified coverage over different labels without sacrificing size stratified coverage vs a baseline TPS.
 At the limit, even when reducing the number of samples per class from Figure~\ref{fig:nspc:citeseer:ssc}, we can see that the loss in size stratified coverage is minimal.
-Thus, at least for the datasets we studied, TTPS-Classwise is a good candidate for an adaptive version of TPS.
+Thus, at least for the datasets we studied, TPS-Classwise is a good candidate for an adaptive version of TPS.
 \begin{figure}
     \begin{subfigure}{0.48\linewidth}
         \includegraphics[width=\linewidth]{graphConformal/figures/nspc/citeseer_nspc_10_size_stratified_coverage}
@@ -134,7 +133,7 @@ Thus, at least for the datasets we studied, TTPS-Classwise is a good candidate f
     \caption{Violin plots denoting efficiencies of APS and Randomized APS across different datasets and multiple runs in LC split. Randomization consistently improves over the non-randomized version.}
     \label{fig:nspc:conformal:aps_vs_randomized}
 \end{figure}
-Figure~\ref{fig:fs:conformal:aps_vs_randomized} and Figure~\ref{fig:nspc:conformal:aps_vs_randomized} provide violin plots that compare tehe efficiency of randomized and non-randomized version of APS across different datasets and $\alpha$.
+Figure~\ref{fig:fs:conformal:aps_vs_randomized} and Figure~\ref{fig:nspc:conformal:aps_vs_randomized} provide violin plots that compare the efficiency of randomized and non-randomized version of APS across different datasets and $\alpha$.
 We observe that in each case, the peaks associated with the randomized version lie to the left of those associated with the non-randomized version.
 This indicates that the randomized version consistently provides a more efficient prediction set.
 This effect is most pronounced for a dataset having a large number of potential classes (Cora), which matches with the intuition from Theorem~\ref{them:APS:efficiency} - with a $(K-1)\left(\alpha_c^{A} - \alpha_C^{\Tilde{A}}\right)$ term contributing to the improved efficiency and least pronounced for PubMed, which has the smallest $K=3$.
@@ -192,6 +191,7 @@ It may be a viable candidate over DAPS when there is a sufficiently large calibr
         \includegraphics[width=\linewidth]{graphConformal/figures/nspc/cfgnn_aps_vs_orig_efficiency_20}
     \end{subfigure}
     \caption{Bar charts denoting efficiency for CFGNN-APS and CFGNN-Original across the LC split at $\alpha=0.1$ with 10 samples per  class (left) and 20 samples per class (right). We see that CFGNN is unstable for the LC setting.}
+    \label{fig:nspc:conformal:cfgnn_aps_vs_orig}
 \end{figure}
 
 We implement an improved version of CFGNN-APS which uses the randomized APS loss in both training and evaluation.
@@ -202,7 +202,8 @@ For these results, we only trained the parameters of the CFGNN, keeping the arch
 Further tuning of the architecture may improve the performance of CFGNN-APS.
 
 Finally, originally, CFGNN was evaluated on FC splits.
-We benchmark its perormance on LC splits in Figure~\ref{fig:nspc:conformal:cfgnn_aps_vs_orig}.
+We benchmark its performance on LC splits in Figure~\ref{fig:nspc:conformal:cfgnn_aps_vs_orig}.
 We see that CFGNN is unstable for the LC setting.
 One potential reason for this is that the CFGNN is not designed to handle the LC setting as the data may be insufficient to train a conformal model.
-This is a potential area for future work.
+Exploring methods to improve the stability of CFGNN in the LC setting is an area for future work.
+%This is an area for future work.

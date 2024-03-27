@@ -10,7 +10,7 @@ For any $\tau \in [0, 1]$, define the generalized conditional quantile funciton 
 \end{align}
 Then the corresponding prediction set, $C_\alpha^{\text{or}}(\vx)$ can be constructed from the probabilities needed to reach $1-\alpha$ coverage.
 \[
-    C_\alpha^{\text{or+}}(\vx) = \{y \in \gY: \pi_y(\vx) \geq \pi_{(L(\vx; \pi, 1-\alpha))}(\vx)\}
+    C_\alpha^{\text{or}}(\vx) = \{y \in \gY: \pi_y(\vx) \geq \pi_{(L(\vx; \pi, 1-\alpha))}(\vx)\}
 \]
 where $\text{or}$ indicates the usage of the oracle probability.
 Further, they define tighter prediction sets in a randomized fashion using an additional uniform random variable $u \sim \text{Uniform}(0, 1)$ as a parameter to construct a generalized inverse. 
@@ -62,8 +62,7 @@ and
 \[
     \hat{q}_{\Tilde{A}} = \text{Quantile}\left(\frac{\ceil{(n+1)(1-\alpha)}}{n}; \{\Tilde{A}(\vx_i, y_i; \hat{\pi})\}_{i=1}^{n}\right)
 \]
-Define $A_i(y) := A(\vx_i, y, u_i; \hat{\pi})$ and $\Tilde{A}_i(y) := \Tilde{A}(\vx_i, y, u_i; \hat{\pi})$
-From the definition of the prediction sets and non-conformity scores, we have 
+Define $A_i(y) := A(\vx_i, y, u_i; \hat{\pi})$ and $\Tilde{A}_i(y) := \Tilde{A}(\vx_i, y, u_i; \hat{\pi})$. From the definition of the prediction sets and non-conformity scores, we have 
 \[
     C_A(\vx_{n+1}) = \{y \in \gY: A_{n+1}(y) \leq \hat{q}_{A}\}
 \] and 
@@ -153,7 +152,7 @@ $1 - \alpha_c^A < 1 - \alpha_c^{\Tilde{A}} \implies \alpha_c^A - \alpha_c^{\Tild
 If the shift is sufficiently large, then the randomized prediction set will be more efficient than the non-randomized one.
 %For the assumption to hold, the shifts $u\pi'$ in the complementary scores $A'$ of the incorrect classes should be smaller to ensure that the $\alpha_c^A$ is larger than $\alpha_c^{\Tilde{A}}$.
 %For a good classifier, $\pi > \pi'$ in general. 
-In Figure~\ref{fig:APS:efficiency}, we show what this looks for a practical example dataset and classifier.
+In Figure~\ref{fig:APS:efficiency}, we show what this looks like empirially, using an example graph dataset and classifier.
 In the plot on the bottom, the (normalized) sorted index at which the lower threshold $q_A$ is reached over the scores $A'$ is lower, i.e., $1 - \alpha_c^A$ is lower, and hence $\alpha_C^A$ is higher.
 Note that the dependence on $\frac{1}{n+1}$ indicates that the improvements would be more pronounced for larger $\calib$.
 \pmcomment{todo show this}

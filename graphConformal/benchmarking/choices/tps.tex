@@ -6,10 +6,10 @@ However, the TPS score has been known to undercover hard examples and overcover 
 Here, hard/easy refers to the coverage achieved by the prediction set in relation to the prediction set size.
 By overcovering easy examples, TPS can still maintain the overall coverage guarantee without having to correctly account for coverage over harder examples.
 
-We note that this discrepancy is claimed to occur as the TPS scores are not `adaptive', and consider only one dimension of the score for each calibration sample.
+We note that this discrepancy is claimed to occur as the TPS scores are not `adaptive' and consider only one dimension of the score for each calibration sample.
 However, \citet{sadinle2019least} also proposed a labelwise control version of TPS.
-Instead of defining a single threshold for all classes, they separately compute the threshold for each class for a corresponding $\alpha$.
-Thus, we define classwise quantile thresholds as
+Instead of defining a single threshold for all classes, they separately compute the threshold for each class and a corresponding $\alpha$.
+Thus, they define classwise quantile thresholds as
 \[
     \hat{q}(\alpha, y_j) = \text{Quantile}\left(\frac{\ceil{(n+1)(1-\alpha)}}{n}; \braces{s(\vx_i, y_i)\, {i=1, \dots, n, y_i = y_j}}\right)
 \]
@@ -18,6 +18,6 @@ and the corresponding prediction sets as
     C_{\text{TPS}}(\vx) = \{y \in \gY: s(\vx, y) \leq \hat{q}(\alpha, y)\}
 \]
 Note that this version would provide coverage for each class label, making it more `adaptive'.
-The version defined by \citet{sadinle2019least} allows controlling $\alpha_y$ for each class label, though we set $\alpha_y = \alpha$ for label-adaptability.
-The trade-off here is that we have fewer calibration samples used for each quantile threshold dimension, which may lead to higher variance in the distribution of coverage~\cite{vovk2012conditional}.
+The version defined by \citet{sadinle2019least} allows controlling $\alpha_y$ for each class label, though, for simplicity, we set $\alpha_y = \alpha$ for label-adaptability.
+The tradeoff here is that we have fewer calibration samples used for each quantile threshold dimension, which may lead to higher variance in the distribution of coverage~\cite{vovk2012conditional}.
 We call this variation of TPS as TPS-Classwise, and consider it in our baselines for comparison.

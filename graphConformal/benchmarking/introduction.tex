@@ -1,23 +1,23 @@
 Modern machine learning models which are trained on losses based on point predictions are prone to being overconfident in their predictions~\citep{guo2017calibration}. 
 The Conformal Prediction (CP) framework~\citep{vovk2005algorithmic} provides a mechanism for generating statistically sound post-hoc prediction sets (or intervals, in case of continuous outcomes) with coverage guarantees under mild assumptions.
 The usual assumption made in CP is that data are exchangeable, i.e, the joint distribution of the data is invariant to permutations of the data points.
+\pmcomment{Fix this definition}
+\begin{definition}
+    A sequence of random variables $X_1, \dots, X_n$ is said to be exchangeable if for any permutation $\sigma$ of the natural numbers, $(X_1, \dots, X_n) \overset{d}{=} (X_{\sigma(1)}, \dots, X_{\sigma(n)})$, where $\overset{d}{=}$ denotes equality in distribution.
+\end{definition}
 The guarantees provided by CP are distribution-free, and can be added post-hoc to the scores produced by arbitrary, black-box predictors.
-This makes CP an ideal candidate for quantifying uncertainty in complex models, such as neural networks.
-Variations of CP include full CP~\citep{vovk2005algorithmic}, cross-conformal prediction~\citep{vovk2005algorithmic}, split CP~\citep{vovk2005algorithmic}, and the CV+/Jackknife+ approach~\citep{barber2021predictive}.
+This makes CP an ideal candidate for quantifying uncertainty in complex models such as neural networks.
+Variations of CP include full CP~\citep{vovk2005algorithmic}, cross-conformal prediction~\citep{vovk2015cross}, split CP~\citep{vovk2005algorithmic}, and the CV+/Jackknife+ approach~\citep{barber2021predictive}.
 Full CP has a significant computational cost as an expensive conformity score function must be computed with replacement for each data point within the calibration set.
 Cross-conformal prediction~\citep{vovk2015cross} and CV+/Jackknife+~\citep{barber2021predictive} are other variations of CP which are computationally more efficient than full CP.
 Split CP, using a fixed conformity score function of a single data point at a time, is the most popular variation of CP.
 In addition to its computational efficiency, the ease of implementation, and distribution-free guarantees with black-box models make split CP a popular choice.
-\pmcomment{Fix this definition}
-\begin{definition}
-    A sequence of random variables $X_1, \dots, X_n$is said to be exchangeable if for any permutation $\sigma$ of the natural numbers, $P = P \circ \pi^{-1}$.
-\end{definition}
 
 Network-structured data such as social networks, transportation networks, and biological networks are ubiquitous in modern data science applications.
 Graph Neural Networks (GNNs) have been developed to model vector representations of such network-structured data, and have been shown to be effective in a variety of tasks such as node classification, link prediction, and graph classification~\citep{hamilton2020graph, wu2022graph}.
-Uncertainty quantification approaches built for independent and identically distributed (i.i.d.) data cannot directly be applied to graph data, as the network structure introduces dependencies between the data points.
-However, recent work~\citep{clarkson2023distribution,zargarbashi23conformal,huang2024uncertainty} has demonstrated that in certain settings, CP can be applied to graph data to generate statistically sound prediction sets for the node classification task.
+Uncertainty quantification approaches built for independent and identically distributed (IID) data cannot directly be applied to graph data as the network structure introduces dependencies between the data points.
+However, recent work~\citep{clarkson2023distribution,zargarbashi23conformal,huang2024uncertainty} has demonstrated that in certain settings, CP can be applied to graph data to generate statistically sound prediction sets which provide a coverage guarantee for the node classification task.
 In line with prior work in CP on graphs, we focus on split CP in this work.
 There is a lack of consensus for the choice and setup of baselines, splitting of common datasets, and evaluation metrics for methods.
-In this work, we aim to analyze the choices made by existing work and understand the trade-offs associated with these choices.
+In this work, we aim to analyze the choices made by existing work and understand the tradeoffs associated with these choices.
 %In addition, we create a python library which implements different variations of these approaches which would help standardize practices in the evaluation of CP for graph data.
