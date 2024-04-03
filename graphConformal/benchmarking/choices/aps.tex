@@ -74,10 +74,10 @@ Define $C_{A}^{i} = C_{A}(\vx_{i})$.
 Let $y'_i \in \{1, 2, \dots, K\} \setminus \{y_i\}$ be any incorrect class label for each $\vx_i$.
 Define 
 \[
-    \alpha_c^A \in [0, 1], \hat{q}_A = \text{Quantile}\left( \frac{\ceil{(n+1)(1 - \alpha_c^A)}}{n}; \{A(\vx_i, y'_i, u_i; \hat{\pi})\}_{i=1}^n \right)
+    \alpha_c^A \in [0, 1], \hat{q}_A \widetilde{=} \text{Quantile}\left( \frac{\ceil{(n+1)(1 - \alpha_c^A)}}{n}; \{A(\vx_i, y'_i, u_i; \hat{\pi})\}_{i=1}^n \right)
 \]
 \[
-    \alpha_c^{\Tilde{A}} \in [0, 1], \hat{q}_{\Tilde{A}} = \text{Quantile}\left( \frac{\ceil{(n+1)(1 - \alpha_c^{\Tilde{A}})}}{n}; \{A(\vx_i, y'_i, u_i; \hat{\pi})\}_{i=1}^n \right)
+    \alpha_c^{\Tilde{A}} \in [0, 1], \hat{q}_{\Tilde{A}} \widetilde{=} \text{Quantile}\left( \frac{\ceil{(n+1)(1 - \alpha_c^{\Tilde{A}})}}{n}; \{A(\vx_i, y'_i, u_i; \hat{\pi})\}_{i=1}^n \right)
 \]    
 as the thresholds for which the corresponding quantile of the scores for the correct classes $A_i(y_i)$ and $\Tilde{A}_i(y_i)$ achieve $1-\alpha$ coverage.
 Then from the exchangeability of $A(\vx_i, y'_i, u_i; \hat{\pi})$
