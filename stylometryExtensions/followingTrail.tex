@@ -84,8 +84,11 @@ Figure~\ref{fig:stylometry_extensions:followingTrail:datasets:behaviors:posts} s
 We observe that Reddit has a significantly smaller proportion of authors with only one post.
 This indicates that there are a larger proportion of authors posting on Darkweb forums with only a single post.
 This may indicate that users create \textit{throwaway accounts}~\cite{leavitt2015throwaway} more frequently on the dark web as they desire greater anonymity.
+Alternatively, this may indicate that the throwaway accounts that exist on Reddit get deleted before they get captured in the intervals in-between Pushshift dataset~\citep{baumgartner2020pushshift} captures.
+(Changes captured between two consecutive scrapes are not reflected in the dataset).
+If an author on Reddit deletes their account, all of their posts would be reflected as posts by an author with associated username \texttt{[deleted]}.
 Figure~\ref{fig:stylometry_extensions:followingTrail:datasets:behaviors:subforums} shows the histogram of the number of subforums a user has posted in.
-This indicates that either the authors on Reddit may have interests in diverse topics, or that the granularity of subforums is higher on Reddit.
+This may indicate that either the authors on Reddit may have interests in diverse topics, or that the granularity of subforums is higher on Reddit.
 Thus, even from a summary statistics perspective, there are fundamental differences in author behaviors across the clear and dark web forums.
 However, it is unclear how these differences at the macro level will affect the generalization capabilities of LUAR.
 

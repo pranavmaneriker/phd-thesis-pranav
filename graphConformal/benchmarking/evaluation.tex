@@ -173,6 +173,39 @@ Based on these results, we can conclude that DTPS is not a universally better me
 It may be a viable candidate over DAPS when there is a sufficiently large calibration set.
 
 \subsection{CFGNN}
+We first describe the runtime improvements achieved by using batching and caching in our CFGNN implementation, and follow it up with an evaluation of CFGNN-APS (randomized) and CFGNN-Original on the FS and LC splits.
+\subsubsection{Runtime}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{llll}
+        \toprule
+        method & baseline & batching & cache+batch \\
+        dataset &  &  &  \\
+        \midrule
+        CiteSeer & 188.07 $\pm$ 1.86 & 8.33 $\pm$ 0.10 & 4.46 $\pm$ 0.03 \\
+        Amazon\_Photos & 291.41 $\pm$ 1.54 & 29.68 $\pm$ 0.43 & 8.29 $\pm$ 0.12 \\
+        Cora & 986.64 $\pm$ 22.80 & 89.66 $\pm$ 0.60 & 29.22 $\pm$ 0.94 \\
+        PubMed & 253.97 $\pm$ 2.19 & 58.26 $\pm$ 0.48 & 15.47 $\pm$ 0.11 \\
+        Coauthor\_CS & 665.98 $\pm$ 15.29 & 72.80 $\pm$ 0.46 & 17.92 $\pm$ 0.87 \\
+        Coauthor\_Physics & 2080.58 $\pm$ 31.44 & 758.00 $\pm$ 4.27 & 27.71 $\pm$ 0.54 \\
+        \bottomrule
+    \end{tabular}
+    \caption{Runtime improvements in CFGNN implementation starting from the baseline, then adding batching, and then adding caching and batching combined. For each setup we compare the results from 5 runs and provide a $[0.2, 0.8]$ quantile interval in the reported results. All runtimes in seconds, runs executed on a single A100 GPU.}
+    \label{tab:conformal:cfgnn_runtime}
+\end{table}
+
+We compare three variations of the CFGNN implementation to demonstrate the impact of batching and caching on the runtime.
+Across all comparisons, we use the FS split, with 20\%/20\% assigned to train/valid sets, and 35\% to the calibration dataset.
+For ease of comparison, we fix the CFGNN architecture to a 2-layer GCN having 128 hidden units.
+We use the best base GNN parameters for each dataset and split.
+The baseline implementation follows the setup used by \citep{huang2024uncertainty}, where the CFGNN is trained with full batch gradient descent for 1000 epochs.
+Our improved implementation, which uses batched descent, is able to achieve an equivalent efficiency in only 20 epochs, without any batch size tuning (we set the batch size to 64 for consistent comparison).
+Finally, we add caching of the output probabilities from the base GNN to the batched implementation, which further reduces the runtime.
+Table~\ref{tab:conformal:cfgnn_runtime} describes the comparison of the batching, and the combined batching + caching improvements.
+We note that our implementation is able to achieve improvements ranging from 16.4x (PubMed) to 75x (Coauthor\_Physics) in runtime over the baseline implementation.
+
+\subsubsection{Evaluation}
 \begin{figure}
     \centering
     \begin{subfigure}{0.7\linewidth}

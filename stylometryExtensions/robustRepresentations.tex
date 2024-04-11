@@ -22,6 +22,8 @@ As another step to better understand these limitations, in this section we focus
 First, do author representations capture representations that allow author identification to generalize across time?
 Through careful experiment design, we find that the degradation in author identification performance may originate from temporally evolving styles rather than model estimation error.
 Second, do author representations encode systematic biases associated with author demographics? 
+By biases, we refer to the fact that these models may be more likely to incorrectly identify authors from certain demographic groups, which may negatively impact downstream decisions against authors from these groups.
+For example, authors who are teenagers may be negatively impacted by incorrect moderation decisions as compared to authors who are adults. 
 We answer this question in the affirmative, finding that authorship attribution performance degrades significantly across demographic groups, including age and gender. 
 
 \subsection{Datasets}
