@@ -42,15 +42,15 @@ We hypothesize that the better performance of the model with fewer layers is bec
 In the next few sections, we validate this hypothesis by evaluating fine-tuned model (\URLTranSysb, \URLTranSysr) that are tuned on a larger dataset.
 
 \begin{figure}
-\begin{subfigure}{0.48\linewidth}
+\begin{subfigure}{0.8\linewidth}
 	\centering
-\includegraphics[width=0.95\linewidth]{urltran/figures/roc_hyperparams}
+\includegraphics[width=0.95\linewidth,alt={Box plots for area under ROC comparison for different seq len, tokenizers, vocab size, and layers.}]{urltran/figures/roc_hyperparams}
 \caption{Area under ROC vs hyperparameters}
 \label{fig:urltran:pretrain_scratch:roc}
 \end{subfigure}
-\begin{subfigure}{0.48\linewidth}
+\begin{subfigure}{0.8\linewidth}
 	\centering
-\includegraphics[width=0.95\linewidth]{urltran/figures/tpr_0.01_hyperparams}
+\includegraphics[width=0.95\linewidth,alt={Box plots for TPR@FPR=0.01\% comparison across different seq len, tokenizers, vocab size, and layers.}]{urltran/figures/tpr_0.01_hyperparams}
 \caption{TPR@FPR = 0.01\% vs hyperparmeters}
 \label{fig:urltran:pretrain_scratch:tpr}
 \end{subfigure}
@@ -64,14 +64,14 @@ In the next few sections, we validate this hypothesis by evaluating fine-tuned m
 
 \begin{figure}
     \centering
-	\includegraphics[width=0.7\linewidth]{urltran/figures/roc_0_02_R.pdf}
+	\includegraphics[width=0.7\linewidth,alt={ROC curev indicating impromvents of our model over baseline models upto a maximum of 2\% FPR}]{urltran/figures/roc_0_02_R.pdf}
 	\caption{Receiver operating characteristic curve indicating the performance of the \URLTranSys and several baseline models zoomed into a maximum of 2\% false positive rate.}
 	\label{fig:urltran:transformer2}
 \end{figure}
 
 \begin{figure}
     \centering
-	\includegraphics[width=0.7\linewidth]{urltran/figures/log_roc_R.pdf}
+	\includegraphics[width=0.7\linewidth,alt={Zoomed in full ROC curve with a log x-axis.}]{urltran/figures/log_roc_R.pdf}
 	\caption{Zoomed in receiver operating characteristic curve with a log x-axis.}
 	\label{fig:urltran:log_transformer2}
 \end{figure}
@@ -122,7 +122,7 @@ required 0:10::44 to complete for an average of 0.36096 milliseconds per sample.
 
 \begin{figure}
     \centering
-	\includegraphics[width=0.7\linewidth]{urltran/figures/log_roc_adv_R}
+	\includegraphics[width=0.7\linewidth,alt={ROC curve under adversarial attack and robustness after training with augmented data.}]{urltran/figures/log_roc_adv_R}
 	\caption{ROC curve for \URLTranSysb when under adversarial attack, and adversarial robustness after augmented training}
 	\label{fig:urltran:adversarial_roc}
 \end{figure} 

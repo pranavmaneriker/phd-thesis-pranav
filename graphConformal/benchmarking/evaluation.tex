@@ -62,9 +62,9 @@ For completeness, we list all the methods that we compare here.
 
 \begin{figure}
     \centering
-    \includegraphics[width=\linewidth]{graphConformal/figures/split/small_datasets_efficiency.pdf}
-    \includegraphics[width=\linewidth]{graphConformal/figures/split/med_1_datasets_efficiency.pdf}
-    \includegraphics[width=\linewidth]{graphConformal/figures/split/med_2_datasets_efficiency.pdf}
+    \includegraphics[width=\linewidth,alt={Line plots showing method comparisons for small datasets.}]{graphConformal/figures/split/small_datasets_efficiency.pdf}
+    \includegraphics[width=\linewidth,alt={Line plots showing method comparisons for Medium datasets.}]{graphConformal/figures/split/med_1_datasets_efficiency.pdf}
+    \includegraphics[width=\linewidth,alt={Line plots showing method comparisons for large datasets.}]{graphConformal/figures/split/med_2_datasets_efficiency.pdf}
     \caption{Plots for efficiency vs $\alpha$ for the major methods across the all the datasets. Among the baseline methods, TPS consistently has the best efficiency. Result for FS paritttion}
     \label{fig:fs:conformal:efficiency_vs_alpha}
 \end{figure}
@@ -80,17 +80,17 @@ Next, we focus on the adaptability provided by using classwise TPS.
 \begin{figure}
     \centering
     \begin{subfigure}{0.48\linewidth}
-    \includegraphics[width=\linewidth]{graphConformal/figures/split/citeseer_label_stratified_coverage}
+    \includegraphics[width=\linewidth,alt={Box plots for method comparison on CiteSeer dataset label stratified coverage.}]{graphConformal/figures/split/citeseer_label_stratified_coverage}
     \end{subfigure}
     \begin{subfigure}{0.48\linewidth}
-        \includegraphics[width=\linewidth]{graphConformal/figures/split/citeseer_size_stratified_coverage} 
+        \includegraphics[width=\linewidth,alt={Box plots for method comparison on CiteSeer dataset size stratified coverage.}]{graphConformal/figures/split/citeseer_size_stratified_coverage} 
      \end{subfigure}
 
     \begin{subfigure}{0.48\linewidth}
-    \includegraphics[width=\linewidth]{graphConformal/figures/split/cora_label_stratified_coverage}
+    \includegraphics[width=\linewidth,alt={Box plots for method comparison on Cora dataset label stratified coverage.}]{graphConformal/figures/split/cora_label_stratified_coverage}
     \end{subfigure}
     \begin{subfigure}{0.48\linewidth}
-        \includegraphics[width=\linewidth]{graphConformal/figures/split/cora_size_stratified_coverage} 
+        \includegraphics[width=\linewidth,alt={Box plots for method comparison on Cora dataset size stratified coverage.}]{graphConformal/figures/split/cora_size_stratified_coverage} 
      \end{subfigure}
      \caption{At a target $\alpha = 0.1$. Boxplots indicating (left) Label Stratified Coverage. (right) Size Stratified Coverage for CiteSeer (top) and Cora(bottom). Classwise TPS provides adaptability when stratified by labels without sacrificing size stratified coverage. Results for FS splits.}
      \label{fig:fs:conformal:citeseer_adaptability}
@@ -100,10 +100,10 @@ At the limit, even when reducing the number of samples per class from Figure~\re
 Thus, at least for the datasets we studied, TPS-Classwise is a good candidate for an adaptive version of TPS.
 \begin{figure}
     \begin{subfigure}{0.48\linewidth}
-        \includegraphics[width=\linewidth]{graphConformal/figures/nspc/amazon_photos_10_size_stratified_coverage.pdf}
+        \includegraphics[width=\linewidth,alt={Box plots for method comparison on Amazon Photos dataset size stratified coverage with 10 samples per class.}]{graphConformal/figures/nspc/amazon_photos_10_size_stratified_coverage.pdf}
     \end{subfigure}
     \begin{subfigure}{0.48\linewidth}
-        \includegraphics[width=\linewidth]{graphConformal/figures/nspc/amazon_photos_40_size_stratified_coverage.pdf}
+        \includegraphics[width=\linewidth,alt={Box plots for method comparison on Amazon Photos dataset size stratified coverage with 40 samples per class.}]{graphConformal/figures/nspc/amazon_photos_40_size_stratified_coverage.pdf}
     \end{subfigure}
     \caption{At a target $\alpha = 0.1$, boxplots for size stratified coverage with calibration sets having (left) 10 samples per class and (right) 40 samples per class for Amazon Photos.}
     \label{fig:nspc:citeseer:ssc}
@@ -113,15 +113,16 @@ Thus, at least for the datasets we studied, TPS-Classwise is a good candidate fo
 \begin{figure}
     \centering
     \begin{subfigure}{0.8\linewidth}
-    \includegraphics[width=\linewidth]{graphConformal/figures/split/aps_randomized_efficiency}
+    \includegraphics[width=\linewidth,alt={Violin plots comparison randomized and non randomized efficieincy for APS across 5 datasets.}]{graphConformal/figures/split/aps_randomized_efficiency}
     \end{subfigure}
     \begin{subfigure}{0.6\linewidth}
-        \includegraphics[width=\linewidth]{graphConformal/figures/split/aps_randomized_efficiency_cora}
+        \includegraphics[width=\linewidth,alt={Violin plots comparison randomized and non randomized efficieincy for APS on Cora.}]{graphConformal/figures/split/aps_randomized_efficiency_cora}
     \end{subfigure}
     \caption{Violin plots denoting efficiencies of APS and Randomized APS across different datasets and multiple runs in FS split. Randomization consistently improves over the non-randomized version.}
     \label{fig:fs:conformal:aps_vs_randomized}
 \end{figure}
 
+\begin{comment}
 \begin{figure}
     \centering
     \begin{subfigure}{0.8\linewidth}
@@ -133,7 +134,10 @@ Thus, at least for the datasets we studied, TPS-Classwise is a good candidate fo
     \caption{Violin plots denoting efficiencies of APS and Randomized APS across different datasets and multiple runs in LC split. Randomization consistently improves over the non-randomized version.}
     \label{fig:nspc:conformal:aps_vs_randomized}
 \end{figure}
-Figure~\ref{fig:fs:conformal:aps_vs_randomized} and Figure~\ref{fig:nspc:conformal:aps_vs_randomized} provide violin plots that compare the efficiency of randomized and non-randomized version of APS across different datasets and $\alpha$.
+\end{comment}
+
+Figure~\ref{fig:fs:conformal:aps_vs_randomized} %and Figure~\ref{fig:nspc:conformal:aps_vs_randomized} 
+provide violin plots that compare the efficiency of randomized and non-randomized version of APS across different datasets and $\alpha$.
 We observe that in each case, the peaks associated with the randomized version lie to the left of those associated with the non-randomized version.
 This indicates that the randomized version consistently provides a more efficient prediction set.
 This effect is most pronounced for a dataset having a large number of potential classes (Cora), which matches with the intuition from Theorem~\ref{them:APS:efficiency} - with a $(K-1)\left(\alpha_c^{A} - \alpha_C^{\Tilde{A}}\right)$ term contributing to the improved efficiency and least pronounced for PubMed, which has the smallest $K=3$.
@@ -144,10 +148,10 @@ Overall, the empirical results show that the effect of randomized APS is more ap
 \begin{figure}
     \centering
     \begin{subfigure}{0.7\linewidth}
-        \includegraphics[width=\linewidth]{graphConformal/figures/split/daps_dtps_pubmed}
+        \includegraphics[width=\linewidth,alt={Bar charts denoting different metrics associated with DAPS and DTPS across PubMed }]{graphConformal/figures/split/daps_dtps_pubmed}
     \end{subfigure}
     \begin{subfigure}{0.7\linewidth}
-        \includegraphics[width=\linewidth]{graphConformal/figures/split/daps_dtps_cora}
+        \includegraphics[width=\linewidth,alt={ar charts denoting different metrics associated with DAPS and DTPS across Cora.}]{graphConformal/figures/split/daps_dtps_cora}
     \end{subfigure}
     \caption{Bar charts denoting different metrics associated with DAPS and DTPS across PubMed (top) and Cora (bottom) for the TS split at $\alpha=0.1$. We see that DTPS improves efficiency for PubMed but not for Cora, with minimal impact to other adaptive metrics.}
     \label{fig:fs:conformal:daps_vs_dtps}
@@ -157,10 +161,10 @@ Overall, the empirical results show that the effect of randomized APS is more ap
 \begin{figure}
     \centering
     \begin{subfigure}{0.7\linewidth}
-        \includegraphics[width=\linewidth]{graphConformal/figures/nspc/daps_dtps_0.1}
+        \includegraphics[width=\linewidth,alt={Bar charts denoting different metrics associated with DAPS and DTPS across the LC split at $\alpha=0.1$}]{graphConformal/figures/nspc/daps_dtps_0.1}
     \end{subfigure}
     \begin{subfigure}{0.7\linewidth}
-        \includegraphics[width=\linewidth]{graphConformal/figures/nspc/daps_dtps_0.2}
+        \includegraphics[width=\linewidth,alt={Bar charts denoting different metrics associated with DAPS and DTPS across the LC split at $\alpha=0.2$}]{graphConformal/figures/nspc/daps_dtps_0.2}
     \end{subfigure}
     \caption{Bar charts denoting different metrics associated with DAPS and DTPS across the LC splits at $\alpha=0.1$ (top) and $\alpha=0.2$ (bottom). We see that DTPS deteriorates significantly as compared to DAPS at higher $\alpha$.}
     \label{fig:nspc:conformal:daps_vs_dtps}
@@ -175,6 +179,7 @@ It may be a viable candidate over DAPS when there is a sufficiently large calibr
 \subsection{CFGNN}
 We first describe the runtime improvements achieved by using batching and caching in our CFGNN implementation, and follow it up with an evaluation of CFGNN-APS (randomized) and CFGNN-Original on the FS and LC splits.
 \subsubsection{Runtime}
+\label{sec:conformal:results:cfgnn:runtime}
 
 \begin{table}[h]
     \centering
@@ -183,15 +188,15 @@ We first describe the runtime improvements achieved by using batching and cachin
         method & baseline & batching & cache+batch \\
         dataset &  &  &  \\
         \midrule
-        CiteSeer & 188.07 $\pm$ 1.86 & 8.33 $\pm$ 0.10 & 4.46 $\pm$ 0.03 \\
-        Amazon\_Photos & 291.41 $\pm$ 1.54 & 29.68 $\pm$ 0.43 & 8.29 $\pm$ 0.12 \\
-        Cora & 986.64 $\pm$ 22.80 & 89.66 $\pm$ 0.60 & 29.22 $\pm$ 0.94 \\
-        PubMed & 253.97 $\pm$ 2.19 & 58.26 $\pm$ 0.48 & 15.47 $\pm$ 0.11 \\
-        Coauthor\_CS & 665.98 $\pm$ 15.29 & 72.80 $\pm$ 0.46 & 17.92 $\pm$ 0.87 \\
-        Coauthor\_Physics & 2080.58 $\pm$ 31.44 & 758.00 $\pm$ 4.27 & 27.71 $\pm$ 0.54 \\
+        CiteSeer & 186.61 $\pm$ 11.43 & 8.64 $\pm$ 1.76 & 4.43 $\pm$ 0.13 \\
+        Amazon\_Photos & 291.11 $\pm$ 6.20 & 29.66 $\pm$ 1.03 & 8.27 $\pm$ 0.18 \\
+        Cora & 985.99 $\pm$ 62.42 & 89.80 $\pm$ 1.50 & 28.82 $\pm$ 2.08 \\
+        PubMed & 254.38 $\pm$ 8.09 & 58.26 $\pm$ 1.68 & 15.31 $\pm$ 0.63 \\
+        Coauthor\_CS & 669.48 $\pm$ 34.75 & 72.97 $\pm$ 1.21 & 17.70 $\pm$ 1.64 \\
+        Coauthor\_Physics & 2089.23 $\pm$ 80.00 & 758.22 $\pm$ 15.28 & 27.63 $\pm$ 0.81 \\
         \bottomrule
     \end{tabular}
-    \caption{Runtime improvements in CFGNN implementation starting from the baseline, then adding batching, and then adding caching and batching combined. For each setup we compare the results from 5 runs and provide a $[0.2, 0.8]$ quantile interval in the reported results. All runtimes in seconds, runs executed on a single A100 GPU.}
+    \caption{Runtime for CFGNN implementations starting from the baseline, then adding batching, and then adding caching and batching combined. For each setup we compare the results from 5 runs and provide 95\% confidence intervals in the reported results. All runtimes in seconds, runs executed on a single A100 GPU.}
     \label{tab:conformal:cfgnn_runtime}
 \end{table}
 
@@ -203,7 +208,8 @@ The baseline implementation follows the setup used by \citep{huang2024uncertaint
 Our improved implementation, which uses batched descent, is able to achieve an equivalent efficiency in only 20 epochs, without any batch size tuning (we set the batch size to 64 for consistent comparison).
 Finally, we add caching of the output probabilities from the base GNN to the batched implementation, which further reduces the runtime.
 Table~\ref{tab:conformal:cfgnn_runtime} describes the comparison of the batching, and the combined batching + caching improvements.
-We note that our implementation is able to achieve improvements ranging from 16.4x (PubMed) to 75x (Coauthor\_Physics) in runtime over the baseline implementation.
+We discard the first run in each experiment as it includes the warm up time for running on the GPU.
+We note that our implementation is able to achieve improvements ranging from 16.6x (PubMed) to 75.6x (Coauthor\_Physics) in runtime over the baseline implementation.
 
 \subsubsection{Evaluation}
 \begin{figure}

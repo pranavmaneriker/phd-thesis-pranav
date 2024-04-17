@@ -13,7 +13,7 @@ Finally, a classifier predicts a score indicating whether or not the unknown URL
 \begin{figure}
 	\centering
 	%\includegraphics[width=0.4\linewidth]{urltran/figures/TransformerModel}
-	\includegraphics[width=0.4\linewidth,alt={test}]{urltran/figures/TransformerModel}
+	\includegraphics[width=0.4\linewidth,alt={Block diagram showing the inputs, tokenization, layers, and output of model.}]{urltran/figures/TransformerModel}
 	\caption{\URLTranSys phishing URL detection model.}
 	\label{fig:urltran:transformer}
 \end{figure}
@@ -189,7 +189,7 @@ We use this approach to generate benign examples.
 Reordering the parameters still results in a valid URL, i.e., parameter reordering does not represent a phishing attack, and therefore we do not modify the label.
 \begin{figure}
 	\centering
-	\includegraphics[width=0.75\linewidth]{urltran/figures/PermuteURL}
+	\includegraphics[width=0.75\linewidth,alt=Example of GET paramter reordering for a URL.]{urltran/figures/PermuteURL}
 	\caption{An example of parameter reordering}
 	\label{fig:urltran:permute_url}
 \end{figure} 
