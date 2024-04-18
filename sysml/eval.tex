@@ -14,7 +14,7 @@ We computed the cosine similarity of the query episode embeddings with all episo
 \noindent \textbf{Recall@k}:  (R@k)  Following~\citet{andrews2019learning}, we define the R@k for an episode $e_i$ to be an indicator denoting whether an episode by the same author occurs within the subset $ \langle r_{i1}, \dots, r_{ik} \rangle$. R@k denotes the mean of these recall values over all the query samples.
 
 \begin{align*}
-    R@k = \frac{1}{\kappa}\sum\limits_{i=1}^{\kappa}{\mathbbm{1}_{\{\exists\ j | 1 \leq j \leq k, A(r_{ij}) = A(e_i)\}}}
+    R@k = \frac{1}{\kappa}\sum\limits_{i=1}^{\kappa}{\1_{\{\exists\ j | 1 \leq j \leq k, A(r_{ij}) = A(e_i)\}}}
 \end{align*}
 
 \noindent \textbf{Baselines}

@@ -1,8 +1,8 @@
 \label{sec:sysml:method}
 Motivated by the success of social media user modeling using combinations of multiple posts by each user~\cite{andrews2019learning,noorshams2020ties}, we model posts on darknet forums using \textit{episodes}.
 Each \textit{episode} consists of the textual content, time, and contextual information from multiple posts. 
-A neural network architecture $f_{\theta}$ maps each episode to combined representation $e \in \mathbbm{R}^E$.
-The model used to generate this representation is trained on various metric learning tasks characterized by a second set of parameters $g_{\phi}: \mathbbm{R}^E \xrightarrow[]{} \mathbbm{R}$.
+A neural network architecture $f_{\theta}$ maps each episode to combined representation $e \in \R^E$.
+The model used to generate this representation is trained on various metric learning tasks characterized by a second set of parameters $g_{\phi}: \R^E \xrightarrow[]{} \R$.
 We design the metric learning task to ensure that episodes having the same author have \textit{similar} embeddings.
 Figure~\ref{fig:main_workflow} describes the architecture of this workflow and the following sections describe the individual components and corresponding tasks. 
 Note that our base modeling framework is inspired by the social media user representations built by \citet{andrews2019learning} for a single task. 
@@ -84,7 +84,7 @@ In \textbf{Mean Pooling}, the episode embedding is the mean of $L$ post embeddin
 For the \textbf{Transformer}, the episode embeddings are fed as the inputs to a transformer model~\cite{devlin2019bert,vaswani2017attention}, with each post embedding acting as one element in a sequence for a total sequence length $L$. 
 We follow the architecture proposed by~\citet{andrews2019learning} and omit a detailed description of the transformer architecture for brevity (Figure~\ref{fig:emb_transformer} shows an overview).
 Note that we do not use positional embeddings within this pooling architecture.
-The parameters of the component-wise models and episode embedding models comprise the episode embedding $f_{\theta}: \left\{(t, \tau, c)\right\}^L \xrightarrow[]{} \mathbbm{R} ^ E$.
+The parameters of the component-wise models and episode embedding models comprise the episode embedding $f_{\theta}: \left\{(t, \tau, c)\right\}^L \xrightarrow[]{} \R ^ E$.
 
 \begin{figure}
     \centering
@@ -109,7 +109,7 @@ We also explore alternative metric learning approaches such as Cosface (CF)~\cit
 \subsection{Single-Task Learning}
 The components discussed in the previous sections are combined together to generate  an embedding and the aforementioned tasks are used to train these models. 
 Given an episode $e = \{(t_i, \tau_i, c_i) | 1 \leq i \leq L\}$, the componentwise embedding modules generate embedding for the text, time, and context, respectively.
-The pooling module combines these embeddings into a single embedding $e \in \mathbbm{R}^E$. 
+The pooling module combines these embeddings into a single embedding $e \in \R^E$. 
 We define $f_\theta$ as the combination of the transformations that generate an embedding from an \textit{episode}.
 Using a final metric learning loss corresponding to the task-specific $g_\phi$, we can train the parameters $\theta$ and $\phi$.
 The framework, as defined in Figure~\ref{fig:main_workflow}, results in a model trainable for a single market $M_i$. 
@@ -128,11 +128,11 @@ Additionally, we add pairs of authors known to be distinct across datasets.
 The \textit{cross-dataset} consists of all episodes of authors that were manually annotated in this fashion.
 The first step in the multi-task approach is to choose a market {($\mathcal{T}_M$)} or cross-market {($\mathcal{T}_{cr}$)} metric learning task $\mathcal{T}_i \sim \mathcal{T} =  \{\mathcal{T}_M, \mathcal{T}_{cr} \}$.
 Following this, a batch of $N$ episodes $\mathcal{E} \sim \mathcal{T}_i$ is sampled from the corresponding task.
-The embedding module generates the embedding for each episode $f_{\theta}^N: \mathcal{E} \xrightarrow[]{} \mathbbm{R}^{N \times E}$. 
+The embedding module generates the embedding for each episode $f_{\theta}^N: \mathcal{E} \xrightarrow[]{} \R^{N \times E}$. 
 Finally, the task-specific metric learning layer $g_{\phi}^{\mathcal{T}_i}$ is selected and a task-specific loss is backpropagated through the network. 
 Note that in the \textit{cross-dataset}, new labels are defined based on whether different usernames correspond to the same author and episodes are sampled from the corresponding markets. 
 Figure~\ref{fig:multitask_setup} demonstrates the shared layers and the use of \textit{cross-dataset} samples. 
-The overall loss function is the sum of the losses across the markets: $\mathcal{L} = \underset{\mathcal{T}_i \sim \mathcal{T},\ \mathcal{E} \sim \mathcal{T}_i}{\mathbbm{E}}\left[\mathcal{L}_i(\mathcal{E})\right] $.
+The overall loss function is the sum of the losses across the markets: $\mathcal{L} = \underset{\mathcal{T}_i \sim \mathcal{T},\ \mathcal{E} \sim \mathcal{T}_i}{\E}\left[\mathcal{L}_i(\mathcal{E})\right] $.
 \begin{figure}
     \centering
     \includegraphics[width=0.8\linewidth,alt={Block diagram for the multitask setup.}]{sysml/figures/MultiTask.pdf}
