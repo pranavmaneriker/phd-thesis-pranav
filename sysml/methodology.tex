@@ -13,7 +13,7 @@ Our implementation is available at: \url{https://github.com/pranavmaneriker/SYSM
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=\linewidth]{sysml/figures/MainFlowchart.pdf}
+    \includegraphics[width=\linewidth,alt={Flowchart showing \SYSMLmethodname{} workflow.}]{sysml/figures/MainFlowchart.pdf}
     \caption{Overall \SYSMLmethodname{} Workflow.}
     \label{fig:main_workflow}
 \end{figure}
@@ -34,7 +34,7 @@ Finally, a fully connected layer generates the embedding for the text sequence, 
 A dropout layer prior to the final fully connected layer prevents overfitting, as shown in Figure~\ref{fig:kim_cnn}. 
 \begin{figure}
     \centering
-    \includegraphics[width=\linewidth]{sysml/figures/TextCNN.pdf}
+    \includegraphics[width=\linewidth,alt={Diagram showing neural network for text embedding CNN.}]{sysml/figures/TextCNN.pdf}
     \caption{Text Embedding CNN \cite{kim2014convolutional}.}
     \label{fig:kim_cnn}
 \end{figure}
@@ -71,7 +71,7 @@ Where $\theta$ is the learned embedding, $N_t(v)$ denotes $v$'s neighborhood wit
 In practice, this is equivalent to running a word2vec~\cite{mikolov2013efficient} style skip gram model over the random walks generated from the meta-path schemes when $p(c_t|v; \theta) = $ is defined as a softmax function. Further details of metapath2vec can be found in the paper by \citet{dong2017metapath2vec}.
 \begin{figure}
     \centering
-    \includegraphics[width=\linewidth]{sysml/figures/metapathExample.pdf}
+    \includegraphics[width=\linewidth,alt={A meta subgraph of the forum graph showing the meta-path UTSTU.}]{sysml/figures/metapathExample.pdf}
     \caption{An instance of meta-path ‘UTSTU’ in a subgraph of the forum graph.}
     \label{fig:metapath}
 \end{figure}
@@ -88,7 +88,7 @@ The parameters of the component-wise models and episode embedding models compris
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.7\linewidth]{sysml/figures/EmbeddingTransformer.pdf}
+    \includegraphics[width=0.7\linewidth,alt={Block diagram of transformer pooling.}]{sysml/figures/EmbeddingTransformer.pdf}
     \caption{Architecture for Transformer Pooling.
     %In mean pooling. The outputs from different layers are concatenated and then passed through an MLP to generate the final embedding for each episode.
     }
@@ -135,7 +135,7 @@ Figure~\ref{fig:multitask_setup} demonstrates the shared layers and the use of \
 The overall loss function is the sum of the losses across the markets: $\mathcal{L} = \underset{\mathcal{T}_i \sim \mathcal{T},\ \mathcal{E} \sim \mathcal{T}_i}{\mathbbm{E}}\left[\mathcal{L}_i(\mathcal{E})\right] $.
 \begin{figure}
     \centering
-    \includegraphics[width=0.8\linewidth]{sysml/figures/MultiTask.pdf}
+    \includegraphics[width=0.8\linewidth,alt={Block diagram for the multitask setup.}]{sysml/figures/MultiTask.pdf}
     \caption{Multi-task setup. Shaded nodes are shared}
     \label{fig:multitask_setup}
 \end{figure}

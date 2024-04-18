@@ -199,35 +199,35 @@ Thus, for a consistent query-target time difference, LUAR is able to maintain a 
 \begin{figure}[ht]
     \centering
     \begin{subfigure}{0.48\linewidth}
-    \includegraphics[width=\linewidth]{stylometryExtensions/figures/heat/os.png}
+    \includegraphics[width=\linewidth,alt={Heatmap for OS.}]{stylometryExtensions/figures/heat/os.png}
     \caption{CS}
     \label{fig:tempral_vary:os}
     \end{subfigure}
     \begin{subfigure}{0.48\linewidth}
-    \includegraphics[width=\linewidth]{stylometryExtensions/figures/heat/tfs.png}
+    \includegraphics[width=\linewidth,alt={Heatmap for TFS.}]{stylometryExtensions/figures/heat/tfs.png}
     \caption{TFS}
     \label{fig:tempral_vary:tfs}
     \end{subfigure}
     
     \begin{subfigure}{0.48\linewidth}
-    \includegraphics[width=\linewidth]{stylometryExtensions/figures/heat/tft.png}
+    \includegraphics[width=\linewidth,alt={Heatmap for TFT.}]{stylometryExtensions/figures/heat/tft.png}
     \caption{TFT}
     \label{fig:tempral_vary:tft}
     \end{subfigure}
     \begin{subfigure}{0.48\linewidth}
-    \includegraphics[width=\linewidth]{stylometryExtensions/figures/heat/sbert.png}
+    \includegraphics[width=\linewidth,alt={Heatmap for SBERT.}]{stylometryExtensions/figures/heat/sbert.png}
     \caption{SBERT}
     \label{fig:tempral_vary:sbert}
     \end{subfigure}
 
     
     \begin{subfigure}{0.48\linewidth}
-    \includegraphics[width=\linewidth]{stylometryExtensions/figures/heat/stel.png}
+    \includegraphics[width=\linewidth,alt={Heatmap for STEL.}]{stylometryExtensions/figures/heat/stel.png}
     \caption{STEL}
     \label{fig:tempral_vary:stel}
     \end{subfigure}
     \begin{subfigure}{0.48\linewidth}
-    \includegraphics[width=\linewidth]{stylometryExtensions/figures/heat/luar.png}
+    \includegraphics[width=\linewidth,alt={Heatmap for LUAR.}]{stylometryExtensions/figures/heat/luar.png}
     \caption{LUAR}
     \label{fig:tempral_vary:LUAR}
     \end{subfigure}
@@ -238,7 +238,7 @@ Thus, for a consistent query-target time difference, LUAR is able to maintain a 
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.6\textwidth]{stylometryExtensions/figures/luar_degradation.png}
+    \includegraphics[width=0.6\textwidth,alt={Line plot showing normalized decay across methods.}]{stylometryExtensions/figures/luar_degradation.png}
     \caption{Target results for the earliest query split (15-1). We compare normalized recall@8 across all methods for \DSvarydelta{}.}
     \label{fig:temporal_vary:line}
 \end{figure}
@@ -252,14 +252,14 @@ This indicates that the author representation features captured by LUAR are more
 \begin{figure}[h]
     \centering
     %\includegraphics[width=0.48\linewidth]{stylometryExtensions/figures/demo/fixeddelta_demographics_age.png}
-    \includegraphics[width=0.6\textwidth]{stylometryExtensions/figures/demo/fixeddelta_demographics_age_groupwise.png}
+    \includegraphics[width=0.6\textwidth,alt={Barplot showing results for age splits.}]{stylometryExtensions/figures/demo/fixeddelta_demographics_age_groupwise.png}
     \caption{Overall results on \DSagefixed{} split by age group. }
     \label{fig:demographic_fixed:age}
 \end{figure}
 \begin{figure}[h]
     \centering
     %\includegraphics[width=0.48\linewidth]{stylometryExtensions/figures/demo/fixeddelta_demographics_gender.png}
-    \includegraphics[width=0.6\textwidth]{stylometryExtensions/figures/demo/fixeddelta_demographics_gender_groupwise.png}
+    \includegraphics[width=0.6\textwidth,alt={Bar pliot showing gender differences.}]{stylometryExtensions/figures/demo/fixeddelta_demographics_gender_groupwise.png}
     \caption{Overall results on \DSgenderfixed{} split by each group (bottom).}
     \label{fig:demographic_fixed:gender}
 \end{figure}
@@ -270,14 +270,14 @@ Further, from Figure~\ref{fig:demographic_fixed:gender}, we note that all models
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.6\textwidth]{stylometryExtensions/figures/demo/varydelta_demographic_groupwise_age.png}
+    \includegraphics[width=0.6\textwidth,alt={Line plot showing interaction of age and time.}]{stylometryExtensions/figures/demo/varydelta_demographic_groupwise_age.png}
     \caption{Overall results on \DSagevary{}. The x-axis denotes the absolute difference in the query and target start time, i.e., $|T_{\rm{start}} - Q_{\rm{start}}|$ .}
     \label{fig:demographic_vary:age}
 \end{figure}
 
 \begin{figure}[h]
     \centering
-    \includegraphics[height=0.6\textwidth]{stylometryExtensions/figures/demo/varydelta_demographic_groupwise_gender.png}
+    \includegraphics[height=0.6\textwidth,alt={Line plot showing interaction of gender and time.}]{stylometryExtensions/figures/demo/varydelta_demographic_groupwise_gender.png}
     \caption{Overall results on \DSgendervary{}. The x-axis denotes the absolute difference in the query and target start time, i.e., $|T_{\rm{start}} - Q_{\rm{start}}|$. }
     \label{fig:demographic_vary:gender}
 \end{figure}

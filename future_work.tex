@@ -64,7 +64,7 @@ In the following section, we focus on a specific platform - Reddit - and utilize
 \begin{figure}
     \begin{subfigure}{0.34\linewidth}
         \centering
-        \includegraphics[width=\linewidth]{future_work/figures/reddit_metagraph.pdf}
+        \includegraphics[width=\linewidth,alt={Reddit Metagraph.}]{future_work/figures/reddit_metagraph.pdf}
     \end{subfigure}
     \begin{subfigure}{0.64\linewidth}
         \resizebox{\linewidth}{!}{
@@ -132,9 +132,10 @@ We will now describe our initial explorations with these approaches and follow w
 \subsubsection{Methods}
 %We investigate two preliminary approaches to use the graph corresponding to the metagraph provided in Figure~\ref{fig:future_work:scale:preliminary:reddit_meta}.
 \textbf{Structure-based}
+
 \begin{figure}
     \centering
-    \includegraphics[width=0.9\linewidth]{future_work/figures/reddit_structure_based.pdf}
+    \includegraphics[width=0.9\linewidth,alt={Block diagram of structure-based approach.}]{future_work/figures/reddit_structure_based.pdf}
     \caption{Structure-based Author Identification Embedding}
     \label{fig:future_work:scale:preliminary:reddit_structure_embedding}
 \end{figure}
@@ -146,7 +147,7 @@ Figure~\ref{fig:future_work:scale:preliminary:reddit_structure_embedding} demons
 \textbf{Context-based}
 \begin{figure}
     \centering
-    \includegraphics[width=0.5\linewidth]{future_work/figures/reddit_context_based.pdf}
+    \includegraphics[width=0.5\linewidth,alt={Block diagram for context-based approach.}]{future_work/figures/reddit_context_based.pdf}
     \caption{Context based Author Identification Embedding}
     \label{fig:future_work:scale:preliminary:reddit_context_embedding}
 \end{figure}
@@ -156,9 +157,10 @@ Each layer of the architecture adds some context before applying a non-linear tr
 Figure~\ref{fig:future_work:scale:preliminary:reddit_context_embedding} provides a  visual representation of the transformations.
 
 \textbf{Preliminary Results}
+
 \begin{figure}
     \centering
-    \includegraphics[width=0.8\linewidth]{future_work/figures/reddit_scale_graph.pdf}
+    \includegraphics[width=0.8\linewidth,alt={Bar plot of preliminary results on Reddit.}]{future_work/figures/reddit_scale_graph.pdf}
     \caption{Results on author identification with preliminary approaches on a validation split. R@8 = recall at 8.}
     \label{fig:future_work:scale:preliminary:results}
 \end{figure}
@@ -364,7 +366,7 @@ Methods such as temporal scaling, isotonic regression, and Platt scaling have be
     \centering
     \begin{subfigure}{0.48\linewidth}
     \centering
-    \includegraphics[width=\linewidth]{stylometryExtensions/figures/calibration_expts/cos_dist_2015.png}
+    \includegraphics[width=\linewidth,alt={Density plot for calibration experiments.}]{stylometryExtensions/figures/calibration_expts/cos_dist_2015.png}
     \end{subfigure} %
     \caption{Density plot for pairwise cosine similarity for authors from the \DSvarydelta{} dataset. 1 corresponds to matching pairs, 0 corresponds to non-matching pairs.}
     \label{fig:calibration:density}
@@ -381,7 +383,7 @@ Using a logistic regression-based recalibration method, we can get a well-calibr
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.7\linewidth]{stylometryExtensions/figures/calibration_expts/calibrate_2015.png}
+    \includegraphics[width=0.7\linewidth,alt={Line plots showing reliability diagram comparisons.}]{stylometryExtensions/figures/calibration_expts/calibrate_2015.png}
     \caption{Reliability diagram for the LUAR model trained on the \DSvarydelta{} dataset for 2015. The x-axis represents the predicted score, and the y-axis represents the empirical probability of the event. The dashed line represents perfect calibration.}
     \label{fig:calibration:relaibility_2015}
 \end{figure}
@@ -405,7 +407,7 @@ Using a logistic regression-based recalibration method, we can get a well-calibr
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.8\linewidth]{stylometryExtensions/figures/calibration_expts/eval_calibration.png}
+    \includegraphics[width=0.8\linewidth,alt={Line plot for reliability diagram of LUAR over time.}]{stylometryExtensions/figures/calibration_expts/eval_calibration.png}
     \caption{Plots for the reliability diagrams recalibrated LUAR model across \DSvarydelta{} splits.}
     \label{fig:calibration:reliability_2016_2019}
 \end{figure}

@@ -20,10 +20,10 @@ Second, can we combine data from the darkweb and clear web to build better model
 \begin{figure}
     \centering
     \begin{subfigure}{0.9\linewidth}
-       \includegraphics[width=\textwidth]{stylometryExtensions/figures/Dread} 
+       \includegraphics[width=\textwidth,alt={Screenshot of Dread.}]{stylometryExtensions/figures/Dread} 
     \end{subfigure}
     \begin{subfigure}{0.9\linewidth}
-       \includegraphics[width=\textwidth]{stylometryExtensions/figures/Reddit} 
+       \includegraphics[width=\textwidth,alt={Screenshot of Reddit.}]{stylometryExtensions/figures/Reddit} 
     \end{subfigure}
     \caption{Dark web market Dread (top) and clear web market Reddit (bottom). Dread image source:~\citet{wiki:Dread}}
     \label{fig:stylometry_extensions:followingTrail:forums}
@@ -64,13 +64,13 @@ As with prior analyses from~\chapref{chp:sysml}, we assume that each username co
 \begin{figure}
     \begin{subfigure}{0.75\linewidth}
         \centering
-        \includegraphics[width=\textwidth]{stylometryExtensions/figures/RedditPostCDF}
+        \includegraphics[width=\textwidth,alt={Empirical Cumulative Distribution Function showing the proportion of authors having n\_post posts.}]{stylometryExtensions/figures/RedditPostCDF}
         \caption{Empirical Cumulative Distribution Function showing the proportion of authors having n\_post posts. Reddit has a much smaller proportion of authors with only one post.}
         \label{fig:stylometry_extensions:followingTrail:datasets:behaviors:posts}
     \end{subfigure}
     \begin{subfigure}{0.75\linewidth}
         \centering
-        \includegraphics[width=\textwidth]{stylometryExtensions/figures/RedditSubforumCounts}
+        \includegraphics[width=\textwidth,alt={Histogram of the number of subforums an author has posted in.}]{stylometryExtensions/figures/RedditSubforumCounts}
         \caption{Histogram of the number of subforums an author has posted in. Reddit has fewer authors posting on only one subforum.}
         \label{fig:stylometry_extensions:followingTrail:datasets:behaviors:subforums}
     \end{subfigure}
@@ -95,7 +95,7 @@ However, it is unclear how these differences at the macro level will affect the 
 \subsubsection{Preprocessing and Setup for Author Identification}
 \begin{figure}
     \centering
-    \includegraphics[width=0.9\linewidth]{stylometryExtensions/figures/train_query_target_split}
+    \includegraphics[width=0.9\linewidth,alt={Diagram showing how data is split for author identificaiton.}]{stylometryExtensions/figures/train_query_target_split}
     \caption{Setup of splits for the Author Identification task. Each color represents a different author.}
     \label{fig:stylometry_extensions:followingTrail:datasets:splits}
 \end{figure}
@@ -112,7 +112,7 @@ Figure~\ref{fig:stylometry_extensions:followingTrail:datasets:final_splits} show
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.9\linewidth]{stylometryExtensions/figures/FinalSplits}
+    \includegraphics[width=0.9\linewidth,alt={Bar chart showing final statistics for each split.}]{stylometryExtensions/figures/FinalSplits}
     \caption{Number of authors in each dataset after preprocessing.}
     \label{fig:stylometry_extensions:followingTrail:datasets:final_splits}
 \end{figure}
@@ -124,7 +124,7 @@ For the following results, we set the episode length to 4. We consider sequence 
 \subsubsection{Zero-shot Transfer}
 \begin{figure}
     \centering
-    \includegraphics[width=0.9\linewidth]{stylometryExtensions/figures/results/rq1_zeroshot} 
+    \includegraphics[width=0.9\linewidth,alt={Bar charts comparing LUAR in a zero-shot setting.}]{stylometryExtensions/figures/results/rq1_zeroshot} 
     \caption{Zero-shot performance of LUAR on the test set from Reddit-201801, Reddit-201912, Dread, and TheHub. seq\_len denotes the number of tokens sampled in each window.}
     \label{fig:stylometry_extensions:followingTrail:results:rq1_zeroshot}   
 \end{figure}
@@ -139,7 +139,7 @@ For the remainder of the experiments, we use the sequence length of $64$ as it p
 \subsubsection{Darkweb vs Clearweb Models}
 \begin{figure}
     \centering
-    \includegraphics[width=0.8\linewidth]{stylometryExtensions/figures/results/rq2_trainedmodels} 
+    \includegraphics[width=0.8\linewidth,alt={Heatmap comparing Recall@8 across models.}]{stylometryExtensions/figures/results/rq2_trainedmodels} 
     \caption{Heatmap comparing Recall@8 across models. Each row represents the training dataset used for training the LUAR model, while each column represents the test dataset.}
     \label{fig:stylometry_extensions:followingTrail:results:rq2_trainedmodels}
 \end{figure}
@@ -155,7 +155,7 @@ This motivates us to try a hybrid approach, where we train the LUAR model on a c
 \subsubsection{Hybrid Dataset: Combining Clear and Dark Web Data}
 \begin{figure}
     \centering
-    \includegraphics[width=0.8\linewidth]{stylometryExtensions/figures/results/rq3_combine} 
+    \includegraphics[width=0.8\linewidth,alt={Heatmap comparing Recall@8 with combined dataset.}]{stylometryExtensions/figures/results/rq3_combine} 
     \caption{Heatmap comparing Recall@8 across models with a combined dataset and individual datasets.}
     \label{fig:stylometry_extensions:followingTrail:results:rq3_combine}
 \end{figure}
