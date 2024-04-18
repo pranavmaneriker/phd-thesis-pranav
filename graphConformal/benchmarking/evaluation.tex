@@ -62,9 +62,9 @@ For completeness, we list all the methods that we compare here.
 
 \begin{figure}
     \centering
-    \includegraphics[width=\linewidth,alt={Line plots showing method comparisons for small datasets.}]{graphConformal/figures/split/small_datasets_efficiency.pdf}
-    \includegraphics[width=\linewidth,alt={Line plots showing method comparisons for Medium datasets.}]{graphConformal/figures/split/med_1_datasets_efficiency.pdf}
-    \includegraphics[width=\linewidth,alt={Line plots showing method comparisons for large datasets.}]{graphConformal/figures/split/med_2_datasets_efficiency.pdf}
+    \includegraphics[width=\linewidth,alt={Line plots showing method comparisons for small datasets.}]{graphConformal/figures/split/small_datasets_efficiency.png}
+    \includegraphics[width=\linewidth,alt={Line plots showing method comparisons for Medium datasets.}]{graphConformal/figures/split/med_1_datasets_efficiency.png}
+    \includegraphics[width=\linewidth,alt={Line plots showing method comparisons for large datasets.}]{graphConformal/figures/split/med_2_datasets_efficiency.png}
     \caption{Plots for efficiency vs $\alpha$ for the major methods across the all the datasets. Among the baseline methods, TPS consistently has the best efficiency. Result for FS paritttion}
     \label{fig:fs:conformal:efficiency_vs_alpha}
 \end{figure}
@@ -80,17 +80,17 @@ Next, we focus on the adaptability provided by using classwise TPS.
 \begin{figure}
     \centering
     \begin{subfigure}{0.48\linewidth}
-    \includegraphics[width=\linewidth,alt={Box plots for method comparison on CiteSeer dataset label stratified coverage.}]{graphConformal/figures/split/citeseer_label_stratified_coverage}
+    \includegraphics[width=\linewidth,alt={Box plots for method comparison on CiteSeer dataset label stratified coverage.}]{graphConformal/figures/split/citeseer_label_stratified_coverage.png}
     \end{subfigure}
     \begin{subfigure}{0.48\linewidth}
-        \includegraphics[width=\linewidth,alt={Box plots for method comparison on CiteSeer dataset size stratified coverage.}]{graphConformal/figures/split/citeseer_size_stratified_coverage} 
+        \includegraphics[width=\linewidth,alt={Box plots for method comparison on CiteSeer dataset size stratified coverage.}]{graphConformal/figures/split/citeseer_size_stratified_coverage.png} 
      \end{subfigure}
 
     \begin{subfigure}{0.48\linewidth}
-    \includegraphics[width=\linewidth,alt={Box plots for method comparison on Cora dataset label stratified coverage.}]{graphConformal/figures/split/cora_label_stratified_coverage}
+    \includegraphics[width=\linewidth,alt={Box plots for method comparison on Cora dataset label stratified coverage.}]{graphConformal/figures/split/cora_label_stratified_coverage.png}
     \end{subfigure}
     \begin{subfigure}{0.48\linewidth}
-        \includegraphics[width=\linewidth,alt={Box plots for method comparison on Cora dataset size stratified coverage.}]{graphConformal/figures/split/cora_size_stratified_coverage} 
+        \includegraphics[width=\linewidth,alt={Box plots for method comparison on Cora dataset size stratified coverage.}]{graphConformal/figures/split/cora_size_stratified_coverage.png} 
      \end{subfigure}
      \caption{At a target $\alpha = 0.1$. Boxplots indicating (left) Label Stratified Coverage. (right) Size Stratified Coverage for CiteSeer (top) and Cora(bottom). Classwise TPS provides adaptability when stratified by labels without sacrificing size stratified coverage. Results for FS splits.}
      \label{fig:fs:conformal:citeseer_adaptability}
@@ -100,10 +100,10 @@ At the limit, even when reducing the number of samples per class from Figure~\re
 Thus, at least for the datasets we studied, TPS-Classwise is a good candidate for an adaptive version of TPS.
 \begin{figure}
     \begin{subfigure}{0.48\linewidth}
-        \includegraphics[width=\linewidth,alt={Box plots for method comparison on Amazon Photos dataset size stratified coverage with 10 samples per class.}]{graphConformal/figures/nspc/amazon_photos_10_size_stratified_coverage.pdf}
+        \includegraphics[width=\linewidth,alt={Box plots for method comparison on Amazon Photos dataset size stratified coverage with 10 samples per class.}]{graphConformal/figures/nspc/amazon_photos_10_size_stratified_coverage.png}
     \end{subfigure}
     \begin{subfigure}{0.48\linewidth}
-        \includegraphics[width=\linewidth,alt={Box plots for method comparison on Amazon Photos dataset size stratified coverage with 40 samples per class.}]{graphConformal/figures/nspc/amazon_photos_40_size_stratified_coverage.pdf}
+        \includegraphics[width=\linewidth,alt={Box plots for method comparison on Amazon Photos dataset size stratified coverage with 40 samples per class.}]{graphConformal/figures/nspc/amazon_photos_40_size_stratified_coverage.png}
     \end{subfigure}
     \caption{At a target $\alpha = 0.1$, boxplots for size stratified coverage with calibration sets having (left) 10 samples per class and (right) 40 samples per class for Amazon Photos.}
     \label{fig:nspc:citeseer:ssc}
@@ -113,10 +113,10 @@ Thus, at least for the datasets we studied, TPS-Classwise is a good candidate fo
 \begin{figure}
     \centering
     \begin{subfigure}{0.8\linewidth}
-    \includegraphics[width=\linewidth,alt={Violin plots comparison randomized and non randomized efficieincy for APS across 5 datasets.}]{graphConformal/figures/split/aps_randomized_efficiency}
+    \includegraphics[width=\linewidth,alt={Violin plots comparison randomized and non randomized efficieincy for APS across 5 datasets.}]{graphConformal/figures/split/aps_randomized_efficiency.png}
     \end{subfigure}
     \begin{subfigure}{0.6\linewidth}
-        \includegraphics[width=\linewidth,alt={Violin plots comparison randomized and non randomized efficieincy for APS on Cora.}]{graphConformal/figures/split/aps_randomized_efficiency_cora}
+        \includegraphics[width=\linewidth,alt={Violin plots comparison randomized and non randomized efficieincy for APS on Cora.}]{graphConformal/figures/split/aps_randomized_efficiency_cora.png}
     \end{subfigure}
     \caption{Violin plots denoting efficiencies of APS and Randomized APS across different datasets and multiple runs in FS split. Randomization consistently improves over the non-randomized version.}
     \label{fig:fs:conformal:aps_vs_randomized}
@@ -148,10 +148,10 @@ Overall, the empirical results show that the effect of randomized APS is more ap
 \begin{figure}
     \centering
     \begin{subfigure}{0.7\linewidth}
-        \includegraphics[width=\linewidth,alt={Bar charts denoting different metrics associated with DAPS and DTPS across PubMed }]{graphConformal/figures/split/daps_dtps_pubmed}
+        \includegraphics[width=\linewidth,alt={Bar charts denoting different metrics associated with DAPS and DTPS across PubMed }]{graphConformal/figures/split/daps_dtps_pubmed.png}
     \end{subfigure}
     \begin{subfigure}{0.7\linewidth}
-        \includegraphics[width=\linewidth,alt={ar charts denoting different metrics associated with DAPS and DTPS across Cora.}]{graphConformal/figures/split/daps_dtps_cora}
+        \includegraphics[width=\linewidth,alt={ar charts denoting different metrics associated with DAPS and DTPS across Cora.}]{graphConformal/figures/split/daps_dtps_cora.png}
     \end{subfigure}
     \caption{Bar charts denoting different metrics associated with DAPS and DTPS across PubMed (top) and Cora (bottom) for the TS split at $\alpha=0.1$. We see that DTPS improves efficiency for PubMed but not for Cora, with minimal impact to other adaptive metrics.}
     \label{fig:fs:conformal:daps_vs_dtps}
@@ -161,10 +161,10 @@ Overall, the empirical results show that the effect of randomized APS is more ap
 \begin{figure}
     \centering
     \begin{subfigure}{0.7\linewidth}
-        \includegraphics[width=\linewidth,alt={Bar charts denoting different metrics associated with DAPS and DTPS across the LC split at $\alpha=0.1$}]{graphConformal/figures/nspc/daps_dtps_0.1}
+        \includegraphics[width=\linewidth,alt={Bar charts denoting different metrics associated with DAPS and DTPS across the LC split at $\alpha=0.1$}]{graphConformal/figures/nspc/daps_dtps_0.1.png}
     \end{subfigure}
     \begin{subfigure}{0.7\linewidth}
-        \includegraphics[width=\linewidth,alt={Bar charts denoting different metrics associated with DAPS and DTPS across the LC split at $\alpha=0.2$}]{graphConformal/figures/nspc/daps_dtps_0.2}
+        \includegraphics[width=\linewidth,alt={Bar charts denoting different metrics associated with DAPS and DTPS across the LC split at $\alpha=0.2$}]{graphConformal/figures/nspc/daps_dtps_0.2.png}
     \end{subfigure}
     \caption{Bar charts denoting different metrics associated with DAPS and DTPS across the LC splits at $\alpha=0.1$ (top) and $\alpha=0.2$ (bottom). We see that DTPS deteriorates significantly as compared to DAPS at higher $\alpha$.}
     \label{fig:nspc:conformal:daps_vs_dtps}
@@ -215,7 +215,7 @@ We note that our implementation is able to achieve improvements ranging from 16.
 \begin{figure}
     \centering
     \begin{subfigure}{0.7\linewidth}
-        \includegraphics[width=\linewidth,alt={Bar charts denoting efficiency for CFGNN-APS and CFGNN-Original across the TS split at $\alpha=0.1$. We see that CFGNN-APS improves or matches efficiency in most cases.}]{graphConformal/figures/split/cfgnn_aps_vs_orig_efficiency}
+        \includegraphics[width=\linewidth,alt={Bar charts denoting efficiency for CFGNN-APS and CFGNN-Original across the TS split at $\alpha=0.1$. We see that CFGNN-APS improves or matches efficiency in most cases.}]{graphConformal/figures/split/cfgnn_aps_vs_orig_efficiency.png}
     \end{subfigure}
     \caption{Bar charts denoting efficiency for CFGNN-APS and CFGNN-Original across the TS split at $\alpha=0.1$. We see that CFGNN-APS improves or matches efficiency in most cases.}
     \label{fig:fs:conformal:cfgnn_aps_vs_orig}
@@ -224,10 +224,10 @@ We note that our implementation is able to achieve improvements ranging from 16.
 \begin{figure}
     \centering
     \begin{subfigure}{0.48\linewidth}
-        \includegraphics[width=\linewidth,alt={Bar charts denoting efficiency for CFGNN-APS and CFGNN-Original across the LC split at $\alpha=0.1$ with 10 samples per  class.}]{graphConformal/figures/nspc/cfgnn_aps_vs_orig_efficiency_10}
+        \includegraphics[width=\linewidth,alt={Bar charts denoting efficiency for CFGNN-APS and CFGNN-Original across the LC split at $\alpha=0.1$ with 10 samples per  class.}]{graphConformal/figures/nspc/cfgnn_aps_vs_orig_efficiency_10.png}
     \end{subfigure}
     \begin{subfigure}{0.48\linewidth}
-        \includegraphics[width=\linewidth, alt={Bar charts denoting efficiency for CFGNN-APS and CFGNN-Original across the LC split at $\alpha=0.1$ with 20 samples per  class.}]{graphConformal/figures/nspc/cfgnn_aps_vs_orig_efficiency_20}
+        \includegraphics[width=\linewidth, alt={Bar charts denoting efficiency for CFGNN-APS and CFGNN-Original across the LC split at $\alpha=0.1$ with 20 samples per  class.}]{graphConformal/figures/nspc/cfgnn_aps_vs_orig_efficiency_20.png}
     \end{subfigure}
     \caption{Bar charts denoting efficiency for CFGNN-APS and CFGNN-Original across the LC split at $\alpha=0.1$ with 10 samples per  class (left) and 20 samples per class (right). We see that CFGNN is unstable for the LC setting.}
     \label{fig:nspc:conformal:cfgnn_aps_vs_orig}
