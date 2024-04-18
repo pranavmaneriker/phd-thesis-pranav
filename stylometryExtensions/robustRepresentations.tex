@@ -196,7 +196,7 @@ Thus, for a consistent query-target time difference, LUAR is able to maintain a 
 %\pmComment{Need better presentation option for this}
 
 % TODO: At least make this a faceted plot 
-\begin{figure}[ht]
+\begin{figure}
     \centering
     \begin{subfigure}{0.48\linewidth}
     \includegraphics[width=\linewidth,alt={Heatmap for OS.}]{stylometryExtensions/figures/heat/os.png}
@@ -242,6 +242,7 @@ Thus, for a consistent query-target time difference, LUAR is able to maintain a 
     \caption{Target results for the earliest query split (15-1). We compare normalized recall@8 across all methods for \DSvarydelta{}.}
     \label{fig:temporal_vary:line}
 \end{figure}
+
 Next, using \DSvarydelta{} we consider temporal variation across a fixed set of users across time.
 Figure~\ref{fig:temporal_vary} shows heatmaps for the recall@8 results for each model across different query/target time periods for a fixed set of authors.
 We see that across all the methods, there is a temporal degradation in performance, which could potentially be caused by temporally evolving styles (STEL), topics of interest (Count/TFIDF) based results or semantics (SBERT).
@@ -249,14 +250,14 @@ However, from Figure~\ref{fig:temporal_vary:line}, we see that when normalized f
 This indicates that the author representation features captured by LUAR are more stable across time compared to the other models.
 
 \subsubsection{DemographicReddit}
-\begin{figure}[h]
+\begin{figure}
     \centering
     %\includegraphics[width=0.48\linewidth]{stylometryExtensions/figures/demo/fixeddelta_demographics_age.png}
     \includegraphics[width=0.6\textwidth,alt={Barplot showing results for age splits.}]{stylometryExtensions/figures/demo/fixeddelta_demographics_age_groupwise.png}
     \caption{Overall results on \DSagefixed{} split by age group. }
     \label{fig:demographic_fixed:age}
 \end{figure}
-\begin{figure}[h]
+\begin{figure}
     \centering
     %\includegraphics[width=0.48\linewidth]{stylometryExtensions/figures/demo/fixeddelta_demographics_gender.png}
     \includegraphics[width=0.6\textwidth,alt={Bar pliot showing gender differences.}]{stylometryExtensions/figures/demo/fixeddelta_demographics_gender_groupwise.png}
@@ -268,14 +269,14 @@ Figure~\ref{fig:demographic_fixed:age} shows the recall@8 results for age groups
 We note that all models consistently underperform on (self-identified) teenage users.
 Further, from Figure~\ref{fig:demographic_fixed:gender}, we note that all models consistently underperform on (self-identified) female users.
 
-\begin{figure}[h]
+\begin{figure}
     \centering
     \includegraphics[width=0.6\textwidth,alt={Line plot showing interaction of age and time.}]{stylometryExtensions/figures/demo/varydelta_demographic_groupwise_age.png}
     \caption{Overall results on \DSagevary{}. The x-axis denotes the absolute difference in the query and target start time, i.e., $|T_{\rm{start}} - Q_{\rm{start}}|$ .}
     \label{fig:demographic_vary:age}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}
     \centering
     \includegraphics[height=0.6\textwidth,alt={Line plot showing interaction of gender and time.}]{stylometryExtensions/figures/demo/varydelta_demographic_groupwise_gender.png}
     \caption{Overall results on \DSgendervary{}. The x-axis denotes the absolute difference in the query and target start time, i.e., $|T_{\rm{start}} - Q_{\rm{start}}|$. }
