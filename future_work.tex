@@ -362,7 +362,7 @@ The expected calibration error is defined as
 where $B_m$ is the set of examples in bin $m$, $n$ is the total number of examples, $\text{acc}(B_m)$ is the accuracy of the model in bin $m$, and $\text{conf}(B_m)$ is the confidence of the model in bin $m$.
 Methods such as temporal scaling, isotonic regression, and Platt scaling have been used to recalibrate the outputs of neural networks~\cite{guo2017calibration} to achieve calibration.
 
-\begin{figure}[h]
+\begin{figure}
     \centering
     \begin{subfigure}{0.48\linewidth}
     \centering
@@ -388,7 +388,7 @@ Using a logistic regression-based recalibration method, we can get a well-calibr
     \label{fig:calibration:relaibility_2015}
 \end{figure}
 
-\begin{table}[]
+\begin{table}
 \centering
 \begin{tabular}{lr}
 \toprule

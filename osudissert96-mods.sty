@@ -498,6 +498,7 @@
               {\uppercase{\listfigurename}}}%
 %% MM. 1994/08/09. Preserving Ram's choices.
   \pagestyle{plain}%
+  \@ifundefined{phantomsection}{}{\phantomsection}
   \addcontentsline{toc}{front}{\listfigurenameLC}
   \startsinglespace%
 % MDH - added to make consistent with TOC spacing
@@ -520,6 +521,7 @@
     \chapter*{\typesetHeading{\listtablename}%
       \@mkboth{\uppercase{\listtablename}}{\uppercase{\listtablename}}}%
 %% MM. 1994/08/09. Preserving Ram's choices.
+\@ifundefined{phantomsection}{}{\phantomsection}
 \addcontentsline{toc}{front}{{\listtablenameLC}}%
 \startsinglespace
 \pagestyle{plain}
@@ -905,6 +907,7 @@
 %
 \renewenvironment{abstract}{
   \chapter*{\typesetHeading{\abstractname}}
+  \@ifundefined{phantomsection}{}{\phantomsection}
   \addcontentsline{toc}{front}{{\abstractnameLC}}
   \thispagestyle{plain}
   \pagestyle{plain}
@@ -956,6 +959,7 @@
 \newenvironment{acknowledgments}{
   \chapter*{\typesetHeading{\acknowledgmentname}
         \@mkboth{\uppercase{\acknowledgmentname}}{\uppercase{\acknowledgmentname}}}%
+  \@ifundefined{phantomsection}{}{\phantomsection}
   \addcontentsline{toc}{front}{{\acknowledgmentnameLC}}
   \thispagestyle{plain}
   \pagestyle{plain}}
@@ -1010,6 +1014,7 @@
 \newenvironment{vita}{
   \chapter*{\typesetHeading\vitaname
         \@mkboth{\uppercase{\vitaname}}{\uppercase{\vitaname}}}%
+  \@ifundefined{phantomsection}{}{\phantomsection}
   \addcontentsline{toc}{front}{{\vitanameLC}}
   \thispagestyle{plain}
   \pagestyle{plain}
